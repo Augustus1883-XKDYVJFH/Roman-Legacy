@@ -1,0 +1,30 @@
+{
+musicVolume: 0
+sfxVolume: 0.8
+musicEnabled: true
+sfxEnabled: true
+keys: {
+	moveUp: 51
+	moveDown: 47
+	moveLeft: 29
+	moveRight: 32
+	zoomIn: 70
+	zoomOut: 69
+	toggleFactions: 34
+	openConsumption: 31
+	cancel: 111
+	openTrade: 48
+	pause: 44
+	quickSave: 135
+	quickLoad: 139
+	switchMap: 41
+	openSettings: 43
+	cancelMouseRight: true
+}
+fullscreen: true
+windowWidth: 1280
+windowHeight: 720
+brightness: 1
+autoSaveInterval: 60
+firstLaunchAchievementGranted: true
+}
