@@ -891,6 +891,9 @@ public class GameInputHandler {
                 return false;
         }
 
+        if (bt.requiresDeposit && !state.hasDepositAt(bt, cx, cy))
+            return false;
+
         if (bt == BuildingType.DOCK || bt == BuildingType.OIL_DOCK) {
             for (BuildingInstance b : state.buildings)
                 if (b.type == bt)

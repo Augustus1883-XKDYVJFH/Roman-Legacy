@@ -37,6 +37,8 @@ public class AchievementManager {
     public static final String AI = "AMICISSIMI_INTIMI";// TODO: sbloccato se 2 fazioni opposte (di parole chiave,
                                                         // distanza 12 se non ricordo male) hanno entrambe relazioni
                                                         // positive allo stesso tempo
+    public static final String PIF = "PLASTIC_IS_FANTASTIC";// TODO: sbloccato dopo aver raggiunto una produzione di 100
+                                                            // di plastica al minuto
 
     private final SteamManager steam;
 

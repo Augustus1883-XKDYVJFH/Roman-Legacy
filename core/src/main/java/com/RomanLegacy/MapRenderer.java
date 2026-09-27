@@ -597,6 +597,31 @@ public class MapRenderer {
         sr.end();
     }
 
+    /**
+     * Contorno colorato sui depositi del mondo corrente: doppio bordo, colore
+     * dell'edificio che li usa.
+     */
+    public void drawDeposits(GameState state) {
+        java.util.Map<String, java.util.List<int[]>> deposits = state.onNewWorld ? state.depositsNew
+                : state.depositsOld;
+        if (deposits.isEmpty())
+            return;
+        int cs = GameState.CELL_SIZE;
+
+        sr.setProjectionMatrix(mapCamera.combined);
+        sr.begin(ShapeRenderer.ShapeType.Line);
+        for (java.util.Map.Entry<String, java.util.List<int[]>> e : deposits.entrySet()) {
+            BuildingType bt = BuildingType.valueOf(e.getKey());
+            Color c = Color.valueOf(bt.colorHex);
+            sr.setColor(c.r, c.g, c.b, 0.9f);
+            for (int[] s : e.getValue()) {
+                sr.rect(s[0] * cs, s[1] * cs, bt.w * cs, bt.h * cs);
+                sr.rect(s[0] * cs + 3, s[1] * cs + 3, bt.w * cs - 6, bt.h * cs - 6);
+            }
+        }
+        sr.end();
+    }
+
     private Color colorForInfluenceSource(BuildingType bt) {
         if (bt == BuildingType.BOILER)
             return new Color(0.6f, 0.6f, 0.7f, 0.6f);

@@ -19,6 +19,7 @@ public class GameState {
     public static final int MAP_WIDTH = 250;
     public static final int MAP_HEIGHT = 250;
     public static final int CELL_SIZE = 15;
+    private static final int DEPOSITS_PER_TYPE = 4;
 
     // ── Costanti spedizione ──────────────────────────────────────────────────────
     public static final int NEW_WORLD_POP_REQ = 1;
@@ -48,6 +49,8 @@ public class GameState {
     public List<BuildingInstance> warehouseCarriageList = new ArrayList<>();
     public List<BuildingInstance> warehouseTruckList = new ArrayList<>();
     public List<ResourceFloater> floaters = new ArrayList<>();
+    public Map<String, List<int[]>> depositsOld = new HashMap<>();
+    public Map<String, List<int[]>> depositsNew = new HashMap<>();
 
     private Map<ServiceCategory, Float> totalCapacity = new HashMap<>();
     private Map<ServiceCategory, Float> totalConsumption = new HashMap<>();
@@ -57,6 +60,9 @@ public class GameState {
     private float[] classWorkforceSatisfaction = new float[BuildingType.SOCIAL_CLASS_NAMES.length];
     private boolean[] classHasDemand = new boolean[BuildingType.SOCIAL_CLASS_NAMES.length];
     private float[] classWorkforceDemand = new float[BuildingType.SOCIAL_CLASS_NAMES.length];
+    private static final BuildingType[] DEPOSIT_BUILDINGS = {
+            BuildingType.CLAYPIT, BuildingType.SANDPIT, BuildingType.MARBLE_QUARRY, BuildingType.OILRIG
+    };
 
     // ── Flags mappa ──────────────────────────────────────────────────────────────
     public boolean onNewWorld = false;
@@ -93,6 +99,7 @@ public class GameState {
         eventManager = new EventManager(factionSeed + 1);
 
         terrainMapOld = new MapGenerator().generate(MAP_WIDTH, MAP_HEIGHT, 3.5);
+        generateDepositsForWorld(false);
         terrainMapNew = null;
         terrainMap = terrainMapOld;
         buildings = buildingsOld;
@@ -126,6 +133,12 @@ public class GameState {
             terrainMap = terrainMapOld;
             buildings = buildingsOld;
         }
+
+        // I depositi non sono salvati: si rigenerano dallo stesso seed, quindi tornano
+        // identici.
+        generateDepositsForWorld(false);
+        if (terrainMapNew != null)
+            generateDepositsForWorld(true);
 
         // 3. Carica edifici di ENTRAMBI i mondi
         buildingsOld.clear();
@@ -539,6 +552,7 @@ public class GameState {
         expeditionActive = true;
         expeditionTimer = 0f;
         terrainMapNew = new MapGenerator().generate(MAP_WIDTH, MAP_HEIGHT, 5.0);
+        generateDepositsForWorld(true);
     }
 
     public void completeExpedition() {
@@ -821,6 +835,96 @@ public class GameState {
                 for (int dx = 0; dx < w; dx++)
                     if (bi.occupies(cx + dx, cy + dy))
                         return true;
+        }
+        return false;
+    }
+
+    public boolean hasDepositAt(BuildingType bt, int x, int y) {
+        Map<String, List<int[]>> deposits = onNewWorld ? depositsNew : depositsOld;
+        List<int[]> spots = deposits.get(bt.id);
+        if (spots == null)
+            return false;
+        for (int[] s : spots)
+            if (s[0] == x && s[1] == y)
+                return true;
+        return false;
+    }
+
+    private void generateDepositsForWorld(boolean newWorld) {
+        int[][] terrain = newWorld ? terrainMapNew : terrainMapOld;
+        if (terrain == null)
+            return;
+
+        long seed = factionManager.getSeed() + (newWorld ? 3 : 2); // +1 è già usato da EventManager
+        Random rng = new Random(seed);
+        BuildingType.Region region = newWorld ? BuildingType.Region.NEW_WORLD : BuildingType.Region.OLD_WORLD;
+        Map<String, List<int[]>> deposits = new HashMap<>();
+
+        for (BuildingType bt : DEPOSIT_BUILDINGS) {
+            if (!bt.isAllowedInRegion(region))
+                continue;
+
+            List<int[]> spots = new ArrayList<>();
+            int attempts = 0;
+            while (spots.size() < DEPOSITS_PER_TYPE && attempts < 2000) {
+                attempts++;
+                int x = rng.nextInt(MAP_WIDTH - bt.w);
+                int y = rng.nextInt(MAP_HEIGHT - bt.h);
+                if (!terrainOkForDeposit(bt, terrain, x, y))
+                    continue;
+                if (overlapsAnyDeposit(deposits, x, y, bt.w, bt.h))
+                    continue;
+                spots.add(new int[] { x, y });
+            }
+            deposits.put(bt.id, spots);
+        }
+
+        if (newWorld)
+            depositsNew = deposits;
+        else
+            depositsOld = deposits;
+    }
+
+    private boolean terrainOkForDeposit(BuildingType bt, int[][] terrain, int x, int y) {
+        for (int dy = 0; dy < bt.h; dy++) {
+            for (int dx = 0; dx < bt.w; dx++) {
+                int t = terrain[y + dy][x + dx];
+                if (t == MapGenerator.WATER) {
+                    boolean waterOk = bt.onlyTerrain != null
+                            && containsTerrainValue(bt.onlyTerrain, MapGenerator.WATER);
+                    if (!waterOk)
+                        return false;
+                }
+                if (t == MapGenerator.MOUNTAIN || t == MapGenerator.PEAK) {
+                    boolean mtnOk = bt.onlyTerrain != null
+                            && (containsTerrainValue(bt.onlyTerrain, MapGenerator.MOUNTAIN)
+                                    || containsTerrainValue(bt.onlyTerrain, MapGenerator.PEAK));
+                    if (!mtnOk)
+                        return false;
+                }
+                if (!bt.allowedOnTerrain(t))
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean containsTerrainValue(int[] arr, int val) {
+        if (arr == null)
+            return false;
+        for (int v : arr)
+            if (v == val)
+                return true;
+        return false;
+    }
+
+    private boolean overlapsAnyDeposit(Map<String, List<int[]>> deposits, int x, int y, int w, int h) {
+        for (Map.Entry<String, List<int[]>> e : deposits.entrySet()) {
+            BuildingType other = BuildingType.valueOf(e.getKey());
+            for (int[] s : e.getValue()) {
+                if (x < s[0] + other.w && s[0] < x + w && y < s[1] + other.h && s[1] < y + h)
+                    return true;
+            }
         }
         return false;
     }

@@ -323,6 +323,7 @@ public class GameScreen implements Screen {
         uiCamera.update();
 
         mapRenderer.drawMap(state);
+        mapRenderer.drawDeposits(state);
         mapRenderer.drawBuildings(state, input);
 
         if (input.selectedBuilding != null && input.previewCellX >= 0

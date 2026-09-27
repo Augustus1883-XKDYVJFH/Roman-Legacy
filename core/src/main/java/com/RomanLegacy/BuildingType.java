@@ -57,6 +57,7 @@ public class BuildingType {
         public final String fieldTypeId; // solo fattorie: id del campo che usano
         public final int fieldCap; // solo fattorie: numero massimo di campi
         public final String fieldOwnerId; // solo campi: id della fattoria a cui appartengono
+        public final boolean requiresDeposit;
 
         private BuildingType(Builder b) {
                 this.id = b.id;
@@ -100,6 +101,7 @@ public class BuildingType {
                 this.fieldTypeId = b.fieldTypeId;
                 this.fieldCap = b.fieldCap;
                 this.fieldOwnerId = b.fieldOwnerId;
+                this.requiresDeposit = b.requiresDeposit;
         }
 
         // ── Builder ──────────────────────────────────────────────────────────────────
@@ -144,6 +146,7 @@ public class BuildingType {
                 private String fieldTypeId = null;
                 private int fieldCap = 0;
                 private String fieldOwnerId = null;
+                private boolean requiresDeposit = false;
 
                 public Builder(String id, String label, String colorHex, int w, int h) {
                         this.id = id;
@@ -288,6 +291,11 @@ public class BuildingType {
                         return this;
                 }
 
+                public Builder requiresDeposit() {
+                        this.requiresDeposit = true;
+                        return this;
+                }
+
                 public BuildingType build() {
                         return new BuildingType(this);
                 }
@@ -299,6 +307,20 @@ public class BuildingType {
                         }
                         return m;
                 }
+        }
+
+        // ── RECINTI ──────────────────────────────────────────────────────────────────
+        // notBuildable: non compaiono nella bottombar, si piazzano dal pannello
+        // dell'allevamento.
+        // TODO: dimensioni, costi e colori sono SEGNAPOSTO. Gli id finiscono nei
+        // salvataggi.
+        private static BuildingType pen(String id, String label, String colorHex, int w, int h,
+                        String ownerId, Object... cost) {
+                return new Builder(id, label, colorHex, w, h)
+                                .cost(cost)
+                                .penOf(ownerId)
+                                .notBuildable()
+                                .build();
         }
 
         // ── Enum ─────────────────────────────────────────────────────────────────────
@@ -555,6 +577,10 @@ public class BuildingType {
                                         + getMonumentChainLength());
                 }
 
+                if (requiresDeposit) {
+                        lines.add("Requires: matching deposit");
+                }
+
                 if (influenceRadius > 0) {
                         lines.add("Radius: " + influenceRadius + " cells");
                 }
@@ -586,9 +612,100 @@ public class BuildingType {
                 return resId;
         }
 
-        // ══════════════════════════════════════════════════════════════════════════════
-        // DICHIARAZIONE EDIFICI
-        // ══════════════════════════════════════════════════════════════════════════════
+        // ── Caricamento dati esterni ─────────────────────────────────────────────
+        private static final Map<String, BuildingDef> DEFS = BuildingDefLoader.load("data/buildings.json");
+
+        private static Object[] toKv(Map<String, Float> map) {
+                if (map == null)
+                        return new Object[0];
+                Object[] kv = new Object[map.size() * 2];
+                int i = 0;
+                for (Map.Entry<String, Float> e : map.entrySet()) {
+                        kv[i++] = e.getKey();
+                        kv[i++] = e.getValue();
+                }
+                return kv;
+        }
+
+        private static Region[] parseRegions(String[] names) {
+                if (names == null)
+                        return null;
+                Region[] r = new Region[names.length];
+                for (int i = 0; i < names.length; i++)
+                        r[i] = Region.valueOf(names[i]);
+                return r;
+        }
+
+        private static BuildingType fromDef(String id) {
+                BuildingDef d = DEFS.get(id);
+                if (d == null)
+                        throw new IllegalStateException("Missing BuildingDef for id: " + id);
+
+                Builder b = new Builder(d.id, d.label, d.colorHex, d.w, d.h);
+
+                if (d.cost != null)
+                        b.cost(toKv(d.cost));
+                if (d.input != null)
+                        b.input(toKv(d.input));
+                if (d.prod != null)
+                        b.prod(d.prod, d.rate, d.cycleTime);
+                if (d.onlyTerrain != null)
+                        b.terrain(d.onlyTerrain);
+                if (d.isHouse)
+                        b.house(d.houseLevel, d.houseNeeds);
+                if (!d.buildable)
+                        b.notBuildable();
+                if (d.allowedRegions != null)
+                        b.region(parseRegions(d.allowedRegions));
+                if (d.requiredConnection != null)
+                        b.requires(ConnectionType.valueOf(d.requiredConnection));
+                if (d.requiredPower != null)
+                        b.requires(PowerType.valueOf(d.requiredPower));
+                if (d.influenceRadius > 0)
+                        b.influenceRadius(d.influenceRadius);
+                if (d.serviceCategory != null)
+                        b.service(ServiceCategory.valueOf(d.serviceCategory), d.serviceCapacity);
+                if (d.consumptionServiceCategory != null)
+                        b.consumptionService(ConsumptionServiceCategory.valueOf(d.consumptionServiceCategory));
+                if (d.consumableOnly)
+                        b.consumableOnly();
+                if (d.maintenanceCost > 0)
+                        b.maintenance(d.maintenanceCost);
+                if (d.isMonument)
+                        b.monument(d.monumentChainId, d.monumentLevel);
+                if (d.upgradeCost != null)
+                        b.upgradeCost(toKv(d.upgradeCost));
+                if (d.upgradeTime > 0)
+                        b.upgradeTime(d.upgradeTime);
+                if (d.axisShift != 0)
+                        b.ideology(d.axisShift);
+                if (d.workforceClass != null)
+                        b.workforce(d.workforceClass, d.workforceAmount);
+                if (d.unlockClass != null)
+                        b.unlockRequirement(d.unlockClass, d.unlockAmount);
+                if (d.requiredEventId != null)
+                        b.unlockEvent(d.requiredEventId);
+                if (d.penIds != null)
+                        b.pens(d.penIds);
+                if (d.penOwnerId != null)
+                        b.penOf(d.penOwnerId);
+                if (d.fieldTypeId != null)
+                        b.field(d.fieldTypeId, d.fieldCap);
+                if (d.fieldOwnerId != null)
+                        b.fieldOf(d.fieldOwnerId);
+                if (d.requiresDeposit)
+                        b.requiresDeposit();
+
+                return b.build();
+        }
+
+        // #region dichiarazioni
+
+        public static final BuildingType WOOD_CAMP = fromDef("WOOD_CAMP");
+        public static final BuildingType IRONMINE = fromDef("IRONMINE");
+        public static final BuildingType COALMINE = fromDef("COALMINE");
+        public static final BuildingType CLAYPIT = fromDef("CLAYPIT");
+        public static final BuildingType OILRIG = fromDef("OILRIG");
 
         // ── LOGISTICA ────────────────────────────────────────────────────────────────
         public static final BuildingType ROAD = new Builder("ROAD", "Road", "#ebd09a", 1, 1)
@@ -805,20 +922,6 @@ public class BuildingType {
                         .pens("GOAT_PEN_1", "GOAT_PEN_2", "GOAT_PEN_3")
                         .build();
 
-        // ── RECINTI ──────────────────────────────────────────────────────────────────
-        // notBuildable: non compaiono nella bottombar, si piazzano dal pannello
-        // dell'allevamento.
-        // TODO: dimensioni, costi e colori sono SEGNAPOSTO. Gli id finiscono nei
-        // salvataggi.
-        private static BuildingType pen(String id, String label, String colorHex, int w, int h,
-                        String ownerId, Object... cost) {
-                return new Builder(id, label, colorHex, w, h)
-                                .cost(cost)
-                                .penOf(ownerId)
-                                .notBuildable()
-                                .build();
-        }
-
         public static final BuildingType SHEEP_PEN_1 = pen("SHEEP_PEN_1", "Sheep pen 1", "#b9c48f", 3, 3,
                         "SHEEP_RANCH", "coin", 100, "timber", 10);
         public static final BuildingType SHEEP_PEN_2 = pen("SHEEP_PEN_2", "Sheep pen 2", "#a9b87f", 3, 3,
@@ -840,33 +943,6 @@ public class BuildingType {
         public static final BuildingType GOAT_PEN_3 = pen("GOAT_PEN_3", "Goat pen 3", "#88934b", 3, 3,
                         "GOAT_RANCH", "coin", 100, "timber", 10);
 
-        public static final BuildingType WOOD_CAMP = new Builder("WOOD_CAMP", "Wood camp", "#724517", 4, 4)
-                        .cost("coin", 500)
-                        .prod("wood_log", 1, 10)
-                        .terrain(3)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("THE_NEW_CITY")
-                        .workforce(0, 5)
-                        .build();
-
-        public static final BuildingType IRONMINE = new Builder("IRONMINE", "Iron mine", "#706060", 2, 3)
-                        .cost("coin", 300, "timber", 10)
-                        .prod("iron", 3, 20)
-                        .terrain(4, 5, 6)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("THE_NEW_CITY")
-                        .workforce(0, 15)
-                        .build();
-
-        public static final BuildingType COALMINE = new Builder("COALMINE", "Coal mine", "#303030", 2, 3)
-                        .cost("coin", 300, "timber", 10)
-                        .prod("coal", 3, 20)
-                        .terrain(4, 5, 6)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("MORE_EFFICIENT_WAY")
-                        .workforce(0, 15)
-                        .build();
-
         public static final BuildingType COPPERMINE = new Builder("COPPERMINE", "Copper mine", "#b06830", 2, 3)
                         .cost("coin", 300, "timber", 10, "brick", 5)
                         .prod("copper", 3, 20)
@@ -885,21 +961,13 @@ public class BuildingType {
                         .workforce(0, 15)
                         .build();
 
-        public static final BuildingType CLAYPIT = new Builder("CLAYPIT", "Clay pit", "#c09060", 3, 3)
-                        .cost("coin", 300, "timber", 10)
-                        .prod("clay", 1, 15)
-                        .terrain(1)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("ARTISANS")
-                        .workforce(0, 15)
-                        .build();
-
         public static final BuildingType SANDPIT = new Builder("SANDPIT", "Sand pit", "#e0d060", 3, 3)
                         .cost("coin", 300, "timber", 10, "brick", 5)
                         .prod("sand", 1, 15)
                         .terrain(1)
                         .requires(ConnectionType.ROAD)
                         .unlockEvent("EQUITES")
+                        .requiresDeposit()
                         .workforce(0, 15)
                         .build();
 
@@ -909,6 +977,7 @@ public class BuildingType {
                         .prod("marble", 1, 15)
                         .terrain(4, 5, 6)
                         .requires(ConnectionType.ROAD)
+                        .requiresDeposit()
                         .unlockEvent("EQUITES")
                         .workforce(0, 15)
                         .build();
@@ -930,17 +999,6 @@ public class BuildingType {
                         .requires(ConnectionType.ROAD)
                         .unlockEvent("EQUITES")
                         .workforce(0, 20)
-                        .build();
-
-        public static final BuildingType OILRIG = new Builder("OILRIG", "Oil rig", "#1c1d19", 3, 3)
-                        .cost("coin", 1000, "timber", 20, "steel", 5)
-                        .prod("oil", 2, 5)
-                        .region(Region.NEW_WORLD)
-                        .requires(ConnectionType.PIPE)
-                        .unlockEvent("OIL_DISCOVERY")
-                        .maintenance(8f)
-                        .ideology(10)
-                        .workforce(2, 10)
                         .build();
 
         // ── INDUSTRIA BASE ───────────────────────────────────────────────────────────

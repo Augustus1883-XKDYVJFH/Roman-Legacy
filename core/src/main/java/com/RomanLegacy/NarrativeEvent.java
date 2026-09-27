@@ -224,17 +224,17 @@ public class NarrativeEvent {
                         .populationThreshold(0, 0)
                         .delay(0f)
                         .choice("EASY",
-                                        EventEffect.resource("wood", 150),
+                                        EventEffect.resource("timber", 150),
                                         EventEffect.resource("brick", 50),
                                         EventEffect.resource("coin", 20000),
                                         EventEffect.difficulty(Difficulty.EASY))
                         .choice("MEDIUM",
-                                        EventEffect.resource("wood", 100),
+                                        EventEffect.resource("timber", 100),
                                         EventEffect.resource("brick", 40),
                                         EventEffect.resource("coin", 15000),
                                         EventEffect.difficulty(Difficulty.MEDIUM))
                         .choice("HARD",
-                                        EventEffect.resource("wood", 50),
+                                        EventEffect.resource("timber", 50),
                                         EventEffect.resource("brick", 20),
                                         EventEffect.resource("coin", 7500),
                                         EventEffect.difficulty(Difficulty.HARD))
@@ -246,15 +246,6 @@ public class NarrativeEvent {
                         .populationThreshold(0, 1)
                         .info()
                         .build();
-
-        /*
-         * public static final NarrativeEvent GRAIN = new Builder(
-         * "GRAIN", "",
-         * "")
-         * .resourcesThreshold("grain", 1)
-         * .info()
-         * .build();
-         */
 
         public static final NarrativeEvent BETTER_SERVICES = new Builder(
                         "BETTER_SERVICES", "City's services",
@@ -300,8 +291,7 @@ public class NarrativeEvent {
                                         EventEffect.resource("tools", 10),
                                         EventEffect.ideology(20f))
                         .choice("defy the source",
-                                        EventEffect.resource("wood", 20),
-                                        EventEffect.resource("planks", 20),
+                                        EventEffect.resource("timber", 20),
                                         EventEffect.ideology(-20f))
                         .build();
 
