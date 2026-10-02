@@ -700,12 +700,39 @@ public class BuildingType {
         }
 
         // #region dichiarazioni
-
         public static final BuildingType WOOD_CAMP = fromDef("WOOD_CAMP");
         public static final BuildingType IRONMINE = fromDef("IRONMINE");
         public static final BuildingType COALMINE = fromDef("COALMINE");
+        public static final BuildingType COPPERMINE = fromDef("COPPERMINE");
+        public static final BuildingType ZINCMINE = fromDef("ZINCMINE");
+        public static final BuildingType SANDPIT = fromDef("SANDPIT");
+        public static final BuildingType MARBLE_QUARRY = fromDef("MARBLE_QUARRY");
         public static final BuildingType CLAYPIT = fromDef("CLAYPIT");
         public static final BuildingType OILRIG = fromDef("OILRIG");
+
+        public static final BuildingType GRAIN_FARM = fromDef("GRAIN_FARM");
+        public static final BuildingType VINEYARD = fromDef("VINEYARD");
+        public static final BuildingType HOPS_FARM = fromDef("HOPS_FARM");
+        public static final BuildingType LAVANDER_FARM = fromDef("LAVANDER_FARM");
+        public static final BuildingType OLIVE_GROVE = fromDef("OLIVE_GROVE");
+        public static final BuildingType FLAX_FARM = fromDef("FLAX_FARM");
+        public static final BuildingType RUBBER_PLANTATION = fromDef("RUBBER_PLANTATION");
+        public static final BuildingType COFFEE_PLANTATION = fromDef("COFFEE_PLANTATION");
+        public static final BuildingType TOBACCO_PLANTATION = fromDef("TOBACCO_PLANTATION");
+        public static final BuildingType SUGAR_PLANTATION = fromDef("SUGAR_PLANTATION");
+        public static final BuildingType COTTON_FARM = fromDef("COTTON_FARM");
+
+        public static final BuildingType GRAIN_FIELD = fromDef("GRAIN_FIELD");
+        public static final BuildingType GRAPES_FIELD = fromDef("GRAPES_FIELD");
+        public static final BuildingType HOPS_FIELD = fromDef("HOPS_FIELD");
+        public static final BuildingType LAVANDER_FIELD = fromDef("LAVANDER_FIELD");
+        public static final BuildingType OLIVE_FIELD = fromDef("OLIVE_FIELD");
+        public static final BuildingType FLAX_FIELD = fromDef("FLAX_FIELD");
+        public static final BuildingType RUBBER_FIELD = fromDef("RUBBER_FIELD");
+        public static final BuildingType COFFEE_FIELD = fromDef("COFFEE_FIELD");
+        public static final BuildingType TOBACCO_FIELD = fromDef("TOBACCO_FIELD");
+        public static final BuildingType SUGAR_FIELD = fromDef("SUGAR_FIELD");
+        public static final BuildingType COTTON_FIELD = fromDef("COTTON_FIELD");
 
         // ── LOGISTICA ────────────────────────────────────────────────────────────────
         public static final BuildingType ROAD = new Builder("ROAD", "Road", "#ebd09a", 1, 1)
@@ -735,7 +762,7 @@ public class BuildingType {
 
         // ── CASE ─────────────────────────────────────────────────────────────────────
         public static final BuildingType CABIN = new Builder("CABIN", "Cabin", "#d4a373", 3, 3)
-                        .cost("coin", 0, "timber", 2)
+                        .cost("timber", 2)
                         .house(0, "bread", "fabric", "tools")
                         .requires(ConnectionType.ROAD)
                         .unlockEvent("THE_NEW_CITY")
@@ -779,121 +806,6 @@ public class BuildingType {
                         .build();
 
         // ── ESTRAZIONE BASE ──────────────────────────────────────────────────────────
-        public static final BuildingType GRAIN_FARM = new Builder("GRAIN_FARM", "Grain farm", "#a79012", 4, 3)
-                        .cost("coin", 100, "timber", 4)
-                        .prod("grain", 1, 10)
-                        .requires(ConnectionType.ROAD)
-                        .field("GRAIN_FIELD", 30)
-                        .unlockEvent("THE_NEW_CITY")
-                        .workforce(0, 5)
-                        .build();
-
-        public static final BuildingType GRAIN_FIELD = new Builder("GRAIN_FIELD", "Grain field", "#c9b23a", 1, 1)
-                        .cost("coin", 20)
-                        .fieldOf("GRAIN_FARM")
-                        .notBuildable()
-                        .build();
-
-        public static final BuildingType VINEYARD = new Builder("VINEYARD", "Vineyard", "#8050a0", 4, 3)
-                        .cost("coin", 100, "timber", 4)
-                        .prod("grapes", 1, 10)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("MAGNATES")
-                        .workforce(0, 5)
-                        .build();
-
-        public static final BuildingType HOPS_FARM = new Builder("HOPS_FARM", "Hop farm", "#417f46", 4, 3)
-                        .cost("coin", 100, "timber", 4)
-                        .prod("hops", 1, 10)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("EQUITES")
-                        .workforce(0, 5)
-                        .build();
-
-        public static final BuildingType OLIVE_GROVE = new Builder("OLIVE_GROVE", "Olive grove", "#466829", 4, 3)
-                        .cost("coin", 100, "timber", 4)
-                        .prod("olive", 1, 10)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("ARTISANS")
-                        .workforce(0, 5)
-                        .build();
-
-        public static final BuildingType FLAX_FARM = new Builder("FLAX_FARM", "Flax farm", "#d4c8e7", 4, 3)
-                        .cost("coin", 100, "timber", 4)
-                        .prod("flax", 1, 10)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("ENGINEERS")
-                        .workforce(0, 5)
-                        .build();
-
-        public static final BuildingType LAVANDER_FARM = new Builder("LAVANDER_FARM", "Lavander farm",
-                        "#7e55bc", 4, 3)
-                        .cost("coin", 100, "timber", 4)
-                        .prod("lavander", 1, 10)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("EQUITES")
-                        .workforce(0, 5)
-                        .build();
-
-        public static final BuildingType RUBBER_PLANTATION = new Builder("RUBBER_PLANTATION",
-                        "Rubber plantation", "#d5d5d5", 4, 3)
-                        .cost("coin", 100, "timber", 4)
-                        .prod("rubber", 1, 10)
-                        .region(Region.NEW_WORLD)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("ENGINEERS")
-                        .maintenance(3f)
-                        .ideology(10)
-                        .workforce(0, 10)
-                        .build();
-
-        public static final BuildingType COFFEE_PLANTATION = new Builder("COFFEE_PLANTATION",
-                        "Coffee plantation", "#7e5f28", 4, 3)
-                        .cost("coin", 100, "timber", 4)
-                        .prod("coffee_beans", 1, 10)
-                        .region(Region.NEW_WORLD)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("PATRICIANS")
-                        .maintenance(3f)
-                        .ideology(10)
-                        .workforce(0, 10)
-                        .build();
-
-        public static final BuildingType TOBACCO_PLANTATION = new Builder("TOBACCO_PLANTATION",
-                        "Tobacco plantation", "#dcb23d", 4, 3)
-                        .cost("coin", 100, "timber", 4)
-                        .prod("tobacco", 1, 10)
-                        .region(Region.NEW_WORLD)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("MAGNATES")
-                        .maintenance(3f)
-                        .ideology(10)
-                        .workforce(0, 10)
-                        .build();
-
-        public static final BuildingType SUGAR_PLANTATION = new Builder("SUGAR_PLANTATION",
-                        "Sugar plantation", "#deff85", 4, 3)
-                        .cost("coin", 100, "timber", 4)
-                        .prod("sugar", 1, 10)
-                        .region(Region.NEW_WORLD)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("ENGINEERS")
-                        .maintenance(3f)
-                        .ideology(10)
-                        .workforce(0, 10)
-                        .build();
-
-        public static final BuildingType COTTON_FARM = new Builder("COTTON_FARM", "Cotton farm",
-                        "#e2e2e2", 3, 2)
-                        .cost("coin", 100, "timber", 4)
-                        .prod("cotton", 1, 10)
-                        .region(Region.NEW_WORLD)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("MAGNATES")
-                        .maintenance(3f)
-                        .ideology(10)
-                        .workforce(0, 10)
-                        .build();
 
         public static final BuildingType SHEEP_RANCH = new Builder("SHEEP_RANCH", "Sheep ranch", "#d8d0b0", 4, 3)
                         .cost("coin", 100, "timber", 4)
@@ -942,45 +854,6 @@ public class BuildingType {
                         "GOAT_RANCH", "coin", 100, "timber", 10);
         public static final BuildingType GOAT_PEN_3 = pen("GOAT_PEN_3", "Goat pen 3", "#88934b", 3, 3,
                         "GOAT_RANCH", "coin", 100, "timber", 10);
-
-        public static final BuildingType COPPERMINE = new Builder("COPPERMINE", "Copper mine", "#b06830", 2, 3)
-                        .cost("coin", 300, "timber", 10, "brick", 5)
-                        .prod("copper", 3, 20)
-                        .terrain(4, 5, 6)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("ENGINEERS")
-                        .workforce(0, 15)
-                        .build();
-
-        public static final BuildingType ZINCMINE = new Builder("ZINCMINE", "Zinc mine", "#a0a0a0", 2, 3)
-                        .cost("coin", 300, "timber", 10, "brick", 5)
-                        .prod("zinc", 3, 20)
-                        .terrain(4, 5, 6)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("ENGINEERS")
-                        .workforce(0, 15)
-                        .build();
-
-        public static final BuildingType SANDPIT = new Builder("SANDPIT", "Sand pit", "#e0d060", 3, 3)
-                        .cost("coin", 300, "timber", 10, "brick", 5)
-                        .prod("sand", 1, 15)
-                        .terrain(1)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("EQUITES")
-                        .requiresDeposit()
-                        .workforce(0, 15)
-                        .build();
-
-        public static final BuildingType MARBLE_QUARRY = new Builder("MARBLE_QUARRY", "Marble quarry", "#e5e5e5",
-                        3, 3)
-                        .cost("coin", 300, "timber", 10)
-                        .prod("marble", 1, 15)
-                        .terrain(4, 5, 6)
-                        .requires(ConnectionType.ROAD)
-                        .requiresDeposit()
-                        .unlockEvent("EQUITES")
-                        .workforce(0, 15)
-                        .build();
 
         public static final BuildingType FISHERY = new Builder("FISHERY", "Fishery", "#3c89cd", 2, 5)
                         .cost("coin", 300, "timber", 15)
@@ -2005,6 +1878,16 @@ public class BuildingType {
                 ALL_TYPES.add(SAWMILL);
                 ALL_TYPES.add(GRAIN_FARM);
                 ALL_TYPES.add(GRAIN_FIELD);
+                ALL_TYPES.add(GRAPES_FIELD);
+                ALL_TYPES.add(HOPS_FIELD);
+                ALL_TYPES.add(LAVANDER_FIELD);
+                ALL_TYPES.add(OLIVE_FIELD);
+                ALL_TYPES.add(FLAX_FIELD);
+                ALL_TYPES.add(RUBBER_FIELD);
+                ALL_TYPES.add(COFFEE_FIELD);
+                ALL_TYPES.add(TOBACCO_FIELD);
+                ALL_TYPES.add(SUGAR_FIELD);
+                ALL_TYPES.add(COTTON_FIELD);
                 ALL_TYPES.add(MILL);
                 ALL_TYPES.add(BAKERY);
                 ALL_TYPES.add(SHEEP_RANCH);

@@ -16,10 +16,10 @@ import java.util.*;
 public class GameState {
 
     // ── Costanti mappa ───────────────────────────────────────────────────────────
-    public static final int MAP_WIDTH = 250;
-    public static final int MAP_HEIGHT = 250;
-    public static final int CELL_SIZE = 15;
-    private static final int DEPOSITS_PER_TYPE = 4;
+    public static final int MAP_WIDTH = 400;
+    public static final int MAP_HEIGHT = 400;
+    public static final int CELL_SIZE = 25;
+    private static final int DEPOSITS_PER_TYPE = 5;
 
     // ── Costanti spedizione ──────────────────────────────────────────────────────
     public static final int NEW_WORLD_POP_REQ = 1;
@@ -999,17 +999,28 @@ public class GameState {
      * Rimuove un edificio; se è un allevamento o una fattoria toglie anche
      * recinti/campi.
      */
-    public void removeBuilding(BuildingInstance target) {
-        buildings.remove(target);
-        if (target.type.hasPens()) {
-            buildings.removeIf(p -> p.type.isPen()
-                    && p.type.penOwnerId.equals(target.type.id)
-                    && p.ownerX == target.rootX && p.ownerY == target.rootY);
-        } else if (target.type.hasFields()) {
-            buildings.removeIf(f -> f.type.isField()
-                    && f.type.fieldOwnerId.equals(target.type.id)
-                    && f.ownerX == target.rootX && f.ownerY == target.rootY);
+    public List<BuildingInstance> removeBuilding(BuildingInstance target) {
+        List<BuildingInstance> removed = new ArrayList<>();
+        if (buildings.remove(target))
+            removed.add(target);
+
+        Iterator<BuildingInstance> it = buildings.iterator();
+        while (it.hasNext()) {
+            BuildingInstance child = it.next();
+            boolean belongsToRemovedBuilding = target.type.hasPens()
+                    && child.type.isPen()
+                    && target.type.id.equals(child.type.penOwnerId)
+                    && child.ownerX == target.rootX && child.ownerY == target.rootY;
+            belongsToRemovedBuilding |= target.type.hasFields()
+                    && child.type.isField()
+                    && target.type.id.equals(child.type.fieldOwnerId)
+                    && child.ownerX == target.rootX && child.ownerY == target.rootY;
+            if (belongsToRemovedBuilding) {
+                removed.add(child);
+                it.remove();
+            }
         }
+        return removed;
     }
 
     /** Efficienza allevamenti (recinti) e fattorie (campi), 0..1. */

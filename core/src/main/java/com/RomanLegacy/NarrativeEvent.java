@@ -522,8 +522,6 @@ public class NarrativeEvent {
                 ALL_EVENTS.add(INDUSTRIALISTS);
                 ALL_EVENTS.add(EXPLORERS);
                 ALL_EVENTS.add(NEW_WORLD_EXPEDITION);
-
-                // ALL_EVENTS.add(GRAIN);
         }
 
         public static List<NarrativeEvent> getAllEvents() {

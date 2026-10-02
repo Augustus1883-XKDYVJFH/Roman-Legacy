@@ -52,6 +52,8 @@ public class GameInputHandler {
     public int roadStartX = -1, roadStartY = -1;
     public boolean pipeDragging = false;
     public int pipeStartX = -1, pipeStartY = -1;
+    public boolean houseDragging = false;
+    public int houseStartX = -1, houseStartY = -1;
 
     public BuildingInstance inspectedBuilding = null;
     public BuildingInstance penOwner = null; // allevamento per cui si sta piazzando un recinto
@@ -190,6 +192,8 @@ public class GameInputHandler {
                 buildingRotated = false;
                 roadDragging = false;
                 pipeDragging = false;
+                houseDragging = false;
+                houseStartX = houseStartY = -1;
                 cameraX = (GameState.MAP_WIDTH * GameState.CELL_SIZE) / 2f;
                 cameraY = (GameState.MAP_HEIGHT * GameState.CELL_SIZE) / 2f;
                 loadTab(activeTab);
@@ -229,6 +233,11 @@ public class GameInputHandler {
         if (pipeDragging) {
             pipeDragging = false;
             pipeStartX = pipeStartY = -1;
+            return true;
+        }
+        if (houseDragging) {
+            houseDragging = false;
+            houseStartX = houseStartY = -1;
             return true;
         }
         if (fieldDragging) {
@@ -288,6 +297,8 @@ public class GameInputHandler {
                 pipeDragging = false;
                 pipeStartX = pipeStartY = -1;
             }
+            houseDragging = false;
+            houseStartX = houseStartY = -1;
             handleBottomBarClick(mx, my);
             return;
         }
@@ -339,6 +350,27 @@ public class GameInputHandler {
         }
 
         if (selectedBuilding != null) {
+            if (selectedBuilding.isHouse) {
+                if (!houseDragging) {
+                    if (previewCellX >= 0 && previewCellY >= 0) {
+                        houseDragging = true;
+                        houseStartX = previewCellX;
+                        houseStartY = previewCellY;
+                    }
+                } else {
+                    boolean placed = false;
+                    for (int[] cell : getHouseLine(houseStartX, houseStartY, previewCellX, previewCellY))
+                        placed |= tryPlaceBuilding(cell[0], cell[1], false, false);
+                    houseDragging = false;
+                    houseStartX = houseStartY = -1;
+                    if (placed) {
+                        state.updateAllConnections();
+                        SaveManager.getInstance().autosave(state, mapCamera.position.x, mapCamera.position.y,
+                                mapCamera.zoom);
+                    }
+                }
+                return;
+            }
             tryPlaceBuilding(previewCellX, previewCellY);
             return;
         }
@@ -363,6 +395,29 @@ public class GameInputHandler {
         }
     }
 
+    /** Posizioni senza sovrapposizioni lungo il tratto scelto per una fila di case. */
+    public List<int[]> getHouseLine(int x1, int y1, int x2, int y2) {
+        List<int[]> placements = new ArrayList<>();
+        if (selectedBuilding == null || !selectedBuilding.isHouse || x1 < 0 || y1 < 0 || x2 < 0 || y2 < 0)
+            return placements;
+
+        int w = buildingRotated ? selectedBuilding.h : selectedBuilding.w;
+        int h = buildingRotated ? selectedBuilding.w : selectedBuilding.h;
+        for (int[] candidate : getRoadLine(x1, y1, x2, y2)) {
+            boolean overlaps = false;
+            for (int[] previous : placements) {
+                if (candidate[0] < previous[0] + w && previous[0] < candidate[0] + w
+                        && candidate[1] < previous[1] + h && previous[1] < candidate[1] + h) {
+                    overlaps = true;
+                    break;
+                }
+            }
+            if (!overlaps)
+                placements.add(candidate);
+        }
+        return placements;
+    }
+
     private boolean handleTopBarButtonClick(float mx, float my, float sw, float sh) {
         // indice da destra: 0 = MAP, 1 = BALANCE, 2 = FACTIONS
         for (int i = 0; i < 3; i++) {
@@ -380,6 +435,8 @@ public class GameInputHandler {
                         buildingRotated = false;
                         roadDragging = false;
                         pipeDragging = false;
+                        houseDragging = false;
+                        houseStartX = houseStartY = -1;
                         cameraX = (GameState.MAP_WIDTH * GameState.CELL_SIZE) / 2f;
                         cameraY = (GameState.MAP_HEIGHT * GameState.CELL_SIZE) / 2f;
                         loadTab(activeTab);
@@ -804,7 +861,8 @@ public class GameInputHandler {
             return;
         }
 
-        state.removeBuilding(target); // se è un allevamento toglie anche i suoi recinti
+        List<BuildingInstance> removedBuildings = state.removeBuilding(target);
+        refundDemolitionCosts(removedBuildings);
         if (inspectedBuilding == target) {
             inspectedBuilding = null;
             showBuildingPanel = false;
@@ -813,6 +871,20 @@ public class GameInputHandler {
         if (game.audio != null)
             game.audio.playSound(AudioManager.SFX_DEMOLISH);
         SaveManager.getInstance().autosave(state, mapCamera.position.x, mapCamera.position.y, mapCamera.zoom);
+    }
+
+    private void refundDemolitionCosts(List<BuildingInstance> demolished) {
+        float refundRate = state.difficulty.demolitionRefundMultiplier;
+        if (refundRate <= 0f)
+            return;
+
+        for (BuildingInstance building : demolished) {
+            // Gli upgrade delle case non hanno un costo separato: la casa base
+            // rappresenta i materiali effettivamente spesi per costruirla.
+            BuildingType costType = building.type.isHouse ? BuildingType.CABIN : building.type;
+            for (Map.Entry<String, Float> cost : costFor(costType).entrySet())
+                state.resources.add(cost.getKey(), cost.getValue() * refundRate);
+        }
     }
 
     private void upgradeHouseAt(int cx, int cy) {
@@ -845,10 +917,14 @@ public class GameInputHandler {
     }
 
     public void tryPlaceBuilding(int cx, int cy) {
+        tryPlaceBuilding(cx, cy, true, true);
+    }
+
+    private boolean tryPlaceBuilding(int cx, int cy, boolean updateConnections, boolean autosave) {
         if (selectedBuilding == null)
-            return;
+            return false;
         if (!canPlace(selectedBuilding, cx, cy))
-            return;
+            return false;
 
         state.resources.spend(costFor(selectedBuilding));
         BuildingInstance newBuilding = new BuildingInstance(selectedBuilding, cx, cy);
@@ -859,11 +935,14 @@ public class GameInputHandler {
         }
         state.buildings.add(newBuilding);
         state.ideologyManager.applyShift(selectedBuilding.axisShift);
-        state.updateAllConnections();
-        SaveManager.getInstance().autosave(state, mapCamera.position.x, mapCamera.position.y, mapCamera.zoom);
+        if (updateConnections)
+            state.updateAllConnections();
+        if (autosave)
+            SaveManager.getInstance().autosave(state, mapCamera.position.x, mapCamera.position.y, mapCamera.zoom);
 
         if (selectedBuilding.isPen())
             finishPenPlacement();
+        return true;
     }
 
     public boolean canPlace(BuildingType bt, int cx, int cy) {

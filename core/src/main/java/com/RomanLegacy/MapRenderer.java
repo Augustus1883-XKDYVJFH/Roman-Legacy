@@ -387,6 +387,24 @@ public class MapRenderer {
             return;
         }
 
+        if (input.selectedBuilding.isHouse && input.houseDragging) {
+            int previewW = input.buildingRotated ? input.selectedBuilding.h : input.selectedBuilding.w;
+            int previewH = input.buildingRotated ? input.selectedBuilding.w : input.selectedBuilding.h;
+            sr.begin(ShapeRenderer.ShapeType.Filled);
+            for (int[] cell : input.getHouseLine(input.houseStartX, input.houseStartY, cx, cy)) {
+                sr.setColor(input.canPlace(input.selectedBuilding, cell[0], cell[1])
+                        ? COL_CANPLACE_CONNECTED : COL_CANTPLACE);
+                sr.rect(cell[0] * cs, cell[1] * cs, previewW * cs, previewH * cs);
+            }
+            sr.end();
+            sr.begin(ShapeRenderer.ShapeType.Line);
+            sr.setColor(Color.WHITE);
+            sr.rect(input.houseStartX * cs, input.houseStartY * cs,
+                    previewW * cs, previewH * cs);
+            sr.end();
+            return;
+        }
+
         // ROAD/PIPE singole
         if (input.selectedBuilding == BuildingType.ROAD || input.selectedBuilding == BuildingType.PIPELINE) {
             boolean ok = input.canPlace(input.selectedBuilding, cx, cy);

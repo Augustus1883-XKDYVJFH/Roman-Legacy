@@ -105,8 +105,15 @@ public class SteamManager {
     }
 
     private void doUnlock(String achievementId) {
-        userStats.setAchievement(achievementId);
-        userStats.storeStats();
+        Gdx.app.log("SteamManager", "Unlocking achievement: " + achievementId);
+
+        boolean result = userStats.setAchievement(achievementId);
+
+        Gdx.app.log("SteamManager", "setAchievement result: " + result);
+
+        boolean stored = userStats.storeStats();
+
+        Gdx.app.log("SteamManager", "storeStats result: " + stored);
     }
 
     /** Da chiamare ogni frame da Main.render(). */

@@ -8,9 +8,9 @@ package com.RomanLegacy;
  */
 public enum Difficulty {
 
-    EASY(1.15f, 0.85f, 0.85f, 0.85f),
-    MEDIUM(1.00f, 1.00f, 1.00f, 1.00f),
-    HARD(0.85f, 1.15f, 1.15f, 1.15f);
+    EASY(1.15f, 0.85f, 0.85f, 0.85f, 1.00f),
+    MEDIUM(1.00f, 1.00f, 1.00f, 1.00f, 0.50f),
+    HARD(0.85f, 1.15f, 1.15f, 1.15f, 0.00f);
 
     /** Moltiplicatore tasse case (>1 = più reddito). */
     public final float incomeMultiplier;
@@ -20,12 +20,15 @@ public enum Difficulty {
     public final float monumentCostMultiplier;
     /** Moltiplicatore tempo upgrade monumenti (>1 = ci mette di più). */
     public final float monumentTimeMultiplier;
+    /** Quota del costo di costruzione restituita demolendo un edificio. */
+    public final float demolitionRefundMultiplier;
 
     Difficulty(float incomeMultiplier, float maintenanceMultiplier,
-            float monumentCostMultiplier, float monumentTimeMultiplier) {
+            float monumentCostMultiplier, float monumentTimeMultiplier, float demolitionRefundMultiplier) {
         this.incomeMultiplier = incomeMultiplier;
         this.maintenanceMultiplier = maintenanceMultiplier;
         this.monumentCostMultiplier = monumentCostMultiplier;
         this.monumentTimeMultiplier = monumentTimeMultiplier;
+        this.demolitionRefundMultiplier = demolitionRefundMultiplier;
     }
 }

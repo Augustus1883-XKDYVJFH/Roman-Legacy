@@ -11,7 +11,7 @@ public class AchievementManager {
 
     // ── ID achievement (devono combaciare ESATTAMENTE con quelli configurati
     // su Steamworks partner site, sezione Stats & Achievements) ──────────
-    public static final String ACH_FIRST_LAUNCH = "DID_YOU_REALLY_BUY_MY_GAME";
+    public static final String DYRBMG = "DID_YOU_REALLY_BUY_MY_GAME";
     public static final String TFB = "THE_FIRST_BRICK";// TODO: sbloccato alla costruzione del primo edificio/strada
     public static final String RWBIAD = "ROME_WASN'T_BUILT_IN_A_DAY";// TODO: sbloccato al raggiungimento di 1000
                                                                      // patricians
@@ -50,7 +50,7 @@ public class AchievementManager {
     public void checkFirstLaunch(GameSettings settings) {
         if (settings.firstLaunchAchievementGranted)
             return;
-        unlock(ACH_FIRST_LAUNCH);
+        unlock(DYRBMG);
         settings.firstLaunchAchievementGranted = true;
         settings.save();
     }
