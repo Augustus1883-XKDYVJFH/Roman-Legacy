@@ -49,15 +49,18 @@ public class IdeologyManager {
      * Gli scaglioni numerici verranno riutilizzati dal sistema eventi.
      */
     public String label() {
+        String key;
         if (value >= 60)
-            return "Revolutionary";
-        if (value >= 20)
-            return "Progressive";
-        if (value >= -20)
-            return "Balanced";
-        if (value >= -60)
-            return "Conservative";
-        return "Traditionalist";
+            key = "revolutionary";
+        else if (value >= 20)
+            key = "progressive";
+        else if (value >= -20)
+            key = "balanced";
+        else if (value >= -60)
+            key = "conservative";
+        else
+            key = "traditionalist";
+        return Localization.get("ideology." + key);
     }
 
     private static float clamp(float v) {

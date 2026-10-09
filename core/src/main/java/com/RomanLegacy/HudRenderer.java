@@ -509,14 +509,14 @@ public class HudRenderer {
 
         for (ServiceCategory cat : ServiceCategory.values()) {
             float s = state.getServiceSatisfaction(cat);
-            b.serviceLabels.add(cat.label); // prima: cat.label + " " + cap + "/" + cons
+            b.serviceLabels.add(cat.getLabel());
             b.serviceValues.add(s);
             b.serviceColors
                     .add(s >= 0.9f ? Color.valueOf("55cc55") : s >= 0.7f ? UITheme.STATUS_YELLOW : UITheme.STATUS_RED);
         }
         for (ConsumptionServiceCategory cat : ConsumptionServiceCategory.values()) {
             float s = state.getConsumptionServiceSatisfaction(cat);
-            b.serviceLabels.add(cat.label);
+            b.serviceLabels.add(cat.getLabel());
             b.serviceValues.add(s);
             b.serviceColors
                     .add(s >= 0.9f ? Color.valueOf("55cc55") : s >= 0.7f ? UITheme.STATUS_YELLOW : UITheme.STATUS_RED);
@@ -652,7 +652,7 @@ public class HudRenderer {
         float y = drawLines(List.of(b.statusLine), px, topY);
         y = drawBigStat(b.capacityText, "Capacity", px, pw, y);
         y = drawHairline(px, pw, y);
-        y = drawSectionLabel(b.cat.label, px, y);
+        y = drawSectionLabel(b.cat.getLabel(), px, y);
         drawLines(b.cityLines, px, y);
     }
 
@@ -1553,13 +1553,13 @@ public class HudRenderer {
         for (ServiceCategory cat : ServiceCategory.values()) {
             float s = state.getServiceSatisfaction(cat);
             Color c = s >= 0.8f ? UITheme.STATUS_GREEN : (s < 0.5f ? UITheme.STATUS_RED : UITheme.STATUS_YELLOW);
-            drawStatCell(cat.label, (int) (s * 100) + "%", c, col * cellW, cellW, rowY);
+            drawStatCell(cat.getLabel(), (int) (s * 100) + "%", c, col * cellW, cellW, rowY);
             col++;
         }
         for (ConsumptionServiceCategory cat : ConsumptionServiceCategory.values()) {
             float s = state.getConsumptionServiceSatisfaction(cat);
             Color c = s >= 0.8f ? UITheme.STATUS_GREEN : (s < 0.5f ? UITheme.STATUS_RED : UITheme.STATUS_YELLOW);
-            drawStatCell(cat.label, (int) (s * 100) + "%", c, col * cellW, cellW, rowY);
+            drawStatCell(cat.getLabel(), (int) (s * 100) + "%", c, col * cellW, cellW, rowY);
             col++;
         }
         batch.end();
@@ -1578,7 +1578,7 @@ public class HudRenderer {
             int required = (int) state.getClassWorkforceDemand(i);
             Color c = s >= 0.8f ? UITheme.STATUS_GREEN : (s < 0.5f ? UITheme.STATUS_RED : UITheme.STATUS_YELLOW);
             String value = available + "/" + required + " " + (int) (s * 100) + "%";
-            drawStatCell(BuildingType.SOCIAL_CLASS_NAMES[i], value, c, i * cellW, cellW, rowY);
+            drawStatCell(BuildingType.socialClassName(i), value, c, i * cellW, cellW, rowY);
         }
         batch.end();
     }
@@ -1719,14 +1719,14 @@ public class HudRenderer {
             Color color = satisfaction >= 0.9f ? Color.valueOf("55cc55")
                     : satisfaction >= 0.7f ? UITheme.STATUS_YELLOW : UITheme.STATUS_RED;
             hc.afterBar.add(new PanelLine(game.fonts.small,
-                    cat.label + " (" + (int) (satisfaction * 100) + "%)", color, 20f));
+                    cat.getLabel() + " (" + (int) (satisfaction * 100) + "%)", color, 20f));
         }
         for (ConsumptionServiceCategory cat : ConsumptionServiceCategory.values()) {
             float satisfaction = state.getConsumptionServiceSatisfaction(cat);
             Color color = satisfaction >= 0.9f ? Color.valueOf("55cc55")
                     : satisfaction >= 0.7f ? UITheme.STATUS_YELLOW : UITheme.STATUS_RED;
             hc.afterBar.add(new PanelLine(game.fonts.small,
-                    cat.label + " (" + (int) (satisfaction * 100) + "%)", color, 20f));
+                    cat.getLabel() + " (" + (int) (satisfaction * 100) + "%)", color, 20f));
         }
 
         hc.afterBar.add(new PanelLine(game.fonts.normal, "Needs:", COL_TEXT_GRAY, 24f));
@@ -2041,7 +2041,7 @@ public class HudRenderer {
 
         // Nome fazione
         com.badlogic.gdx.graphics.g2d.GlyphLayout nameGl = new com.badlogic.gdx.graphics.g2d.GlyphLayout(
-                game.fonts.large, f.label, fc, textW, com.badlogic.gdx.utils.Align.center, false);
+                game.fonts.large, f.getLabel(), fc, textW, com.badlogic.gdx.utils.Align.center, false);
         game.fonts.large.setColor(fc);
         game.fonts.large.draw(batch, nameGl, colX + colW / 2f - textW / 2f, y);
         y -= nameGl.height + 10f;
@@ -2050,7 +2050,7 @@ public class HudRenderer {
         StringBuilder kwLine = new StringBuilder();
         Faction.Keyword[] kws = f.keywords();
         for (int i = 0; i < kws.length; i++) {
-            kwLine.append("[").append(kws[i].label).append("]");
+            kwLine.append("[").append(kws[i].getLabel()).append("]");
             if (i < kws.length - 1)
                 kwLine.append("   ");
         }

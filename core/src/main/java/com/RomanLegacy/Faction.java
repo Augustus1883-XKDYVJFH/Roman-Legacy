@@ -30,6 +30,10 @@ public enum Faction {
         Keyword(String label) {
             this.label = label;
         }
+
+        public String getLabel() {
+            return Localization.getOr("keyword." + name(), label);
+        }
     }
 
     public final String label;
@@ -69,4 +73,9 @@ public enum Faction {
     public Keyword[] keywords() {
         return new Keyword[] { k1, k2, k3 };
     }
+
+    public String getLabel() {
+        return Localization.getOr("faction." + name(), label);
+    }
+
 }

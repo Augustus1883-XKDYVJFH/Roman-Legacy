@@ -19,6 +19,10 @@ public class ResourceManager {
             this.color = new float[] { r, g, b };
             this.amount = 0f;
         }
+
+        public String getLabel() {
+            return Localization.getOr("resource." + id, label);
+        }
     }
 
     private final Map<String, Resource> resources = new LinkedHashMap<>();

@@ -78,6 +78,8 @@ public class ConsumptionScreen implements Screen {
 
     @Override
     public void show() {
+        if (game.achievements != null)
+            game.achievements.onPanelOpened(AchievementManager.PanelKind.BALANCE);
         calculateStats();
         Gdx.input.setInputProcessor(new com.badlogic.gdx.InputAdapter() {
             @Override

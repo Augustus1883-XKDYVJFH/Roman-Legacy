@@ -4,7 +4,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.RomanLegacy.IconManager;
 
 public class Main extends Game {
 
@@ -19,9 +18,21 @@ public class Main extends Game {
 
     private Cursor customCursor;
 
+    private void loadCustomCursor() {
+        try {
+            Pixmap pixmap = new Pixmap(Gdx.files.internal("icons/cursor/cursor.png"));
+            customCursor = Gdx.graphics.newCursor(pixmap, 0, 0);
+            Gdx.graphics.setCursor(customCursor);
+            pixmap.dispose();
+        } catch (Exception e) {
+            Gdx.app.error("Main", "Custom cursor load failed, using system default", e);
+        }
+    }
+
     @Override
     public void create() {
         GameSettings settings = GameSettings.get();
+        Localization.load(settings.language);
         if (settings.fullscreen) {
             Gdx.app.postRunnable(() -> {
                 Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
@@ -39,23 +50,21 @@ public class Main extends Game {
         icons = new IconManager();
         steam = new SteamManager();
         achievements = new AchievementManager(steam);
+
         achievements.checkFirstLaunch(GameSettings.get());
+
+        audio.playMusic(AudioManager.MUSIC_MENU);
 
         loadCustomCursor();
 
-        audio.playMusic(AudioManager.MUSIC_MENU);
         setScreen(new SplashScreen(this));
     }
 
-    private void loadCustomCursor() {
-        try {
-            Pixmap pixmap = new Pixmap(Gdx.files.internal("icons/cursor/cursor.png"));
-            customCursor = Gdx.graphics.newCursor(pixmap, 0, 0);
-            Gdx.graphics.setCursor(customCursor);
-            pixmap.dispose();
-        } catch (Exception e) {
-            Gdx.app.error("Main", "Custom cursor load failed, using system default", e);
-        }
+    @Override
+    public void render() {
+        super.render();
+        if (steam != null)
+            steam.update();
     }
 
     @Override

@@ -356,6 +356,10 @@ public class BuildingType {
                         this.baseCapacity = baseCapacity;
                         this.consumptionPerHouse = consumptionPerHouse;
                 }
+
+                public String getLabel() {
+                        return Localization.getOr("service." + name(), label);
+                }
         }
 
         /**
@@ -374,6 +378,10 @@ public class BuildingType {
 
                 ConsumptionServiceCategory(String label) {
                         this.label = label;
+                }
+
+                public String getLabel() {
+                        return Localization.getOr("consumption_service." + name(), label);
                 }
         }
 
@@ -497,6 +505,13 @@ public class BuildingType {
                 throw new IllegalArgumentException("Unknown building type: " + id);
         }
 
+        public static String socialClassName(int index) {
+                String fallback = (index >= 0 && index < SOCIAL_CLASS_NAMES.length)
+                                ? SOCIAL_CLASS_NAMES[index]
+                                : "?";
+                return Localization.getOr("social_class." + index, fallback);
+        }
+
         public static List<BuildingType> getAllBuildable() {
                 List<BuildingType> list = new ArrayList<>();
                 for (BuildingType bt : ALL_TYPES) {
@@ -504,6 +519,10 @@ public class BuildingType {
                                 list.add(bt);
                 }
                 return list;
+        }
+
+        public String getLabel() {
+                return Localization.getOr("building." + id + ".name", label);
         }
 
         // ── Info lines per tooltip hover ─────────────────────────────────────────────
@@ -596,11 +615,11 @@ public class BuildingType {
                 }
 
                 if (workforceClass != null && workforceAmount > 0) {
-                        lines.add("Manodopera: " + workforceAmount + "x " + SOCIAL_CLASS_NAMES[workforceClass]);
+                        lines.add("Manodopera: " + workforceAmount + "x " + socialClassName(workforceClass));
                 }
 
                 if (unlockClass != null && unlockAmount > 0) {
-                        lines.add("Richiede: " + unlockAmount + " " + SOCIAL_CLASS_NAMES[unlockClass]);
+                        lines.add("Richiede: " + unlockAmount + " " + socialClassName(unlockClass));
                 }
 
                 return lines;
@@ -647,7 +666,7 @@ public class BuildingType {
                         b.cost(toKv(d.cost));
                 if (d.input != null)
                         b.input(toKv(d.input));
-                if (d.prod != null)
+                if (d.prod != null || d.consumableOnly)
                         b.prod(d.prod, d.rate, d.cycleTime);
                 if (d.onlyTerrain != null)
                         b.terrain(d.onlyTerrain);
@@ -707,6 +726,8 @@ public class BuildingType {
         public static final BuildingType ZINCMINE = fromDef("ZINCMINE");
         public static final BuildingType SANDPIT = fromDef("SANDPIT");
         public static final BuildingType MARBLE_QUARRY = fromDef("MARBLE_QUARRY");
+        public static final BuildingType FISHERY = fromDef("FISHERY");
+        public static final BuildingType NITRATE_EXTRACTOR = fromDef("NITRATE_EXTRACTOR");
         public static final BuildingType CLAYPIT = fromDef("CLAYPIT");
         public static final BuildingType OILRIG = fromDef("OILRIG");
 
@@ -733,6 +754,51 @@ public class BuildingType {
         public static final BuildingType TOBACCO_FIELD = fromDef("TOBACCO_FIELD");
         public static final BuildingType SUGAR_FIELD = fromDef("SUGAR_FIELD");
         public static final BuildingType COTTON_FIELD = fromDef("COTTON_FIELD");
+
+        // ── INDUSTRIA BASE ───────────────────────────────────────────────────────────
+        public static final BuildingType SAWMILL = fromDef("SAWMILL");
+        public static final BuildingType MILL = fromDef("MILL");
+        public static final BuildingType BAKERY = fromDef("BAKERY");
+        public static final BuildingType BREWERY = fromDef("BREWERY");
+        public static final BuildingType OIL_PREES = fromDef("OIL_PREES");
+        public static final BuildingType CHEESE_MAKER = fromDef("CHEESE_MAKER");
+        public static final BuildingType SOAP_MAKER = fromDef("SOAP_MAKER");
+        public static final BuildingType PERFUME_MIXER = fromDef("PERFUME_MIXER");
+        public static final BuildingType SMITHY = fromDef("SMITHY");
+        public static final BuildingType FABRIC_FACTORY = fromDef("FABRIC_FACTORY");
+        public static final BuildingType WOOLEN_MILL = fromDef("WOOLEN_MILL");
+        public static final BuildingType KILN = fromDef("KILN");
+        public static final BuildingType TAILORING_WORKSHOP = fromDef("TAILORING_WORKSHOP");
+        public static final BuildingType GLASSWORKS = fromDef("GLASSWORKS");
+        public static final BuildingType STEELWORK = fromDef("STEELWORK");
+        public static final BuildingType BRASS_FOUNDRY = fromDef("BRASS_FOUNDRY");
+        public static final BuildingType BRICKFACTORY = fromDef("BRICKFACTORY");
+        public static final BuildingType WINDOWMAKER = fromDef("WINDOWMAKER");
+        public static final BuildingType PAPER_MAKER = fromDef("PAPER_MAKER");
+        public static final BuildingType SPECTACLES_FACTORY = fromDef("SPECTACLES_FACTORY");
+        public static final BuildingType CEMENTMIXER = fromDef("CEMENTMIXER");
+        public static final BuildingType CANNERY = fromDef("CANNERY");
+        public static final BuildingType PURSE_FACTORY = fromDef("PURSE_FACTORY");
+        public static final BuildingType MOTORFACTORY = fromDef("MOTORFACTORY");
+        public static final BuildingType WINE_CELLAR = fromDef("WINE_CELLAR");
+        public static final BuildingType FUEL_REFINERY = fromDef("FUEL_REFINERY");
+        public static final BuildingType PLASTIC_REFINERY = fromDef("PLASTIC_REFINERY");
+        public static final BuildingType CABLE_FACTORY = fromDef("CABLE_FACTORY");
+        public static final BuildingType ELECTRICMOTOR_FACTORY = fromDef("ELECTRICMOTOR_FACTORY");
+        public static final BuildingType LIGHTBULB_FACTORY = fromDef("LIGHTBULB_FACTORY");
+        public static final BuildingType COFFEE_ROASTER = fromDef("COFFEE_ROASTER");
+        public static final BuildingType CIGAR_FACTORY = fromDef("CIGAR_FACTORY");
+        public static final BuildingType RUM_DISTILLERY = fromDef("RUM_DISTILLERY");
+        public static final BuildingType RADIO_FACTORY = fromDef("RADIO_FACTORY");
+        public static final BuildingType STEAM_CARRIAGES_FACTORY = fromDef("STEAM_CARRIAGES_FACTORY");
+        public static final BuildingType TRUCK_FACTORY = fromDef("TRUCK_FACTORY");
+        public static final BuildingType FAN_FACTORY = fromDef("FAN_FACTORY");
+        public static final BuildingType FUR_DEALER = fromDef("FUR_DEALER");
+        public static final BuildingType SEWING_MACHINE_FACTORY = fromDef("SEWING_MACHINE_FACTORY");
+        public static final BuildingType WAREHOUSE_CARRIAGE = fromDef("WAREHOUSE_CARRIAGE");
+        public static final BuildingType WAREHOUSE_TRUCK = fromDef("WAREHOUSE_TRUCK");
+        public static final BuildingType POWERPLANT = fromDef("POWERPLANT");
+        public static final BuildingType BOILER = fromDef("BOILER");
 
         // ── LOGISTICA ────────────────────────────────────────────────────────────────
         public static final BuildingType ROAD = new Builder("ROAD", "Road", "#ebd09a", 1, 1)
@@ -854,549 +920,6 @@ public class BuildingType {
                         "GOAT_RANCH", "coin", 100, "timber", 10);
         public static final BuildingType GOAT_PEN_3 = pen("GOAT_PEN_3", "Goat pen 3", "#88934b", 3, 3,
                         "GOAT_RANCH", "coin", 100, "timber", 10);
-
-        public static final BuildingType FISHERY = new Builder("FISHERY", "Fishery", "#3c89cd", 2, 5)
-                        .cost("coin", 300, "timber", 15)
-                        .prod("fish", 1, 30)
-                        .terrain(0)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("EQUITES")
-                        .workforce(0, 20)
-                        .build();
-
-        public static final BuildingType NITRATE_EXTRACTOR = new Builder("NITRATE_EXTRACTOR",
-                        "Nitrate extractor", "#e5e5b2", 2, 5)
-                        .cost("coin", 500, "timber", 15, "window", 10)
-                        .prod("saltpeter", 1, 30)
-                        .terrain(0)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("EQUITES")
-                        .workforce(0, 20)
-                        .build();
-
-        // ── INDUSTRIA BASE ───────────────────────────────────────────────────────────
-        public static final BuildingType SAWMILL = new Builder("SAWMILL", "Sawmill", "#805020", 3, 3)
-                        .cost("coin", 1000)
-                        .input("wood_log", 1)
-                        .prod("timber", 3, 10)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("THE_NEW_CITY")
-                        .workforce(0, 5)
-                        .build();
-
-        public static final BuildingType MILL = new Builder("MILL", "Mill", "#c8a060", 2, 2)
-                        .cost("coin", 300, "timber", 5)
-                        .input("grain", 1)
-                        .prod("flour", 2, 30)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("THE_NEW_CITY")
-                        .maintenance(3f)
-                        .workforce(0, 10)
-                        .build();
-
-        public static final BuildingType BAKERY = new Builder("BAKERY", "Bakery", "#d4946a", 3, 3)
-                        .cost("coin", 400, "timber", 5)
-                        .input("flour", 2)
-                        .prod("bread", 3, 30)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("THE_NEW_CITY")
-                        .maintenance(3f)
-                        .workforce(0, 10)
-                        .build();
-
-        public static final BuildingType BREWERY = new Builder("BREWERY", "Brewery", "#d5bd73", 4, 5)
-                        .cost("coin", 700, "timber", 20, "brick", 10)
-                        .input("grain", 1, "hops", 2)
-                        .prod("beer", 2, 30)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("EQUITES")
-                        .maintenance(3f)
-                        .workforce(1, 10)
-                        .build();
-
-        public static final BuildingType OIL_PREES = new Builder("OIL_PREES", "Oil press", "#5a7f3b", 3, 5)
-                        .cost("coin", 700, "timber", 20, "brick", 10)
-                        .input("olive", 2)
-                        .prod("olive_oil", 2, 20)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("ARTISANS")
-                        .maintenance(3f)
-                        .workforce(1, 20)
-                        .build();
-
-        public static final BuildingType CHEESE_MAKER = new Builder("CHEESE_MAKER", "Cheese maker",
-                        "#e1e1ac", 4, 4)
-                        .cost("coin", 800, "timber", 50, "brick", 10)
-                        .input("milk", 1)
-                        .prod("cheese", 3, 60)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("ARTISANS")
-                        .maintenance(3f)
-                        .workforce(1, 10)
-                        .build();
-
-        public static final BuildingType SOAP_MAKER = new Builder("SOAP_MAKER", "Soap maker",
-                        "#a575ac", 4, 6)
-                        .cost("coin", 800, "timber", 30, "brick", 15)
-                        .input("lavander", 2, "saltpeter", 1)
-                        .prod("soap", 2, 45)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("EQUITES")
-                        .maintenance(3f)
-                        .workforce(1, 10)
-                        .build();
-
-        public static final BuildingType PERFUME_MIXER = new Builder("PERFUME_MIXER", "Perfume mixer",
-                        "#a02e7a", 3, 4)
-                        .cost("coin", 1000, "brick", 30, "timber", 20)
-                        .input("lavander", 1, "olive_oil", 1)
-                        .prod("perfume", 2, 90)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("PATRICIANS")
-                        .maintenance(3f)
-                        .workforce(1, 10)
-                        .build();
-
-        public static final BuildingType SMITHY = new Builder("SMITHY", "Smithy", "#4c4747", 3, 2)
-                        .cost("coin", 500, "timber", 15)
-                        .input("iron", 2, "wood_log", 2)
-                        .prod("tools", 2, 30)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("THE_NEW_CITY")
-                        .maintenance(5f)
-                        .workforce(0, 10)
-                        .build();
-
-        public static final BuildingType FABRIC_FACTORY = new Builder("FABRIC_FACTORY", "fabric factory",
-                        "#f0e6ff", 5, 8)
-                        .cost("coin", 1000, "timber", 30, "steel", 10, "concrete", 10)
-                        .input("flax", 1)
-                        .prod("fabric", 4, 20)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("ENGINEERS")
-                        .requires(PowerType.BOTH)
-                        .maintenance(3f)
-                        .ideology(5)
-                        .workforce(2, 20)
-                        .build();
-
-        public static final BuildingType WOOLEN_MILL = new Builder("WOOLEN_MILL", "Woolen mill", "#e7d3a9", 4, 4)
-                        .cost("coin", 500, "timber", 10)
-                        .input("wool", 2)
-                        .prod("fabric", 3, 30)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("THE_NEW_CITY")
-                        .maintenance(3f)
-                        .workforce(0, 10)
-                        .build();
-
-        public static final BuildingType KILN = new Builder("KILN", "Kiln", "#b15327", 4, 4)
-                        .cost("coin", 1000, "timber", 40, "brick", 20)
-                        .input("clay", 1)
-                        .prod("ceramics", 2, 30)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("ARTISANS")
-                        .maintenance(3f)
-                        .workforce(1, 10)
-                        .build();
-
-        public static final BuildingType TAILORING_WORKSHOP = new Builder("TAILORING_WORKSHOP",
-                        "Tailoring workshop", "#4e73bb", 6, 6)
-                        .cost("coin", 1200, "timber", 30, "brick", 10)
-                        .input("fabric", 2)
-                        .prod("toga", 3, 30)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("ARTISANS")
-                        .maintenance(3f)
-                        .workforce(1, 10)
-                        .build();
-
-        public static final BuildingType GLASSWORKS = new Builder("GLASSWORKS", "Glasswork", "#70a8b0", 5, 5)
-                        .cost("coin", 1000, "timber", 30, "brick", 10)
-                        .input("sand", 1)
-                        .prod("glass", 2, 30)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("EQUITES")
-                        .maintenance(3f)
-                        .workforce(1, 10)
-                        .build();
-
-        public static final BuildingType STEELWORK = new Builder("STEELWORK", "Steelwork", "#313338", 4, 7)
-                        .cost("coin", 1000, "timber", 30, "brick", 20)
-                        .input("iron", 1, "coal", 2)
-                        .prod("steel", 1, 5)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("STEELWORKS")
-                        .requires(PowerType.STEAM)
-                        .maintenance(10f)
-                        .ideology(20)
-                        .workforce(1, 20)
-                        .build();
-
-        public static final BuildingType BRASS_FOUNDRY = new Builder("BRASS_FOUNDRY", "Brass foundry", "#a1732a",
-                        4, 4)
-                        .cost("coin", 800, "timber", 20, "steel", 10)
-                        .input("zinc", 1, "copper", 1)
-                        .prod("brass", 1, 30)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("ENGINEERS")
-                        .requires(PowerType.STEAM)
-                        .maintenance(10f)
-                        .ideology(5)
-                        .workforce(1, 20)
-                        .build();
-
-        public static final BuildingType BRICKFACTORY = new Builder("BRICKFACTORY", "Brick factory", "#f07743",
-                        4, 4)
-                        .cost("coin", 500, "timber", 30)
-                        .input("clay", 1)
-                        .prod("brick", 1, 20)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("ARTISANS")
-                        .maintenance(10f)
-                        .ideology(5)
-                        .workforce(1, 10)
-                        .build();
-
-        public static final BuildingType WINDOWMAKER = new Builder("WINDOWMAKER", "Windowmaker", "#78d5d8",
-                        5, 5)
-                        .cost("coin", 700, "timber", 30, "brick", 10)
-                        .input("glass", 1, "wood_log", 2)
-                        .prod("window", 2, 40)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("EQUITES")
-                        .maintenance(10f)
-                        .ideology(5)
-                        .workforce(1, 15)
-                        .build();
-
-        public static final BuildingType PAPER_MAKER = new Builder("PAPER_MAKER",
-                        "Paper maker", "#a1c4ca", 4, 6)
-                        .cost("coin", 400, "timber", 30, "steel", 5)
-                        .input("timber", 2)
-                        .prod("paper", 3, 45)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("SERVICES")
-                        .maintenance(10f)
-                        .workforce(1, 10)
-                        .build();
-
-        public static final BuildingType SPECTACLES_FACTORY = new Builder("SPECTACLES_FACTORY",
-                        "Spectacle factory", "#48757c", 3, 6)
-                        .cost("coin", 800, "timber", 30, "steel", 10, "window", 10)
-                        .input("glass", 2, "brass", 1)
-                        .prod("spectacles", 3, 90)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("ENGINEERS")
-                        .maintenance(10f)
-                        .ideology(5)
-                        .workforce(2, 10)
-                        .build();
-
-        public static final BuildingType CEMENTMIXER = new Builder("CEMENTMIXER", "Cementmixer", "#46627c", 3, 6)
-                        .cost("coin", 1500, "brick", 30, "steel", 10, "window", 10)
-                        .input("clay", 2, "sand", 2, "steel", 1)
-                        .prod("concrete", 2, 45)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("ENGINEERS")
-                        .requires(PowerType.ELECTRICITY)
-                        .maintenance(10f)
-                        .ideology(10)
-                        .workforce(2, 10)
-                        .build();
-
-        public static final BuildingType CANNERY = new Builder("CANNERY", "Cannery", "#607850", 3, 5)
-                        .cost("coin", 1500, "brick", 30, "window", 10)
-                        .input("fish", 2, "iron", 1)
-                        .prod("cannedfood", 3, 45)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("EQUITES")
-                        .requires(PowerType.STEAM)
-                        .maintenance(10f)
-                        .ideology(10)
-                        .workforce(2, 10)
-                        .build();
-
-        public static final BuildingType PURSE_FACTORY = new Builder("PURSE_FACTORY", "Purse factory", "#695018",
-                        5, 6)
-                        .cost("coin", 1500, "brick", 30, "window", 10)
-                        .input("leather", 1, "fabric", 3)
-                        .prod("purse", 2, 30)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("PATRICIANS")
-                        .requires(PowerType.STEAM)
-                        .maintenance(10f)
-                        .ideology(5)
-                        .workforce(1, 20)
-                        .build();
-
-        public static final BuildingType MOTORFACTORY = new Builder("MOTORFACTORY", "Motor factory", "#1c2f55",
-                        7, 9)
-                        .cost("coin", 2000, "brick", 30, "window", 10, "steel", 10, "concrete", 20)
-                        .input("steel", 2, "brass", 1)
-                        .prod("motor", 2, 60)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("STEAM_MOTOR")
-                        .requires(PowerType.STEAM)
-                        .maintenance(30f)
-                        .ideology(20)
-                        .workforce(4, 30)
-                        .build();
-
-        public static final BuildingType WINE_CELLAR = new Builder("WINE_CELLAR", "Wine cellar", "#421442", 4, 6)
-                        .cost("coin", 900, "timber", 20, "window", 10)
-                        .input("grapes", 1, "glass", 1)
-                        .prod("wine", 3, 45)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("MAGNATES")
-                        .maintenance(4f)
-                        .workforce(3, 10)
-                        .build();
-
-        public static final BuildingType FUEL_REFINERY = new Builder("FUEL_REFINERY",
-                        "Fuel refinery", "#282830", 7, 8)
-                        .cost("coin", 3000, "timber", 40, "steel", 20, "window", 10)
-                        .input("oil", 5)
-                        .prod("fuel", 3, 10)
-                        .region(Region.NEW_WORLD)
-                        .requires(ConnectionType.BOTH)
-                        .unlockEvent("MAGNATES")
-                        .requires(PowerType.BOTH)
-                        .maintenance(10f)
-                        .ideology(10)
-                        .workforce(4, 30)
-                        .build();
-
-        public static final BuildingType PLASTIC_REFINERY = new Builder("PLASTIC_REFINERY",
-                        "Plastic refinery", "#304848", 7, 8)
-                        .cost("coin", 3000, "timber", 40, "steel", 20, "window", 10)
-                        .input("oil", 10)
-                        .prod("plastic", 5, 10)
-                        .region(Region.NEW_WORLD)
-                        .requires(ConnectionType.BOTH)
-                        .unlockEvent("MAGNATES")
-                        .requires(PowerType.BOTH)
-                        .maintenance(10f)
-                        .ideology(10)
-                        .workforce(4, 30)
-                        .build();
-
-        public static final BuildingType CABLE_FACTORY = new Builder("CABLE_FACTORY", "Cable factory", "#9c4167",
-                        5, 4)
-                        .cost("coin", 3000, "timber", 40, "window", 10)
-                        .input("copper", 1, "rubber", 4)
-                        .prod("cable", 2, 30)
-                        .region(Region.NEW_WORLD)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("ENGINEERS")
-                        .requires(PowerType.ELECTRICITY)
-                        .maintenance(10f)
-                        .ideology(5)
-                        .workforce(4, 10)
-                        .build();
-
-        public static final BuildingType ELECTRICMOTOR_FACTORY = new Builder("ELECTRICMOTOR_FACTORY",
-                        "Electric motor factory", "#384858", 7, 11)
-                        .cost("coin", 3000, "timber", 40, "steel", 20, "window", 10, "concrete", 20)
-                        .input("steel", 1, "plastic", 10, "cable", 3)
-                        .prod("electricmotor", 2, 45)
-                        .region(Region.NEW_WORLD)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("ELECTRIC_MOTOR")
-                        .requires(PowerType.ELECTRICITY)
-                        .maintenance(10f)
-                        .ideology(20)
-                        .workforce(4, 10)
-                        .build();
-
-        public static final BuildingType LIGHTBULB_FACTORY = new Builder("LIGHTBULB_FACTORY",
-                        "Light bulb factory", "#dbc336", 7, 7)
-                        .cost("coin", 3000, "timber", 40, "window", 10)
-                        .input("cable", 2, "glass", 1)
-                        .prod("lightbulb", 2, 60)
-                        .region(Region.NEW_WORLD)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("ENGINEERS")
-                        .maintenance(10f)
-                        .ideology(5)
-                        .workforce(2, 40)
-                        .build();
-
-        public static final BuildingType COFFEE_ROASTER = new Builder("COFFEE_ROASTER", "Coffee roaster",
-                        "#643018", 5, 5)
-                        .cost("coin", 3000, "timber", 30, "brick", 10, "window", 10)
-                        .input("coffee_beans", 1)
-                        .prod("coffee", 2, 60)
-                        .region(Region.NEW_WORLD)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("PATRICIANS")
-                        .maintenance(10f)
-                        .ideology(5)
-                        .workforce(1, 20)
-                        .build();
-
-        public static final BuildingType CIGAR_FACTORY = new Builder("CIGAR_FACTORY", "Cigar factory",
-                        "#402012", 3, 5)
-                        .cost("coin", 3000, "timber", 40, "brick", 10, "window", 10)
-                        .input("tobacco", 1, "timber", 1)
-                        .prod("cigars", 2, 90)
-                        .region(Region.NEW_WORLD)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("MAGNATES")
-                        .maintenance(10f)
-                        .ideology(5)
-                        .workforce(1, 20)
-                        .build();
-
-        public static final BuildingType RUM_DISTILLERY = new Builder("RUM_DISTILLERY", "Rum distillery", "#a78451", 6,
-                        5)
-                        .cost("coin", 2500, "timber", 40, "steel", 20, "window", 10)
-                        .input("sugar", 1, "wood_log", 2)
-                        .prod("rum", 2, 60)
-                        .region(Region.NEW_WORLD)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("ENGINEERS")
-                        .maintenance(10f)
-                        .ideology(5)
-                        .workforce(3, 20)
-                        .build();
-
-        public static final BuildingType RADIO_FACTORY = new Builder("RADIO_FACTORY", "Radio factory",
-                        "#2b4557", 9, 9)
-                        .cost("coin", 4000, "timber", 40, "steel", 20, "window", 10, "concrete", 10)
-                        .input("steel", 1, "rubber", 2, "cable", 3)
-                        .prod("radio", 2, 90)
-                        .region(Region.NEW_WORLD)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("MAGNATES")
-                        .requires(PowerType.ELECTRICITY)
-                        .maintenance(20f)
-                        .ideology(20)
-                        .workforce(5, 25)
-                        .build();
-
-        public static final BuildingType STEAM_CARRIAGES_FACTORY = new Builder("STEAM_CARRIAGES_FACTORY",
-                        "Steam carriages factory", "#8b9e20", 7, 7)
-                        .cost("coin", 2000, "brick", 30, "window", 10, "steel", 10, "concrete", 20)
-                        .input("timber", 10, "motor", 1, "steel", 3)
-                        .prod("steam_carriage", 2, 90)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("ENGINEERS")
-                        .requires(PowerType.STEAM)
-                        .maintenance(40f)
-                        .ideology(30)
-                        .workforce(4, 20)
-                        .build();
-
-        public static final BuildingType TRUCK_FACTORY = new Builder("TRUCK_FACTORY", "Truck factory",
-                        "#776811", 7, 7)
-                        .cost("coin", 2000, "brick", 30, "window", 10, "steel", 10, "concrete", 20)
-                        .input("rubber", 5, "motor", 3, "steel", 5)
-                        .prod("truck", 2, 120)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("MAGNATES")
-                        .requires(PowerType.BOTH)
-                        .maintenance(40f)
-                        .ideology(40)
-                        .workforce(4, 20)
-                        .build();
-
-        public static final BuildingType FAN_FACTORY = new Builder("FAN_FACTORY", "Fan factory",
-                        "#776811", 7, 7)
-                        .cost("coin", 2000, "brick", 30, "window", 10, "steel", 10, "concrete", 20)
-                        .input("electricmotor", 2, "plastic", 5, "cable", 1)
-                        .prod("fan", 3, 60)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("MAGNATES")
-                        .requires(PowerType.BOTH)
-                        .maintenance(40f)
-                        .ideology(40)
-                        .workforce(4, 20)
-                        .build();
-
-        public static final BuildingType FUR_DEALER = new Builder("FUR_DEALER", "Fur dealer",
-                        "#776811", 7, 7)
-                        .cost("coin", 2000, "brick", 30, "window", 10, "steel", 10, "concrete", 20)
-                        .input("leather", 1, "fabric", 2, "cotton", 5)
-                        .prod("fur_coats", 2, 90)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("MAGNATES")
-                        .requires(PowerType.BOTH)
-                        .maintenance(40f)
-                        .ideology(40)
-                        .workforce(4, 20)
-                        .build();
-
-        public static final BuildingType SEWING_MACHINE_FACTORY = new Builder("SEWING_MACHINE_FACTORY",
-                        "Sewing machine factory",
-                        "#776811", 7, 7)
-                        .cost("coin", 2000, "brick", 30, "window", 10, "steel", 10, "concrete", 20)
-                        .input("timber", 2, "iron", 1)
-                        .prod("sewing_machine", 1, 30)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("MAGNATES")
-                        .requires(PowerType.BOTH)
-                        .maintenance(40f)
-                        .ideology(40)
-                        .workforce(4, 20)
-                        .build();
-
-        public static final BuildingType WAREHOUSE_CARRIAGE = new Builder("WAREHOUSE_CARRIAGE",
-                        "Warehouse (steam carriages)", "#af1d1d", 4, 4)
-                        .cost("coin", 500, "steel", 40, "concrete", 30)
-                        .input("steam_carriage", 3, "coal", 5)
-                        .prod(null, 0, 60)
-                        .consumableOnly()
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("ENGINEERS")
-                        .requires(PowerType.STEAM)
-                        .influenceRadius(20)
-                        .maintenance(10f)
-                        .ideology(10)
-                        .workforce(2, 50)
-                        .build();
-
-        public static final BuildingType WAREHOUSE_TRUCK = new Builder("WAREHOUSE_TRUCK",
-                        "Warehouse (truck)", "#a8135d", 4, 4)
-                        .cost("coin", 1500, "steel", 40, "concrete", 30)
-                        .input("truck", 3, "fuel", 15)
-                        .prod(null, 0, 90)
-                        .consumableOnly()
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("MAGNATES")
-                        .requires(PowerType.ELECTRICITY)
-                        .influenceRadius(25)
-                        .maintenance(40f)
-                        .ideology(10)
-                        .workforce(4, 50)
-                        .build();
-
-        public static final BuildingType POWERPLANT = new Builder("POWERPLANT", "Powerplant", "#ffcc25",
-                        5, 5)
-                        .cost("coin", 1000, "timber", 50, "steel", 10, "window", 20)
-                        .input("oil", 3)
-                        .prod(null, 0, 60)
-                        .consumableOnly()
-                        .requires(ConnectionType.BOTH)
-                        .unlockEvent("ELECTRICITY")
-                        .influenceRadius(30)
-                        .maintenance(50f)
-                        .ideology(30)
-                        .workforce(4, 50)
-                        .build();
-
-        public static final BuildingType BOILER = new Builder("BOILER", "Boiler", "#c0c0c0", 2, 2)
-                        .cost("coin", 1000, "timber", 50, "brick", 10)
-                        .input("coal", 1)
-                        .prod(null, 0, 60)
-                        .consumableOnly()
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("BOILERS")
-                        .influenceRadius(10)
-                        .maintenance(3f)
-                        .ideology(15)
-                        .workforce(2, 50)
-                        .build();
 
         // ____MONUMENTI_______________
         // FORO
@@ -1875,82 +1398,101 @@ public class BuildingType {
                 ALL_TYPES.add(PALACE);
                 ALL_TYPES.add(SKYSCRAPER);
 
+                ALL_TYPES.add(WOOD_CAMP);
                 ALL_TYPES.add(SAWMILL);
-                ALL_TYPES.add(GRAIN_FARM);
-                ALL_TYPES.add(GRAIN_FIELD);
-                ALL_TYPES.add(GRAPES_FIELD);
-                ALL_TYPES.add(HOPS_FIELD);
-                ALL_TYPES.add(LAVANDER_FIELD);
-                ALL_TYPES.add(OLIVE_FIELD);
-                ALL_TYPES.add(FLAX_FIELD);
-                ALL_TYPES.add(RUBBER_FIELD);
-                ALL_TYPES.add(COFFEE_FIELD);
-                ALL_TYPES.add(TOBACCO_FIELD);
-                ALL_TYPES.add(SUGAR_FIELD);
-                ALL_TYPES.add(COTTON_FIELD);
-                ALL_TYPES.add(MILL);
-                ALL_TYPES.add(BAKERY);
-                ALL_TYPES.add(SHEEP_RANCH);
-                ALL_TYPES.add(WOOLEN_MILL);
-                ALL_TYPES.add(IRONMINE);
-                ALL_TYPES.add(SMITHY);
                 ALL_TYPES.add(CLAYPIT);
                 ALL_TYPES.add(BRICKFACTORY);
-                ALL_TYPES.add(GOAT_RANCH);
-                ALL_TYPES.add(CHEESE_MAKER);
-                ALL_TYPES.add(OLIVE_GROVE);
-                ALL_TYPES.add(OIL_PREES);
-                ALL_TYPES.add(KILN);
-                ALL_TYPES.add(TAILORING_WORKSHOP);
+                ALL_TYPES.add(MARBLE_QUARRY);
+                ALL_TYPES.add(IRONMINE);
+                ALL_TYPES.add(COALMINE);
+                ALL_TYPES.add(STEELWORK);
                 ALL_TYPES.add(SANDPIT);
                 ALL_TYPES.add(GLASSWORKS);
                 ALL_TYPES.add(WINDOWMAKER);
-                ALL_TYPES.add(COALMINE);
-                ALL_TYPES.add(STEELWORK);
-                ALL_TYPES.add(LAVANDER_FARM);
-                ALL_TYPES.add(NITRATE_EXTRACTOR);
-                ALL_TYPES.add(SOAP_MAKER);
-                ALL_TYPES.add(FISHERY);
-                ALL_TYPES.add(CANNERY);
-                ALL_TYPES.add(HOPS_FARM);
-                ALL_TYPES.add(BREWERY);
-                ALL_TYPES.add(MARBLE_QUARRY);
-                ALL_TYPES.add(OILRIG);
-                ALL_TYPES.add(PERFUME_MIXER);
+                ALL_TYPES.add(CEMENTMIXER);
+                ALL_TYPES.add(PAPER_MAKER);
+
+                ALL_TYPES.add(GRAIN_FARM);
+                ALL_TYPES.add(GRAIN_FIELD);
+                ALL_TYPES.add(MILL);
+                ALL_TYPES.add(BAKERY);
+
+                ALL_TYPES.add(SHEEP_RANCH);
+                ALL_TYPES.add(WOOLEN_MILL);
+                ALL_TYPES.add(FLAX_FARM);
+                ALL_TYPES.add(FLAX_FIELD);
+                ALL_TYPES.add(FABRIC_FACTORY);
+                ALL_TYPES.add(TAILORING_WORKSHOP);
+                ALL_TYPES.add(COTTON_FARM);
+                ALL_TYPES.add(COTTON_FIELD);
                 ALL_TYPES.add(COW_RANCH);
                 ALL_TYPES.add(PURSE_FACTORY);
-                ALL_TYPES.add(COFFEE_PLANTATION);
-                ALL_TYPES.add(COFFEE_ROASTER);
-                ALL_TYPES.add(FLAX_FARM);
-                ALL_TYPES.add(FABRIC_FACTORY);
-                ALL_TYPES.add(CEMENTMIXER);
-                ALL_TYPES.add(SUGAR_PLANTATION);
-                ALL_TYPES.add(RUM_DISTILLERY);
+                ALL_TYPES.add(FUR_DEALER);
+
+                ALL_TYPES.add(SMITHY);
+
+                ALL_TYPES.add(GOAT_RANCH);
+                ALL_TYPES.add(CHEESE_MAKER);
+
+                ALL_TYPES.add(OLIVE_GROVE);
+                ALL_TYPES.add(OLIVE_FIELD);
+                ALL_TYPES.add(OIL_PREES);
+
+                ALL_TYPES.add(KILN);
+
+                ALL_TYPES.add(LAVANDER_FARM);
+                ALL_TYPES.add(LAVANDER_FIELD);
+                ALL_TYPES.add(NITRATE_EXTRACTOR);
+                ALL_TYPES.add(SOAP_MAKER);
+                ALL_TYPES.add(PERFUME_MIXER);
+
+                ALL_TYPES.add(FISHERY);
+                ALL_TYPES.add(CANNERY);
+
+                ALL_TYPES.add(HOPS_FARM);
+                ALL_TYPES.add(HOPS_FIELD);
+                ALL_TYPES.add(BREWERY);
+
                 ALL_TYPES.add(ZINCMINE);
                 ALL_TYPES.add(COPPERMINE);
                 ALL_TYPES.add(BRASS_FOUNDRY);
                 ALL_TYPES.add(SPECTACLES_FACTORY);
+
+                ALL_TYPES.add(SUGAR_PLANTATION);
+                ALL_TYPES.add(SUGAR_FIELD);
+                ALL_TYPES.add(RUM_DISTILLERY);
+
+                ALL_TYPES.add(SEWING_MACHINE_FACTORY);
+
+                ALL_TYPES.add(COFFEE_PLANTATION);
+                ALL_TYPES.add(COFFEE_FIELD);
+                ALL_TYPES.add(COFFEE_ROASTER);
+
                 ALL_TYPES.add(RUBBER_PLANTATION);
+                ALL_TYPES.add(RUBBER_FIELD);
                 ALL_TYPES.add(CABLE_FACTORY);
                 ALL_TYPES.add(LIGHTBULB_FACTORY);
+                ALL_TYPES.add(RADIO_FACTORY);
+
                 ALL_TYPES.add(MOTORFACTORY);
                 ALL_TYPES.add(STEAM_CARRIAGES_FACTORY);
+
+                ALL_TYPES.add(OILRIG);
                 ALL_TYPES.add(PLASTIC_REFINERY);
                 ALL_TYPES.add(ELECTRICMOTOR_FACTORY);
+                ALL_TYPES.add(FAN_FACTORY);
+
+                ALL_TYPES.add(VINEYARD);
+                ALL_TYPES.add(GRAPES_FIELD);
+                ALL_TYPES.add(WINE_CELLAR);
+
+                ALL_TYPES.add(TOBACCO_PLANTATION);
+                ALL_TYPES.add(TOBACCO_FIELD);
+                ALL_TYPES.add(CIGAR_FACTORY);
+
                 ALL_TYPES.add(FUEL_REFINERY);
                 ALL_TYPES.add(TRUCK_FACTORY);
-                ALL_TYPES.add(TOBACCO_PLANTATION);
-                ALL_TYPES.add(CIGAR_FACTORY);
-                ALL_TYPES.add(RADIO_FACTORY);
-                ALL_TYPES.add(COTTON_FARM);
-                ALL_TYPES.add(VINEYARD);
-                ALL_TYPES.add(WINE_CELLAR);
-                ALL_TYPES.add(FAN_FACTORY);
-                ALL_TYPES.add(FUR_DEALER);
-                ALL_TYPES.add(SEWING_MACHINE_FACTORY);
-                ALL_TYPES.add(WOOD_CAMP);
 
-                ALL_TYPES.add(PAPER_MAKER);
                 ALL_TYPES.add(WELL);
                 ALL_TYPES.add(AQUEDUCT);
                 ALL_TYPES.add(DUMP);
@@ -1959,10 +1501,11 @@ public class BuildingType {
                 ALL_TYPES.add(BIG_FIRE_STATION);
                 ALL_TYPES.add(SMALL_PARK);
                 ALL_TYPES.add(BIG_PARK);
-                ALL_TYPES.add(THEATER);
-                ALL_TYPES.add(CINEMA);
                 ALL_TYPES.add(SCHOOL);
                 ALL_TYPES.add(UNIVERSITY);
+
+                ALL_TYPES.add(THEATER);
+                ALL_TYPES.add(CINEMA);
                 ALL_TYPES.add(POST_OFFICE);
                 ALL_TYPES.add(RADIO_TOWER);
                 ALL_TYPES.add(THERMAL_BATHS);

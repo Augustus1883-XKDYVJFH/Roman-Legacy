@@ -51,6 +51,7 @@ public class GameState {
     public List<ResourceFloater> floaters = new ArrayList<>();
     public Map<String, List<int[]>> depositsOld = new HashMap<>();
     public Map<String, List<int[]>> depositsNew = new HashMap<>();
+    public final Set<String> everProduced = new HashSet<>();
 
     private Map<ServiceCategory, Float> totalCapacity = new HashMap<>();
     private Map<ServiceCategory, Float> totalConsumption = new HashMap<>();
@@ -216,6 +217,7 @@ public class GameState {
                 float worldX = (b.rootX + b.effectiveW() / 2f) * CELL_SIZE;
                 float worldY = (b.rootY + b.effectiveH()) * CELL_SIZE;
                 spawnResourceFloater(b.type.prod, b.type.rate, worldX, worldY);
+                everProduced.add(b.type.prod);
             }
         }
     }

@@ -130,13 +130,20 @@ public class GameInputHandler {
         }
     }
 
+    private void toggleFactionPanel() {
+        showFactionPanel = !showFactionPanel;
+        if (showFactionPanel) {
+            panelJustOpened = true;
+            if (game.achievements != null)
+                game.achievements.onPanelOpened(AchievementManager.PanelKind.FACTIONS);
+        }
+    }
+
     private void handleKeys(float delta) {
         GameSettings.KeyBindings keys = GameSettings.get().keys;
 
         if (Gdx.input.isKeyJustPressed(keys.toggleFactions)) {
-            showFactionPanel = !showFactionPanel;
-            if (showFactionPanel)
-                panelJustOpened = true;
+            toggleFactionPanel();
         }
 
         if (Gdx.input.isKeyJustPressed(keys.openConsumption)) {
@@ -391,11 +398,15 @@ public class GameInputHandler {
             inspectedBuilding = clicked;
             showBuildingPanel = true;
             panelJustOpened = true;
+            if (game.achievements != null)
+                game.achievements.onPanelOpened(AchievementManager.PanelKind.BUILDING);
             return;
         }
     }
 
-    /** Posizioni senza sovrapposizioni lungo il tratto scelto per una fila di case. */
+    /**
+     * Posizioni senza sovrapposizioni lungo il tratto scelto per una fila di case.
+     */
     public List<int[]> getHouseLine(int x1, int y1, int x2, int y2) {
         List<int[]> placements = new ArrayList<>();
         if (selectedBuilding == null || !selectedBuilding.isHouse || x1 < 0 || y1 < 0 || x2 < 0 || y2 < 0)
@@ -452,9 +463,7 @@ public class GameInputHandler {
                     game.setScreen(new ConsumptionScreen(game, state, currentGameScreen));
                     return true;
                 case 2: // FACTIONS
-                    showFactionPanel = !showFactionPanel;
-                    if (showFactionPanel)
-                        panelJustOpened = true;
+                    toggleFactionPanel();
                     return true;
             }
         }

@@ -1,5 +1,6 @@
 package com.RomanLegacy;
 
+import java.util.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;
@@ -41,7 +42,13 @@ public class GameSettings {
     public int autoSaveInterval = 60;
     private static GameSettings instance;
 
+    public ArrayList<String> unlockedAchievements = new ArrayList<>();
     public boolean firstLaunchAchievementGranted = false;
+    public int buildingPanelOpens = 0;
+    public int factionPanelOpens = 0;
+    public int balanceOpens = 0;
+
+    public String language = "en";
 
     // ── Singleton ────────────────────────────────────────────────────────────────
     private GameSettings() {
@@ -76,6 +83,10 @@ public class GameSettings {
                 loaded.keys.switchMap = Input.Keys.M;
             if (loaded.keys.openSettings == 0)
                 loaded.keys.openSettings = Input.Keys.O;
+            if (loaded.unlockedAchievements == null)
+                loaded.unlockedAchievements = new ArrayList<>();
+            if (loaded.language == null || !Localization.isSupported(loaded.language))
+                loaded.language = "en";
 
             return loaded;
         } catch (Exception e) {

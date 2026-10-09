@@ -308,7 +308,8 @@ public class GameScreen implements Screen {
         }
 
         updateTimers(delta * state.gameSpeed);
-        state.tickFloaters(delta); // delta reale, non scalato: animazione sempre alla stessa velocità
+        state.tickFloaters(delta);
+        game.achievements.tick(state, delta);
         if (state.eventManager.pendingEvent == null)
             input.handleInput(delta);
 
