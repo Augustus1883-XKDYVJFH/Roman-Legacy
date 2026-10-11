@@ -142,7 +142,7 @@ public class LoadingScreen implements Screen {
         game.fonts.small.setColor(0.6f, 0.6f, 0.6f, 1f);
         game.fonts.small.draw(batch, tips[tipIndex],
                 Main.SCREEN_W / 2f - 300, Main.SCREEN_H / 2f - 100);
-        game.fonts.small.draw(batch, "Caricamento assets in corso...",
+        game.fonts.small.draw(batch, Localization.get("ui.loading.assets"),
                 Main.SCREEN_W / 2f - 150, Main.SCREEN_H / 2f - 130);
         batch.end();
     }

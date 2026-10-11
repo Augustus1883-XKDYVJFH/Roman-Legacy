@@ -38,9 +38,9 @@ public class SplashScreen implements Screen {
     }
 
     private final Stage[] stages = {
-            new Stage("Made by augustus1883", null, false, 3.6f, 0.9f),
-            new Stage("EARLY ACCESS", null, false, 3.6f, 0.9f),
-            new Stage(null, null, true, 3.6f, 0.9f) // logo / fallback Roman Legacy
+            new Stage("ui.splash.made_by", null, false, 3.6f, 0.9f),
+            new Stage("ui.badge.early_access", null, false, 3.6f, 0.9f),
+            new Stage(null, null, true, 3.6f, 0.9f)
     };
 
     private int stageIndex = 0;
@@ -107,14 +107,14 @@ public class SplashScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
 
-        layout.setText(game.fonts.huge, stage.line1);
+        String line1 = Localization.get(stage.line1);
+        layout.setText(game.fonts.huge, line1);
         game.fonts.huge.setColor(0.9f, 0.8f, 0.5f, alpha);
-        game.fonts.huge.draw(batch, stage.line1,
-                Main.SCREEN_W / 2f - layout.width / 2f,
-                Main.SCREEN_H / 2f + 20);
+        game.fonts.huge.draw(batch, line1, Main.SCREEN_W / 2f - layout.width / 2f, Main.SCREEN_H / 2f + 20);
 
         if (stage.line2 != null) {
-            layout.setText(game.fonts.normal, stage.line2);
+            String line2 = Localization.get(stage.line2);
+            layout.setText(game.fonts.normal, line2);
             game.fonts.normal.setColor(0.7f, 0.7f, 0.7f, alpha);
             game.fonts.normal.draw(batch, stage.line2,
                     Main.SCREEN_W / 2f - layout.width / 2f,

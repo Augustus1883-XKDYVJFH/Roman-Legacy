@@ -35,12 +35,12 @@ public class GameScreen implements Screen {
     private static final float FADE_TO_MENU_DURATION = 1f;
 
     private final String[] inGameMenuItems = {
-            "Continue",
-            "Load game",
-            "Save game",
-            "Options",
-            "Exit to menu",
-            "Exit game"
+            "ui.ingame.continue",
+            "ui.menu.load_game",
+            "ui.ingame.save_game",
+            "ui.menu.options",
+            "ui.ingame.exit_menu",
+            "ui.ingame.exit_game"
     };
 
     private final Vector3 menuMousePos = new Vector3();
@@ -213,7 +213,7 @@ public class GameScreen implements Screen {
         batch.setProjectionMatrix(uiCamera.combined);
         batch.begin();
 
-        String title = "GAME MENU";
+        String title = Localization.get("ui.ingame.title");
         menuLayout.setText(game.fonts.huge, title);
         game.fonts.huge.setColor(UITheme.TEXT_GOLD);
         game.fonts.huge.draw(batch, title, sw / 2f - menuLayout.width / 2f, sh - 130);
@@ -223,12 +223,12 @@ public class GameScreen implements Screen {
         for (int i = 0; i < inGameMenuItems.length; i++) {
             float y = startY - i * UITheme.MENU_ITEM_SPACING;
             UITheme.drawMenuRow(sr, batch, game.fonts.large, menuLayout,
-                    inGameMenuItems[i], sw / 2f, y, MENU_BUTTON_W, MENU_BUTTON_H,
+                    Localization.get(inGameMenuItems[i]), sw / 2f, y, MENU_BUTTON_W, MENU_BUTTON_H,
                     i == inGameMenuIndex, i == inGameHoveredIndex);
         }
 
         batch.begin();
-        String footer = "UP/DOWN = Select    •    ENTER = Confirm    •    ESC = Exit";
+        String footer = Localization.get("ui.ingame.footer");
         menuLayout.setText(game.fonts.small, footer);
         game.fonts.small.setColor(UITheme.TEXT_DARK_GRAY);
         game.fonts.small.draw(batch, footer, sw / 2f - menuLayout.width / 2f, 70);

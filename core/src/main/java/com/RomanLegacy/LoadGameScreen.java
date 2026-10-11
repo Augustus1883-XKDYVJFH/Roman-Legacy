@@ -77,7 +77,7 @@ public class LoadGameScreen implements Screen {
         UITheme.drawPanel(sr, px, py, PANEL_W, PANEL_H);
 
         int dots = ((int) (elapsed * 3) % 4);
-        String title = "LOADING" + ".".repeat(dots);
+        String title = Localization.get("ui.loading.title") + ".".repeat(dots);
 
         batch.begin();
 
@@ -87,9 +87,9 @@ public class LoadGameScreen implements Screen {
                 Main.SCREEN_W / 2f - layout.width / 2f, py + PANEL_H - 32);
 
         if (saveData != null) {
-            String dateStr = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm")
+            String dateStr = new java.text.SimpleDateFormat(Localization.get("ui.format.datetime"))
                     .format(new java.util.Date(saveData.timestamp));
-            String saveLine = "Save: " + dateStr;
+            String saveLine = Localization.format("ui.loading.save_date", dateStr);
             layout.setText(game.fonts.small, saveLine);
             game.fonts.small.setColor(UITheme.TEXT_GRAY);
             game.fonts.small.draw(batch, saveLine,

@@ -54,12 +54,21 @@ public class SettingsScreen implements Screen {
 
     // ── Keybinding remap ───────────────────────────────────────
     private int remapIndex = -1;
-    private String[] controlLabels = {
-            "Move Up", "Move Down", "Move Left", "Move Right",
-            "Zoom +", "Zoom -", "Cancel (key)", "Cancel (right click)",
-            "Factions [F]", "Balance [C]", "Trade [T]",
-            "Pause [P]", "Quick save [F5]", "Quick load [F9]",
-            "Switch map [M]", "Settings [O]"
+    private static final String[] CONTROL_KEYS = {
+            "ui.settings.control.move_up", "ui.settings.control.move_down",
+            "ui.settings.control.move_left", "ui.settings.control.move_right",
+            "ui.settings.control.zoom_in", "ui.settings.control.zoom_out",
+            "ui.settings.control.cancel_key", "ui.settings.control.cancel_mouse",
+            "ui.settings.control.factions", "ui.settings.control.balance",
+            "ui.settings.control.trade", "ui.settings.control.pause",
+            "ui.settings.control.quick_save", "ui.settings.control.quick_load",
+            "ui.settings.control.switch_map", "ui.settings.control.settings"
+    };
+    private static final int CANCEL_MOUSE_INDEX = 7;
+
+    private static final String[] TAB_KEYS = {
+            "ui.settings.tab.controls", "ui.settings.tab.graphics",
+            "ui.settings.tab.audio", "ui.settings.tab.other"
     };
 
     // ── Slider drag ────────────────────────────────────────────
@@ -204,12 +213,12 @@ public class SettingsScreen implements Screen {
     private void handleControlsClick(float mx, float my) {
         GameSettings s = GameSettings.get();
 
-        for (int i = 0; i < controlLabels.length; i++) {
+        for (int i = 0; i < CONTROL_KEYS.length; i++) {
             int col = i / CONTROLS_ROWS;
             int row = i % CONTROLS_ROWS;
             float valueX = COL_VALUE_X + col * CONTROLS_COL2_OFFSET;
             float y = rowY(row + 1);
-            boolean isMouseToggle = controlLabels[i].equals("Cancel (right click)");
+            boolean isMouseToggle = (i == CANCEL_MOUSE_INDEX);
             float boxW = isMouseToggle ? 80 : 200;
 
             if (my >= y - 18 && my <= y + 10 && mx >= valueX - 10 && mx <= valueX + boxW + 10) {
@@ -285,6 +294,27 @@ public class SettingsScreen implements Screen {
         if (mx >= sliderX() - 10 && mx <= sliderX() + SLIDER_W + 10 && my >= y - 18 && my <= y + 10) {
             draggingAutoSave = true;
         }
+        y = rowY(1);
+        if (mx >= COL_VALUE_X - 10 && mx <= COL_VALUE_X + 210 && my >= y - 18 && my <= y + 10) {
+            cycleLanguage();
+            game.audio.playSound(AudioManager.SFX_UI_CLICK);
+        }
+    }
+
+    private void cycleLanguage() {
+        GameSettings s = GameSettings.get();
+        String[] supported = Localization.SUPPORTED;
+        int idx = 0;
+        for (int i = 0; i < supported.length; i++) {
+            if (supported[i].equals(s.language)) {
+                idx = i;
+                break;
+            }
+        }
+        String next = supported[(idx + 1) % supported.length];
+        s.language = next;
+        Localization.load(next);
+        s.save();
     }
 
     // ── Disegno ─────────────────────────────────────────────────
@@ -302,7 +332,7 @@ public class SettingsScreen implements Screen {
 
     private void drawTitle() {
         batch.begin();
-        String title = "SETTINGS";
+        String title = Localization.get("ui.settings.title");
         layout.setText(game.fonts.huge, title);
         game.fonts.huge.setColor(UITheme.TEXT_GOLD);
         // Posizione dedicata (non UITheme.TITLE_Y_OFFSET, tarato per i menu
@@ -315,9 +345,8 @@ public class SettingsScreen implements Screen {
 
     private void drawTabs() {
         float startX = (Main.SCREEN_W - Tab.values().length * TAB_W) / 2;
-        String[] tabNames = { "CONTROLS", "GRAPHICS", "AUDIO", "OTHER" };
 
-        for (int i = 0; i < tabNames.length; i++) {
+        for (int i = 0; i < TAB_KEYS.length; i++) {
             float tabX = startX + i * TAB_W;
             boolean active = currentTab.ordinal() == i;
             boolean hovered = !active && mousePos.x >= tabX && mousePos.x <= tabX + TAB_W
@@ -337,10 +366,11 @@ public class SettingsScreen implements Screen {
             sr.rect(tabX, TAB_Y, TAB_W, TAB_H);
             sr.end();
 
+            String tabName = Localization.get(TAB_KEYS[i]);
             batch.begin();
-            layout.setText(game.fonts.normal, tabNames[i]);
+            layout.setText(game.fonts.normal, tabName);
             game.fonts.normal.setColor(active || hovered ? UITheme.TEXT_GOLD : UITheme.TEXT_GRAY);
-            game.fonts.normal.draw(batch, tabNames[i],
+            game.fonts.normal.draw(batch, tabName,
                     tabX + TAB_W / 2f - layout.width / 2f, TAB_Y + TAB_H / 2f + 7f);
             batch.end();
         }
@@ -369,10 +399,10 @@ public class SettingsScreen implements Screen {
 
         batch.begin();
         game.fonts.large.setColor(UITheme.TEXT_GOLD);
-        game.fonts.large.draw(batch, "Key bindings", COL_LABEL_X, rowY(0) + 30);
+        game.fonts.large.draw(batch, Localization.get("ui.settings.key_bindings"), COL_LABEL_X, rowY(0) + 30);
         batch.end();
 
-        for (int i = 0; i < controlLabels.length; i++) {
+        for (int i = 0; i < CONTROL_KEYS.length; i++) {
             int col = i / CONTROLS_ROWS;
             int row = i % CONTROLS_ROWS;
             float labelX = COL_LABEL_X + col * CONTROLS_COL2_OFFSET;
@@ -380,14 +410,14 @@ public class SettingsScreen implements Screen {
             float y = rowY(row + 1);
 
             boolean waiting = (remapIndex == i);
-            boolean isMouseToggle = controlLabels[i].equals("Cancel (right click)");
+            boolean isMouseToggle = (i == CANCEL_MOUSE_INDEX);
             float boxW = isMouseToggle ? 80 : 200;
             boolean hovered = !waiting && mousePos.x >= valueX - 10 && mousePos.x <= valueX + boxW + 10
                     && mousePos.y >= y - 18 && mousePos.y <= y + 10;
 
             batch.begin();
             game.fonts.normal.setColor(UITheme.TEXT_WHITE);
-            game.fonts.normal.draw(batch, controlLabels[i], labelX, y);
+            game.fonts.normal.draw(batch, Localization.get(CONTROL_KEYS[i]), labelX, y);
             batch.end();
 
             sr.begin(ShapeRenderer.ShapeType.Filled);
@@ -403,9 +433,9 @@ public class SettingsScreen implements Screen {
             batch.begin();
             String text;
             if (isMouseToggle) {
-                text = s.keys.cancelMouseRight ? "ON" : "OFF";
+                text = Localization.get(s.keys.cancelMouseRight ? "ui.common.on" : "ui.common.off");
             } else if (waiting) {
-                text = "Press a key...";
+                text = Localization.get("ui.settings.press_key");
             } else {
                 text = GameSettings.keyName(keycodes[i]);
             }
@@ -416,18 +446,18 @@ public class SettingsScreen implements Screen {
 
     private void drawGraphicsTab() {
         GameSettings s = GameSettings.get();
-        drawToggleRow(0, "Fullscreen", s.fullscreen);
+        drawToggleRow(0, Localization.get("ui.settings.fullscreen"), s.fullscreen);
         float brightness = Math.max(BRIGHTNESS_MIN, Math.min(BRIGHTNESS_MAX, s.brightness));
-        drawSliderRow(1, "Brightness", brightness, BRIGHTNESS_MIN, BRIGHTNESS_MAX);
+        drawSliderRow(1, Localization.get("ui.settings.brightness"), brightness, BRIGHTNESS_MIN, BRIGHTNESS_MAX);
     }
 
     private void drawAudioTab() {
         GameSettings s = GameSettings.get();
 
-        drawToggleRow(0, "Music", s.musicEnabled);
-        drawSliderRow(1, "Music volume", s.musicVolume, 0f, 1f);
-        drawToggleRow(2, "Sound effects", s.sfxEnabled);
-        drawSliderRow(3, "SFX volume", s.sfxVolume, 0f, 1f);
+        drawToggleRow(0, Localization.get("ui.settings.music"), s.musicEnabled);
+        drawSliderRow(1, Localization.get("ui.settings.music_volume"), s.musicVolume, 0f, 1f);
+        drawToggleRow(2, Localization.get("ui.settings.sfx"), s.sfxEnabled);
+        drawSliderRow(3, Localization.get("ui.settings.sfx_volume"), s.sfxVolume, 0f, 1f);
     }
 
     private void drawOtherTab() {
@@ -435,15 +465,44 @@ public class SettingsScreen implements Screen {
         float autoSavePercent = (s.autoSaveInterval - 30) / 180f;
         int minutes = s.autoSaveInterval / 60;
         int seconds = s.autoSaveInterval % 60;
-        String timeStr = minutes > 0 ? minutes + " min" : seconds + " sec";
+        drawLanguageRow(1);
+        String timeStr;
         if (minutes > 0 && seconds > 0)
-            timeStr = minutes + "m " + seconds + "s";
+            timeStr = Localization.format("ui.settings.time.min_sec", minutes, seconds);
+        else if (minutes > 0)
+            timeStr = Localization.format("ui.settings.time.min", minutes);
+        else
+            timeStr = Localization.format("ui.settings.time.sec", seconds);
+        drawSliderRow(0, Localization.get("ui.settings.autosave"), autoSavePercent, 0f, 1f, timeStr);
+    }
 
-        drawSliderRow(0, "Auto-save (every)", autoSavePercent, 0f, 1f, timeStr);
+    private void drawLanguageRow(int row) {
+        float y = rowY(row);
+        float boxW = 200f;
+        boolean hovered = mousePos.x >= COL_VALUE_X - 10 && mousePos.x <= COL_VALUE_X + boxW + 10
+                && mousePos.y >= y - 18 && mousePos.y <= y + 10;
+
+        batch.begin();
+        game.fonts.normal.setColor(UITheme.TEXT_WHITE);
+        game.fonts.normal.draw(batch, Localization.get("ui.settings.language"), COL_LABEL_X, y);
+        batch.end();
+
+        sr.begin(ShapeRenderer.ShapeType.Filled);
+        sr.setColor(hovered ? UITheme.HOVER_BG : UITheme.BG_PANEL);
+        sr.rect(COL_VALUE_X - 4, y - 20, boxW, 28);
+        sr.end();
+        sr.begin(ShapeRenderer.ShapeType.Line);
+        sr.setColor(hovered ? UITheme.GOLD_PRIMARY : UITheme.GOLD_DARK);
+        sr.rect(COL_VALUE_X - 4, y - 20, boxW, 28);
+        sr.end();
+
+        batch.begin();
+        drawCenteredBoxText(Localization.get("ui.language.name"),
+                COL_VALUE_X - 4, y - 20, boxW, 28, UITheme.TEXT_GOLD);
+        batch.end();
     }
 
     // ── Helper per disegno ──────────────────────────────────────
-
     private void drawToggleRow(int row, String label, boolean value) {
         float y = rowY(row);
         boolean hovered = mousePos.x >= COL_VALUE_X - 10 && mousePos.x <= COL_VALUE_X + 80
@@ -467,7 +526,7 @@ public class SettingsScreen implements Screen {
         sr.end();
 
         batch.begin();
-        drawCenteredBoxText(value ? "ON" : "OFF", COL_VALUE_X - 4, y - 20, 80, 28,
+        drawCenteredBoxText(Localization.get(value ? "ui.common.on" : "ui.common.off"), COL_VALUE_X - 4, y - 20, 80, 28,
                 value ? UITheme.STATUS_GREEN : UITheme.TEXT_GRAY);
         batch.end();
     }
@@ -529,7 +588,7 @@ public class SettingsScreen implements Screen {
 
         batch.begin();
         game.fonts.normal.setColor(UITheme.TEXT_GOLD);
-        game.fonts.normal.draw(batch, "<- Back to menu", 76, 55);
+        game.fonts.normal.draw(batch, Localization.get("ui.settings.back"), 76, 55);
         batch.end();
     }
 
@@ -539,8 +598,8 @@ public class SettingsScreen implements Screen {
         sr.rect(0, 0, Main.SCREEN_W, Main.SCREEN_H);
         sr.end();
 
-        String title = "Press the new key for: " + controlLabels[remapIndex];
-        String hint = "(ESC to cancel)";
+        String title = Localization.format("ui.settings.remap_title", Localization.get(CONTROL_KEYS[remapIndex]));
+        String hint = Localization.get("ui.settings.remap_hint");
 
         layout.setText(game.fonts.large, title);
         float boxW = layout.width + 80f;

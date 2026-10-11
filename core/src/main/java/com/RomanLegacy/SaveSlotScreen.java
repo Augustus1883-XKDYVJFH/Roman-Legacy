@@ -175,7 +175,7 @@ public class SaveSlotScreen implements Screen {
 
     private void drawTitle() {
         batch.begin();
-        String title = allowSave ? "SAVE / LOAD" : "LOAD GAME";
+        String title = Localization.get(allowSave ? "ui.saves.title_save_load" : "ui.saves.title_load");
         layout.setText(game.fonts.title, title);
         game.fonts.title.setColor(UITheme.TEXT_GOLD);
         game.fonts.title.draw(batch, title, Main.SCREEN_W / 2f - layout.width / 2f, Main.SCREEN_H - 45f);
@@ -191,16 +191,17 @@ public class SaveSlotScreen implements Screen {
         float x = Main.SCREEN_W - FRAME_X - 16f;
 
         deleteAllBtnX = x - btnW;
-        drawButton(deleteAllBtnX, topBtnY, btnW, BTN_H, "Delete all saves", UITheme.STATUS_RED);
+        drawButton(deleteAllBtnX, topBtnY, btnW, BTN_H, Localization.get("ui.saves.delete_all"), UITheme.STATUS_RED);
         x = deleteAllBtnX - gap;
 
         if (allowSave) {
             quickSaveBtnX = x - btnW;
-            drawButton(quickSaveBtnX, topBtnY, btnW, BTN_H, "Quicksave", UITheme.STATUS_BLUE);
+            drawButton(quickSaveBtnX, topBtnY, btnW, BTN_H, Localization.get("ui.saves.quicksave"),
+                    UITheme.STATUS_BLUE);
             x = quickSaveBtnX - gap;
 
             newSaveBtnX = x - btnW;
-            drawButton(newSaveBtnX, topBtnY, btnW, BTN_H, "+ New save", UITheme.STATUS_GREEN);
+            drawButton(newSaveBtnX, topBtnY, btnW, BTN_H, Localization.get("ui.saves.new_save"), UITheme.STATUS_GREEN);
         }
     }
 
@@ -228,7 +229,7 @@ public class SaveSlotScreen implements Screen {
     private void drawList() {
         if (slots.isEmpty()) {
             batch.begin();
-            String msg = "No save found";
+            String msg = Localization.get("ui.saves.none");
             layout.setText(game.fonts.large, msg);
             game.fonts.large.setColor(UITheme.TEXT_GRAY);
             game.fonts.large.draw(batch, msg, Main.SCREEN_W / 2f - layout.width / 2f, FRAME_TOP - 100f);
@@ -261,21 +262,25 @@ public class SaveSlotScreen implements Screen {
             sr.end();
 
             batch.begin();
-            String name = (info.isAutosave ? "[Auto] " : "") + info.displayName;
+            String name = info.isAutosave
+                    ? Localization.format("ui.saves.autosave_name", info.autosaveSlot)
+                    : info.displayName;
             game.fonts.large.setColor(UITheme.TEXT_GOLD);
             game.fonts.large.draw(batch, name, rowX + 16f, rowY + ROW_H - 14f);
 
-            String dateStr = new java.text.SimpleDateFormat("dd/MM/yyyy  HH:mm")
+            String dateStr = new java.text.SimpleDateFormat(Localization.get("ui.format.datetime"))
                     .format(new java.util.Date(info.timestamp));
             game.fonts.small.setColor(UITheme.TEXT_GRAY);
             game.fonts.small.draw(batch, dateStr, rowX + 16f, rowY + ROW_H - 38f);
             batch.end();
 
             float loadX = rowX + rowW - DELETE_BTN_W - 12f - LOAD_BTN_W;
-            drawButton(loadX, rowY + (ROW_H - BTN_H) / 2f, LOAD_BTN_W, BTN_H, "Load", UITheme.STATUS_GREEN);
+            drawButton(loadX, rowY + (ROW_H - BTN_H) / 2f, LOAD_BTN_W, BTN_H, Localization.get("ui.saves.load"),
+                    UITheme.STATUS_GREEN);
 
             float delX = rowX + rowW - DELETE_BTN_W - 6f;
-            drawButton(delX, rowY + (ROW_H - BTN_H) / 2f, DELETE_BTN_W, BTN_H, "X", UITheme.STATUS_RED);
+            drawButton(delX, rowY + (ROW_H - BTN_H) / 2f, DELETE_BTN_W, BTN_H,
+                    Localization.get("ui.saves.delete_short"), UITheme.STATUS_RED);
         }
 
         if (maxScroll > 0) {
@@ -313,7 +318,7 @@ public class SaveSlotScreen implements Screen {
 
         batch.begin();
         game.fonts.normal.setColor(UITheme.TEXT_GOLD);
-        game.fonts.normal.draw(batch, "<- Back", 56, 52);
+        game.fonts.normal.draw(batch, Localization.get("ui.saves.back"), 56, 52);
         batch.end();
     }
 
@@ -333,7 +338,7 @@ public class SaveSlotScreen implements Screen {
         UITheme.drawPanel(sr, nameBoxX, nameBoxY, NAME_BOX_W, NAME_BOX_H);
 
         batch.begin();
-        String title = "Save name";
+        String title = Localization.get("ui.saves.name_title");
         layout.setText(game.fonts.large, title);
         game.fonts.large.setColor(UITheme.TEXT_GOLD);
         game.fonts.large.draw(batch, title, Main.SCREEN_W / 2f - layout.width / 2f, nameBoxY + NAME_BOX_H - 24);
@@ -369,8 +374,10 @@ public class SaveSlotScreen implements Screen {
         nameConfirmBtnX = Main.SCREEN_W / 2f - btnW - 8f;
         nameCancelBtnX = Main.SCREEN_W / 2f + 8f;
 
-        drawOverlayButton(nameConfirmBtnX, nameBtnY, btnW, BTN_H, "Confirm", UITheme.STATUS_GREEN);
-        drawOverlayButton(nameCancelBtnX, nameBtnY, btnW, BTN_H, "Cancel", UITheme.STATUS_RED);
+        drawOverlayButton(nameConfirmBtnX, nameBtnY, btnW, BTN_H, Localization.get("ui.common.confirm"),
+                UITheme.STATUS_GREEN);
+        drawOverlayButton(nameCancelBtnX, nameBtnY, btnW, BTN_H, Localization.get("ui.common.cancel"),
+                UITheme.STATUS_RED);
     }
 
     private void drawOverlayButton(float x, float y, float w, float h, String label, Color accent) {

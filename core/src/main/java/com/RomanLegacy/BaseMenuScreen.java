@@ -100,7 +100,7 @@ public abstract class BaseMenuScreen implements Screen {
         int startY = Main.SCREEN_H / 2 + (int) UITheme.MENU_START_Y_OFFSET;
         for (int i = 0; i < menuItems.length; i++) {
             float y = startY - i * UITheme.MENU_ITEM_SPACING;
-            drawMenuRow(i, menuItems[i], y, i == selectedIndex, i == hoveredIndex);
+            drawMenuRow(i, Localization.get(menuItems[i]), y, i == selectedIndex, i == hoveredIndex);
         }
     }
 
@@ -119,7 +119,7 @@ public abstract class BaseMenuScreen implements Screen {
     }
 
     protected void drawEarlyAccessBadge() {
-        String badge = "EARLY ACCESS";
+        String badge = Localization.get("ui.badge.early_access");
         float pad = 10f;
         layout.setText(game.fonts.small, badge);
         float bw = layout.width + pad * 2f;
@@ -221,11 +221,6 @@ public abstract class BaseMenuScreen implements Screen {
 
     @Override
     public void resize(int w, int h) {
-        // NON usare camera.setToOrtho(false, w, h): riancorerebbe la camera
-        // alle dimensioni reali della finestra invece che al canvas virtuale
-        // Main.SCREEN_W/SCREEN_H su cui è calcolato tutto il layout dei
-        // bottoni (drawMenu, drawMenuRow ecc.), causando menu deformati o
-        // tagliati quando la finestra reale è più piccola del canvas.
         camera.update();
     }
 

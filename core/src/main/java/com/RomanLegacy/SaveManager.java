@@ -18,6 +18,7 @@ public class SaveManager {
         public String displayName;
         public long timestamp;
         public boolean isAutosave;
+        public int autosaveSlot;
     }
 
     private SaveManager() {
@@ -100,10 +101,16 @@ public class SaveManager {
                 info.filename = name;
                 info.isAutosave = name.startsWith("autosave");
                 info.timestamp = sd.timestamp;
-                info.displayName = info.isAutosave
-                        ? "Autosave " + name.replace("autosave", "").replace(".json", "")
-                        : name.substring("manual_".length(), name.length() - 5);
-                result.add(info);
+                if (info.isAutosave) {
+                    try {
+                        info.autosaveSlot = Integer.parseInt(name.replace("autosave", "").replace(".json", ""));
+                    } catch (NumberFormatException ignored) {
+                    }
+                    info.displayName = name; // tecnico, non mostrato a schermo
+                } else {
+                    info.displayName = name.substring("manual_".length(), name.length() - 5);
+                }
+                result.add(info); // <-- questa mancava
             } catch (Exception e) {
                 // salvataggio corrotto, ignoralo nella lista
             }

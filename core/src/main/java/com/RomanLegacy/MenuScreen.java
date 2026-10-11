@@ -8,22 +8,23 @@ public class MenuScreen extends BaseMenuScreen {
     public MenuScreen(Main game) {
         super(game);
         menuItems = new String[] {
-                "New game",
-                "Continue",
-                "Load game",
-                "Options",
-                "Exit the game"
+                "ui.menu.new_game",
+                "ui.menu.continue",
+                "ui.menu.load_game",
+                "ui.menu.options",
+                "ui.menu.exit"
         };
+
     }
 
     @Override
     protected String getTitle() {
-        return "ROMAN LEGACY";
+        return Localization.get("ui.menu.title");
     }
 
     @Override
     protected String getFooterText() {
-        return "UP/DOWN = Select    •    ENTER = Confirm    •    ESC = Exit";
+        return Localization.get("ui.menu.footer");
     }
 
     @Override

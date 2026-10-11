@@ -800,6 +800,56 @@ public class BuildingType {
         public static final BuildingType POWERPLANT = fromDef("POWERPLANT");
         public static final BuildingType BOILER = fromDef("BOILER");
 
+        public static final BuildingType WELL = fromDef("WELL");
+        public static final BuildingType AQUEDUCT = fromDef("AQUEDUCT");
+        public static final BuildingType DUMP = fromDef("DUMP");
+        public static final BuildingType INCINERATOR = fromDef("INCINERATOR");
+        public static final BuildingType SMALL_FIRE_STATION = fromDef("SMALL_FIRE_STATION");
+        public static final BuildingType BIG_FIRE_STATION = fromDef("BIG_FIRE_STATION");
+        public static final BuildingType THERMAL_BATHS = fromDef("THERMAL_BATHS");
+        public static final BuildingType HOSPITAL = fromDef("HOSPITAL");
+        public static final BuildingType TEMPLE = fromDef("TEMPLE");
+        public static final BuildingType CHURCH = fromDef("CHURCH");
+        public static final BuildingType THEATER = fromDef("THEATER");
+        public static final BuildingType CINEMA = fromDef("CINEMA");
+        public static final BuildingType POST_OFFICE = fromDef("POST_OFFICE");
+        public static final BuildingType RADIO_TOWER = fromDef("RADIO_TOWER");
+        public static final BuildingType SCHOOL = fromDef("SCHOOL");
+        public static final BuildingType UNIVERSITY = fromDef("UNIVERSITY");
+        public static final BuildingType SMALL_PARK = fromDef("SMALL_PARK");
+        public static final BuildingType BIG_PARK = fromDef("BIG_PARK");
+
+        // FORO
+        public static final BuildingType FORUM_FOUNDATIONS = fromDef("FORUM_FOUNDATIONS");
+        public static final BuildingType FORUM_MAIN_STRUCTRE = fromDef("FORUM_MAIN_STRUCTRE");
+        public static final BuildingType FORUM_INFRASTUCTURE = fromDef("FORUM_INFRASTUCTURE");
+        public static final BuildingType FORUM_FINISHING = fromDef("FORUM_FINISHING");
+
+        // COLOSSEO
+        public static final BuildingType CL_SITE_PREPARATION = fromDef("CL_SITE_PREPARATION");
+        public static final BuildingType CL_FOUNDATION = fromDef("CL_FOUNDATION");
+        public static final BuildingType CL_EXTERIOR = fromDef("CL_EXTERIOR");
+        public static final BuildingType CL_INTERIOR = fromDef("CL_INTERIOR");
+        public static final BuildingType CL_FINISHING = fromDef("CL_FINISHING");
+
+        // ESPOSIZIONE UNIVERSALE
+        public static final BuildingType UE_FOUNDATION = fromDef("UE_FOUNDATION");
+        public static final BuildingType UE_STRUCTURE = fromDef("UE_STRUCTURE");
+        public static final BuildingType UE_INTERIOR = fromDef("UE_INTERIOR");
+        public static final BuildingType UE_FINISHING = fromDef("UE_FINISHING");
+
+        // TORRE D'ACCIAIO
+        public static final BuildingType ST_FOUNATION = fromDef("ST_FOUNATION");
+        public static final BuildingType ST_MAIN_FRAME = fromDef("ST_MAIN_FRAME");
+        public static final BuildingType ST_FINISHING = fromDef("ST_FINISHING");
+
+        // ACCADEMIA
+        public static final BuildingType AC_FOUNDATION = fromDef("AC_FOUNDATION");
+        public static final BuildingType AC_STRUCTURE = fromDef("AC_STRUCTURE");
+        public static final BuildingType AC_INTERIOR = fromDef("AC_INTERIOR");
+        public static final BuildingType AC_EXTERIOR = fromDef("AC_EXTERIOR");
+        public static final BuildingType AC_FINISHING = fromDef("AC_FINISHING");
+
         // ── LOGISTICA ────────────────────────────────────────────────────────────────
         public static final BuildingType ROAD = new Builder("ROAD", "Road", "#ebd09a", 1, 1)
                         .cost("coin", 1)
@@ -920,456 +970,6 @@ public class BuildingType {
                         "GOAT_RANCH", "coin", 100, "timber", 10);
         public static final BuildingType GOAT_PEN_3 = pen("GOAT_PEN_3", "Goat pen 3", "#88934b", 3, 3,
                         "GOAT_RANCH", "coin", 100, "timber", 10);
-
-        // ____MONUMENTI_______________
-        // FORO
-        public static final BuildingType FORUM_FOUNDATIONS = new Builder("FORUM_FOUNDATIONS", "Forum foundation",
-                        "#b8a030", 5, 5)
-                        .cost("coin", 1000, "timber", 50, "brick", 30)
-                        .monument("FORUM", 0)
-                        .requires(ConnectionType.ROAD)
-                        .ideology(-50f)
-                        .workforce(0, 200)
-                        .build();
-
-        public static final BuildingType FORUM_MAIN_STRUCTRE = new Builder("FORUM_MAIN_STRUCTRE",
-                        "Forum main structure", "#c9a83a", 6, 6)
-                        .monument("FORUM", 1)
-                        .upgradeCost("coin", 2000, "marble", 20, "steel", 10)
-                        .upgradeTime(60f)
-                        .requires(ConnectionType.ROAD)
-                        .workforce(1, 200)
-                        .notBuildable()
-                        .build();
-
-        public static final BuildingType FORUM_INFRASTUCTURE = new Builder("FORUM_INFRASTUCTURE", "Forum infrastucture",
-                        "#d4b84a", 7,
-                        7)
-                        .monument("FORUM", 2)
-                        .upgradeCost("coin", 4000, "marble", 40, "gold", 10, "concrete", 20)
-                        .upgradeTime(90f)
-                        .requires(ConnectionType.ROAD)
-                        .workforce(2, 200)
-                        .influenceRadius(15)
-                        .notBuildable()
-                        .build();
-
-        public static final BuildingType FORUM_FINISHING = new Builder("FORUM_FINISHING", "Forum finishing", "#e6c84a",
-                        7,
-                        7)
-                        .monument("FORUM", 3)
-                        .upgradeCost("coin", 4000, "marble", 40, "gold", 10, "concrete", 20)
-                        .upgradeTime(90f)
-                        .requires(ConnectionType.ROAD)
-                        .ideology(-20f)
-                        .workforce(4, 200)
-                        .influenceRadius(15)
-                        .notBuildable()
-                        .build();
-
-        // COLOSSEO
-        public static final BuildingType CL_SITE_PREPARATION = new Builder("CL_SITE_PREPARATION",
-                        "Colosseum site preparation",
-                        "#7a3d12", 6, 4)
-                        .cost("coin", 1500, "timber", 40, "brick", 20)
-                        .monument("COLOSSEUM", 0)
-                        .requires(ConnectionType.ROAD)
-                        .ideology(-50f)
-                        .workforce(0, 300)
-                        .build();
-
-        public static final BuildingType CL_FOUNDATION = new Builder("CL_FOUNDATION", "Colosseum foundation", "#a8780a",
-                        7, 5)
-                        .monument("COLOSSEUM", 1)
-                        .upgradeCost("coin", 3000, "marble", 30, "steel", 15, "concrete", 10)
-                        .upgradeTime(75f)
-                        .requires(ConnectionType.ROAD)
-                        .workforce(1, 300)
-                        .influenceRadius(10)
-                        .notBuildable()
-                        .build();
-
-        public static final BuildingType CL_EXTERIOR = new Builder(
-                        "CL_EXTERIOR",
-                        "Colosseum exterior", "#c89618", 8, 6)
-                        .monument("COLOSSEUM", 2)
-                        .upgradeCost("coin", 5000, "marble", 50, "gold", 15, "concrete", 30)
-                        .upgradeTime(120f)
-                        .requires(ConnectionType.ROAD)
-                        .workforce(2, 300)
-                        .influenceRadius(20)
-                        .consumptionService(ConsumptionServiceCategory.ENTERTAINMENT)
-                        .notBuildable()
-                        .build();
-
-        public static final BuildingType CL_INTERIOR = new Builder(
-                        "CL_INTERIOR",
-                        "Colosseum interior", "#d9a020", 8, 6)
-                        .monument("COLOSSEUM", 3)
-                        .upgradeCost("coin", 5000, "marble", 50, "gold", 15, "concrete", 30)
-                        .upgradeTime(120f)
-                        .requires(ConnectionType.ROAD)
-                        .workforce(3, 300)
-                        .influenceRadius(20)
-                        .consumptionService(ConsumptionServiceCategory.ENTERTAINMENT)
-                        .notBuildable()
-                        .build();
-
-        public static final BuildingType CL_FINISHING = new Builder(
-                        "CL_FINISHING",
-                        "Colosseum finishing", "#e0a828", 8, 6)
-                        .monument("COLOSSEUM", 4)
-                        .upgradeCost("coin", 5000, "marble", 50, "gold", 15, "concrete", 30)
-                        .upgradeTime(120f)
-                        .requires(ConnectionType.ROAD)
-                        .ideology(-20f)
-                        .workforce(4, 300)
-                        .influenceRadius(20)
-                        .consumptionService(ConsumptionServiceCategory.ENTERTAINMENT)
-                        .notBuildable()
-                        .build();
-
-        // ESPOSIZIONE UNIVERSALE
-        public static final BuildingType UE_FOUNDATION = new Builder("UE_FOUNDATION", "Universal exposition foundation",
-                        "#b0b8c0", 5, 5)
-                        .cost("coin", 1000, "timber", 50, "brick", 30)
-                        .monument("UNIVERSAL_EXPOSITION", 0)
-                        .requires(ConnectionType.ROAD)
-                        .ideology(20f)
-                        .workforce(0, 500)
-                        .build();
-
-        public static final BuildingType UE_STRUCTURE = new Builder("UE_STRUCTURE", "Universal exposition structure",
-                        "#c8c8d0", 6, 6)
-                        .monument("UNIVERSAL_EXPOSITION", 1)
-                        .upgradeCost("coin", 2000, "marble", 20, "steel", 10)
-                        .upgradeTime(60f)
-                        .requires(ConnectionType.ROAD)
-                        .workforce(1, 500)
-                        .notBuildable()
-                        .build();
-
-        public static final BuildingType UE_INTERIOR = new Builder("UE_INTERIOR", "Universal exposition interior",
-                        "#d8d8e0", 7,
-                        7)
-                        .monument("UNIVERSAL_EXPOSITION", 2)
-                        .upgradeCost("coin", 4000, "marble", 40, "gold", 10, "concrete", 20)
-                        .upgradeTime(90f)
-                        .requires(ConnectionType.ROAD)
-                        .workforce(3, 500)
-                        .influenceRadius(15)
-                        .notBuildable()
-                        .build();
-
-        public static final BuildingType UE_FINISHING = new Builder("UE_FINISHING", "Universal exposition finishing",
-                        "#e8e8f0", 7,
-                        7)
-                        .monument("UNIVERSAL_EXPOSITION", 3)
-                        .upgradeCost("coin", 4000, "marble", 40, "gold", 10, "concrete", 20)
-                        .upgradeTime(90f)
-                        .requires(ConnectionType.ROAD)
-                        .ideology(20f)
-                        .workforce(5, 100)
-                        .influenceRadius(15)
-                        .notBuildable()
-                        .build();
-
-        // TORRE D'ACCIAIO
-        public static final BuildingType ST_FOUNATION = new Builder("ST_FOUNATION", "Steel tower foundation", "#8a9aad",
-                        5, 5)
-                        .cost("coin", 1000, "timber", 50, "brick", 30)
-                        .monument("STEEL_TOWER", 0)
-                        .requires(ConnectionType.ROAD)
-                        .ideology(50f)
-                        .workforce(0, 200)
-                        .build();
-
-        public static final BuildingType ST_MAIN_FRAME = new Builder("ST_MAIN_FRAME", "Steel tower main frame",
-                        "#9aabb8", 6, 6)
-                        .monument("STEEL_TOWER", 1)
-                        .upgradeCost("coin", 2000, "marble", 20, "steel", 10)
-                        .upgradeTime(60f)
-                        .requires(ConnectionType.ROAD)
-                        .workforce(1, 200)
-                        .notBuildable()
-                        .build();
-
-        public static final BuildingType ST_FINISHING = new Builder("ST_FINISHING", "Steel tower finishing", "#b0c0d0",
-                        7,
-                        7)
-                        .monument("STEEL_TOWER", 2)
-                        .upgradeCost("coin", 4000, "marble", 40, "gold", 10, "concrete", 20)
-                        .upgradeTime(90f)
-                        .requires(ConnectionType.ROAD)
-                        .ideology(20f)
-                        .workforce(4, 600)
-                        .influenceRadius(15)
-                        .notBuildable()
-                        .build();
-
-        // ACCADEMIA
-        public static final BuildingType AC_FOUNDATION = new Builder("AC_FOUNDATION", "Accademy foundation", "#8b6b4a",
-                        5, 5)
-                        .cost("coin", 1000, "timber", 50, "brick", 30)
-                        .monument("ACCADEMY", 0)
-                        .requires(ConnectionType.ROAD)
-                        .ideology(-20f)
-                        .workforce(0, 300)
-                        .build();
-
-        public static final BuildingType AC_STRUCTURE = new Builder("AC_STRUCTURE", "Accademy structure", "#a87b5a", 6,
-                        6)
-                        .monument("ACCADEMY", 1)
-                        .upgradeCost("coin", 2000, "marble", 20, "steel", 10)
-                        .upgradeTime(60f)
-                        .requires(ConnectionType.ROAD)
-                        .workforce(1, 300)
-                        .notBuildable()
-                        .build();
-
-        public static final BuildingType AC_INTERIOR = new Builder("AC_INTERIOR", "Accademy interior", "#c89b6a", 7,
-                        7)
-                        .monument("ACCADEMY", 2)
-                        .upgradeCost("coin", 4000, "marble", 40, "gold", 10, "concrete", 20)
-                        .upgradeTime(90f)
-                        .requires(ConnectionType.ROAD)
-                        .workforce(3, 300)
-                        .influenceRadius(15)
-                        .notBuildable()
-                        .build();
-
-        public static final BuildingType AC_EXTERIOR = new Builder("AC_EXTERIOR", "Accademy exterior", "#d8ab7a", 7,
-                        7)
-                        .monument("ACCADEMY", 3)
-                        .upgradeCost("coin", 4000, "marble", 40, "gold", 10, "concrete", 20)
-                        .upgradeTime(90f)
-                        .requires(ConnectionType.ROAD)
-                        .workforce(4, 300)
-                        .influenceRadius(15)
-                        .notBuildable()
-                        .build();
-
-        public static final BuildingType AC_FINISHING = new Builder("AC_FINISHING", "Accademy finishing", "#e8bb8a", 7,
-                        7)
-                        .monument("ACCADEMY", 4)
-                        .upgradeCost("coin", 4000, "marble", 40, "gold", 10, "concrete", 20)
-                        .upgradeTime(90f)
-                        .requires(ConnectionType.ROAD)
-                        .ideology(-20f)
-                        .workforce(4, 300)
-                        .influenceRadius(15)
-                        .notBuildable()
-                        .build();
-
-        // ── ACQUA ──────────────────────────────────────────────────────
-        public static final BuildingType WELL = new Builder("WELL", "Well", "#4A90D9", 2, 2)
-                        .cost("coin", 100, "timber", 5)
-                        .service(ServiceCategory.WATER, 100)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("SERVICES")
-                        .maintenance(2f)
-                        .build();
-
-        public static final BuildingType AQUEDUCT = new Builder("AQUEDUCT", "Acqueduct", "#2E6DB4", 3, 5)
-                        .cost("coin", 500, "brick", 20, "steel", 10)
-                        .service(ServiceCategory.WATER, 300)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("BETTER_SERVICES")
-                        .maintenance(8f)
-                        .ideology(10f)
-                        .build();
-
-        // ── RIFIUTI ────────────────────────────────────────────────────
-        public static final BuildingType DUMP = new Builder("DUMP", "Dump", "#8B7355", 3, 3)
-                        .cost("coin", 150, "timber", 8)
-                        .service(ServiceCategory.WASTE, 300)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("SERVICES")
-                        .maintenance(3f)
-                        .workforce(0, 20)
-                        .build();
-
-        public static final BuildingType INCINERATOR = new Builder("INCINERATOR", "Incinerator", "#8B4513", 4, 4)
-                        .cost("coin", 800, "steel", 20, "brick", 20)
-                        .service(ServiceCategory.WASTE, 800)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("BETTER_SERVICES")
-                        .maintenance(12f)
-                        .ideology(10f)
-                        .workforce(0, 40)
-                        .build();
-
-        // ── VIGILI DEL FUOCO ──────────────────────────────────────────
-        public static final BuildingType SMALL_FIRE_STATION = new Builder("SMALL_FIRE_STATION", "Small fire station",
-                        "#FF4500", 3, 4)
-                        .cost("coin", 400, "timber", 15)
-                        .service(ServiceCategory.FIRE, 500)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("SERVICES")
-                        .maintenance(6f)
-                        .workforce(2, 20)
-                        .build();
-
-        public static final BuildingType BIG_FIRE_STATION = new Builder("BIG_FIRE_STATION", "Big fire station",
-                        "#be3a22", 4, 5)
-                        .cost("coin", 800, "timber", 25, "steel", 15, "concrete", 10)
-                        .service(ServiceCategory.FIRE, 1500)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("BETTER_SERVICES")
-                        .maintenance(12f)
-                        .ideology(10)
-                        .workforce(2, 60)
-                        .build();
-
-        // ── SANITÀ ─────────────────────────────────────────────────────
-        // SANITÀ
-        public static final BuildingType THERMAL_BATHS = new Builder("THERMAL_BATHS", "Thermal baths", "#4d7796", 3, 4)
-                        .cost("coin", 300, "timber", 10, "brick", 15)
-                        .input("timber", 1, "fabric", 1)
-                        .prod(null, 0, 30)
-                        .consumableOnly()
-                        .consumptionService(ConsumptionServiceCategory.HEALTH)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("SERVICES")
-                        .maintenance(5f)
-                        .ideology(-5f)
-                        .influenceRadius(20)
-                        .build();
-
-        public static final BuildingType HOSPITAL = new Builder("HOSPITAL", "Hospital", "#285879", 3, 5)
-                        .cost("coin", 1000, "brick", 30, "steel", 15, "concrete", 10)
-                        .input("lavander", 2, "fabric", 3, "rum", 1)
-                        .prod(null, 0, 45)
-                        .consumableOnly()
-                        .consumptionService(ConsumptionServiceCategory.HEALTH)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("BETTER_SERVICES")
-                        .maintenance(15f)
-                        .ideology(-10f)
-                        .influenceRadius(35)
-                        .workforce(3, 30)
-                        .build();
-
-        // RELIGIONE
-        public static final BuildingType TEMPLE = new Builder("TEMPLE", "Temple", "#af8f23", 3, 3)
-                        .cost("coin", 400, "timber", 10, "marble", 10)
-                        .input("toga", 1)
-                        .prod(null, 0, 30)
-                        .consumableOnly()
-                        .consumptionService(ConsumptionServiceCategory.RELIGION)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("SERVICES")
-                        .maintenance(5f)
-                        .ideology(-15f)
-                        .influenceRadius(10)
-                        .build();
-
-        public static final BuildingType CHURCH = new Builder("CHURCH", "Church", "#b88608", 3, 5)
-                        .cost("coin", 1200, "timber", 20, "marble", 30)
-                        .input("toga", 3, "wine", 2)
-                        .prod(null, 0, 60)
-                        .consumableOnly()
-                        .consumptionService(ConsumptionServiceCategory.RELIGION)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("BETTER_SERVICES")
-                        .maintenance(12f)
-                        .ideology(-30f)
-                        .influenceRadius(25)
-                        .build();
-
-        // INTRATTENIMENTO
-        public static final BuildingType THEATER = new Builder("THEATER", "Theater", "#a5265b", 4, 4)
-                        .cost("coin", 1200, "timber", 20, "brick", 30)
-                        .input("fabric", 3, "cheese", 2, "beer", 1)
-                        .prod(null, 0, 60)
-                        .consumableOnly()
-                        .consumptionService(ConsumptionServiceCategory.ENTERTAINMENT)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("SERVICES")
-                        .maintenance(12f)
-                        .ideology(-20f)
-                        .influenceRadius(18)
-                        .build();
-
-        public static final BuildingType CINEMA = new Builder("CINEMA", "Cinema", "#bb5a82", 5, 5)
-                        .cost("coin", 1200, "timber", 20, "brick", 30, "steel", 20)
-                        .input("spectacles", 3, "cigars", 2, "wine", 1)
-                        .prod(null, 0, 60)
-                        .consumableOnly()
-                        .consumptionService(ConsumptionServiceCategory.ENTERTAINMENT)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("BETTER_SERVICES")
-                        .maintenance(12f)
-                        .ideology(20f)
-                        .influenceRadius(34)
-                        .build();
-
-        // COMUNICAZIONE
-        public static final BuildingType POST_OFFICE = new Builder("POST_OFFICE", "Post office", "#94cfc0", 2, 2)
-                        .cost("coin", 1200, "timber", 30)
-                        .input("paper", 1)
-                        .prod(null, 0, 60)
-                        .consumableOnly()
-                        .consumptionService(ConsumptionServiceCategory.COMMUNICATION)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("SERVICES")
-                        .maintenance(12f)
-                        .ideology(-10)
-                        .influenceRadius(10)
-                        .build();
-
-        public static final BuildingType RADIO_TOWER = new Builder("RADIO_TOWER", "Radio tower", "#61e6d4", 6, 6)
-                        .cost("coin", 1200, "timber", 20, "steel", 20, "concrete", 20)
-                        .input("radio", 3, "cable", 2)
-                        .prod(null, 0, 60)
-                        .consumableOnly()
-                        .consumptionService(ConsumptionServiceCategory.COMMUNICATION)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("BETTER_SERVICES")
-                        .maintenance(12f)
-                        .ideology(30)
-                        .influenceRadius(50)
-                        .workforce(4, 10)
-                        .build();
-
-        // EDUCAZIONE
-        public static final BuildingType SCHOOL = new Builder("SCHOOL", "School", "#3327e7", 4, 4)
-                        .cost("coin", 100, "timber", 30)
-                        .service(ServiceCategory.EDUCATION, 200)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("SERVICES")
-                        .maintenance(2f)
-                        .workforce(3, 20)
-                        .build();
-
-        public static final BuildingType UNIVERSITY = new Builder("UNIVERSITY", "University", "#4d46b6", 6, 8)
-                        .cost("coin", 100, "timber", 50, "steel", 10, "window", 20)
-                        .service(ServiceCategory.EDUCATION, 800)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("BETTER_SERVICES")
-                        .maintenance(2f)
-                        .ideology(-20f)
-                        .workforce(3, 80)
-                        .build();
-
-        // PARCHI
-        public static final BuildingType SMALL_PARK = new Builder("SMALL_PARK", "Small park", "#29d175", 3, 3)
-                        .cost("coin", 100, "timber", 5)
-                        .service(ServiceCategory.PARKS, 100)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("SERVICES")
-                        .maintenance(2f)
-                        .ideology(-10f)
-                        .build();
-
-        public static final BuildingType BIG_PARK = new Builder("BIG_PARK", "Big park", "#159e09", 7, 7)
-                        .cost("coin", 100, "timber", 50, "brick", 30)
-                        .service(ServiceCategory.PARKS, 1000)
-                        .requires(ConnectionType.ROAD)
-                        .unlockEvent("BETTER_SERVICES")
-                        .maintenance(2f)
-                        .ideology(10f)
-                        .build();
 
         // ── Inizializzazione ─────────────────────────────────────────────────────────
         private static final List<BuildingType> ALL_TYPES = new ArrayList<>();
