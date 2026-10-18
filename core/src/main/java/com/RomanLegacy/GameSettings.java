@@ -18,12 +18,10 @@ public class GameSettings {
         public int toggleFactions = Input.Keys.F;
         public int openConsumption = Input.Keys.C;
         public int cancel = Input.Keys.ESCAPE;
-        public int openTrade = Input.Keys.T;
         public int pause = Input.Keys.P;
         public int quickSave = Input.Keys.F5;
         public int quickLoad = Input.Keys.F9;
         public int switchMap = Input.Keys.M;
-        public int openSettings = Input.Keys.O;
         public boolean cancelMouseRight = false;
     }
 
@@ -81,8 +79,6 @@ public class GameSettings {
                 loaded.keys = new KeyBindings();
             if (loaded.keys.switchMap == 0)
                 loaded.keys.switchMap = Input.Keys.M;
-            if (loaded.keys.openSettings == 0)
-                loaded.keys.openSettings = Input.Keys.O;
             if (loaded.unlockedAchievements == null)
                 loaded.unlockedAchievements = new ArrayList<>();
             if (loaded.language == null || !Localization.isSupported(loaded.language))

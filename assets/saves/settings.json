@@ -13,12 +13,10 @@ keys: {
 	toggleFactions: 34
 	openConsumption: 31
 	cancel: 111
-	openTrade: 48
 	pause: 44
 	quickSave: 135
 	quickLoad: 139
 	switchMap: 41
-	openSettings: 43
 	cancelMouseRight: true
 }
 fullscreen: true
@@ -31,5 +29,5 @@ firstLaunchAchievementGranted: true
 buildingPanelOpens: 118
 factionPanelOpens: 0
 balanceOpens: 31
-language: it
+language: en
 }

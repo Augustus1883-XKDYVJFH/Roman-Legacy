@@ -41,15 +41,12 @@ public class UITheme {
     public static final Color HOVER_BG = Color.valueOf("333344");
 
     // ── Layout constants ────────────────────────────────────────────────────
-    public static final float DECO_LINE_Y_OFFSET = -25f;
     public static final float TITLE_Y_OFFSET = -130f;
     public static final float MENU_START_Y_OFFSET = 75f;
     public static final float MENU_ITEM_SPACING = 58f;
     public static final float MENU_ITEM_WIDTH = 400f;
 
     // ── Animation ───────────────────────────────────────────────────────────
-    public static final float FADE_DURATION = 0.3f;
-    public static final float HOVER_SCALE = 1.02f;
 
     // ── Cornice retro condivisa ───────────────────────────────────────────────
     // Stesso look del HUD (HudRenderer.drawPanel): sfondo scuro del tema +

@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.RomanLegacy.UITheme;
+import com.badlogic.gdx.graphics.glutils.HdpiUtils;
 
 public class GameScreen implements Screen {
 
@@ -49,8 +49,6 @@ public class GameScreen implements Screen {
     private static final float MENU_BUTTON_H = 46f;
     private static final float MENU_BUTTON_W = UITheme.MENU_ITEM_WIDTH;
 
-    private int selectedIndex = 0;
-
     public GameScreen(Main game) {
         this(game, null);
     }
@@ -61,6 +59,8 @@ public class GameScreen implements Screen {
         mapCamera = new OrthographicCamera();
         mapCamera.setToOrtho(false, Main.SCREEN_W, Main.SCREEN_H);
         mapCamera.zoom = 1.2f;
+
+        syncMapViewport();
 
         uiCamera = new OrthographicCamera();
         uiCamera.setToOrtho(false, Main.SCREEN_W, Main.SCREEN_H);
@@ -99,6 +99,12 @@ public class GameScreen implements Screen {
     public void toggleInGameMenu() {
         inGameMenu = !inGameMenu;
         paused = inGameMenu;
+    }
+
+    private void syncMapViewport() {
+        mapCamera.viewportWidth = HudLayout.mapW();
+        mapCamera.viewportHeight = HudLayout.mapH();
+        mapCamera.update();
     }
 
     private void updateInGameMenuHover() {
@@ -299,17 +305,13 @@ public class GameScreen implements Screen {
             state.gameSpeed = 2f;
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3))
             state.gameSpeed = 3f;
-        if (Gdx.input.isKeyJustPressed(keys.quickSave)) {
-            quickSave();
-        }
-        if (Gdx.input.isKeyJustPressed(keys.quickLoad)) {
-            quickLoad();
-            return;
-        }
 
-        updateTimers(delta * state.gameSpeed);
+        if (!paused)
+            updateTimers(delta * state.gameSpeed);
         state.tickFloaters(delta);
         game.achievements.tick(state, delta);
+        syncMapViewport();
+
         if (state.eventManager.pendingEvent == null)
             input.handleInput(delta);
 
@@ -322,6 +324,9 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(0, 0, 0, 1);
         uiCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         uiCamera.update();
+
+        // ── Mappa: solo nel rettangolo libero tra le barre ──
+        HdpiUtils.glViewport(HudLayout.mapX(), HudLayout.mapY(), HudLayout.mapW(), HudLayout.mapH());
 
         mapRenderer.drawMap(state);
         mapRenderer.drawDeposits(state);
@@ -336,6 +341,9 @@ public class GameScreen implements Screen {
             mapRenderer.drawToolPreview(input, state);
 
         mapRenderer.drawFloaters(state, game, batch);
+
+        // ── HUD: di nuovo a schermo intero ──
+        HdpiUtils.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         hud.drawTopBar(input, state);
         hud.drawBottomBar(input);
@@ -353,11 +361,9 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int w, int h) {
-        mapCamera.viewportWidth = w;
-        mapCamera.viewportHeight = h;
-        mapCamera.update();
         uiCamera.setToOrtho(false, w, h);
         uiCamera.update();
+        syncMapViewport();
     }
 
     @Override
@@ -400,9 +406,7 @@ public class GameScreen implements Screen {
                 state.completeExpedition();
         }
 
-        state.tradeManager.tick(delta);
         state.eventManager.tick(delta, state);
         state.tickMonumentUpgrades(delta);
-        game.audio.setUnlockedEvents(new java.util.HashSet<>(state.eventManager.serializeFiredEvents()));
     }
 }

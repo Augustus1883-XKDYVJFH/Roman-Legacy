@@ -493,10 +493,6 @@ public class BuildingType {
                 return chain != null ? chain.length : 1;
         }
 
-        public static BuildingType[] getMonumentChain(String chainId) {
-                return MONUMENT_CHAINS.get(chainId);
-        }
-
         public static BuildingType valueOf(String id) {
                 for (BuildingType bt : ALL_TYPES) {
                         if (bt.id.equals(id))

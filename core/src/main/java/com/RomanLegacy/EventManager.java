@@ -1,7 +1,5 @@
 package com.RomanLegacy;
 
-import com.RomanLegacy.GameState;
-import com.badlogic.gdx.Gdx;
 import java.util.*;
 
 public class EventManager {
@@ -128,24 +126,11 @@ public class EventManager {
 
         String resolvedId = pendingEvent.id;
         firedEvents.add(resolvedId);
-        notifyUnlockedBuildings(resolvedId, state);
         pendingEvent = null;
-    }
-
-    private void notifyUnlockedBuildings(String eventId, GameState state) {
-        List<String> labels = new ArrayList<>();
-        for (BuildingType bt : BuildingType.getAllBuildable()) {
-            if (eventId.equals(bt.requiredEventId))
-                labels.add(bt.label);
-        }
     }
 
     public boolean hasFired(String eventId) {
         return eventId != null && firedEvents.contains(eventId);
-    }
-
-    public int getFiredEventCount() {
-        return firedEvents.size();
     }
 
     private void applyEffect(NarrativeEvent.EventEffect eff, GameState state) {

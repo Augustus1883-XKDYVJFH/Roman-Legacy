@@ -36,9 +36,6 @@ public class SaveData {
     public String pendingEventId;
     public float gameSpeed;
 
-    // Flotta commerciale
-    public List<TradeManager.ShipSaveData> fleet;
-    public Map<String, Float> serviceSatisfaction;
 
     public SaveData() {
         buildingsOld = new Array<>();

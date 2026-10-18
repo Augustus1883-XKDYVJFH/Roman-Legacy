@@ -9,11 +9,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.graphics.Texture;
-import com.RomanLegacy.UITheme;
-import com.RomanLegacy.Main;
-import com.RomanLegacy.BuildingInstance;
-import com.RomanLegacy.BuildingType;
-import com.RomanLegacy.ResourceManager;
 
 import java.util.*;
 

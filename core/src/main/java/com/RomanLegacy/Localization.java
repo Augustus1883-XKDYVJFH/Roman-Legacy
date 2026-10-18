@@ -33,7 +33,6 @@ public final class Localization {
     private static final String MISSING = new String("<missing>"); // sentinella per identità
 
     private static I18NBundle bundle;
-    private static String current = DEFAULT_LANG;
     private static final Map<String, String> cache = new HashMap<>();
 
     private Localization() {
@@ -51,17 +50,12 @@ public final class Localization {
 
             Locale locale = lang.equals(DEFAULT_LANG) ? Locale.ROOT : Locale.forLanguageTag(lang);
             bundle = I18NBundle.createBundle(base, locale);
-            current = lang;
             Gdx.app.log("Localization", "Bundle loaded, lang=" + lang + ", test=" + bundle.get("ui.menu.new_game"));
         } catch (Exception e) {
             Gdx.app.error("Localization", "Cannot load bundle for '" + lang + "'", e);
             bundle = null;
         }
         cache.clear();
-    }
-
-    public static String getLanguage() {
-        return current;
     }
 
     public static boolean isSupported(String lang) {

@@ -10,7 +10,7 @@ import java.util.*;
 public class GameInputHandler {
 
     private static final int BOTBAR_H = HudRenderer.BOTBAR_H;
-    private static final int TOPBAR_H = HudRenderer.TOPBAR_H;
+    // private static final int TOPBAR_H = HudRenderer.TOPBAR_H;
     private static final int SLOT_W = HudRenderer.SLOT_W;
 
     private static final BuildingType.Category[] TAB_CATS = {
@@ -103,12 +103,6 @@ public class GameInputHandler {
         syncCamera();
     }
 
-    // Camera position (acceduto direttamente da GameScreen via mapCamera)
-    void setCameraPosition() {
-        mapCamera.position.set(cameraX, cameraY, 0);
-        mapCamera.update();
-    }
-
     public void restoreCamera(float x, float y, float zoom) {
         this.cameraX = x;
         this.cameraY = y;
@@ -146,10 +140,6 @@ public class GameInputHandler {
         if (Gdx.input.isKeyJustPressed(keys.openConsumption)) {
             GameScreen currentGameScreen = (GameScreen) game.getScreen();
             game.setScreen(new ConsumptionScreen(game, state, currentGameScreen));
-            return;
-        }
-
-        if (Gdx.input.isKeyJustPressed(keys.openTrade)) {
             return;
         }
 
@@ -806,7 +796,7 @@ public class GameInputHandler {
             return;
 
         tmpVec.set(sx, sy, 0);
-        mapCamera.unproject(tmpVec);
+        mapCamera.unproject(tmpVec, HudLayout.mapX(), HudLayout.mapY(), HudLayout.mapW(), HudLayout.mapH());
         float beforeX = tmpVec.x, beforeY = tmpVec.y;
 
         mapCamera.zoom = newZoom;
@@ -814,12 +804,30 @@ public class GameInputHandler {
         mapCamera.update();
 
         tmpVec.set(sx, sy, 0);
-        mapCamera.unproject(tmpVec);
+        mapCamera.unproject(tmpVec, HudLayout.mapX(), HudLayout.mapY(), HudLayout.mapW(), HudLayout.mapH());
         cameraX -= (tmpVec.x - beforeX);
         cameraY -= (tmpVec.y - beforeY);
         clampCamera();
         mapCamera.position.set(cameraX, cameraY, 0);
         mapCamera.update();
+    }
+
+    private void updatePreviewCell() {
+        float mx = Gdx.input.getX();
+        float my = Gdx.graphics.getHeight() - Gdx.input.getY();
+        // Nessuna preview se il mouse è fuori dal rettangolo della mappa (barre, tab,
+        // ecc.)
+        if (!HudLayout.isOverMap(mx, my)) {
+            previewCellX = previewCellY = -1;
+            return;
+        }
+        tmpVec.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+        mapCamera.unproject(tmpVec, HudLayout.mapX(), HudLayout.mapY(), HudLayout.mapW(), HudLayout.mapH());
+        previewCellX = (int) (tmpVec.x / GameState.CELL_SIZE);
+        previewCellY = (int) (tmpVec.y / GameState.CELL_SIZE);
+
+        previewCellX = Math.max(0, Math.min(GameState.MAP_WIDTH - 1, previewCellX));
+        previewCellY = Math.max(0, Math.min(GameState.MAP_HEIGHT - 1, previewCellY));
     }
 
     private float maxZoom() {
@@ -841,24 +849,6 @@ public class GameInputHandler {
 
     public float getCameraY() {
         return cameraY;
-    }
-
-    private void updatePreviewCell() {
-        float screenH = Gdx.graphics.getHeight();
-        float my = Gdx.input.getY();
-        // Non mostrare preview se il mouse è sopra la UI
-        if (my > screenH - BOTBAR_H || my < TOPBAR_H) {
-            previewCellX = previewCellY = -1;
-            return;
-        }
-        tmpVec.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-        mapCamera.unproject(tmpVec);
-        previewCellX = (int) (tmpVec.x / GameState.CELL_SIZE);
-        previewCellY = (int) (tmpVec.y / GameState.CELL_SIZE);
-
-        // Clamp ai limiti della mappa
-        previewCellX = Math.max(0, Math.min(GameState.MAP_WIDTH - 1, previewCellX));
-        previewCellY = Math.max(0, Math.min(GameState.MAP_HEIGHT - 1, previewCellY));
     }
 
     private void demolishBuildingAt(int cx, int cy) {
@@ -900,11 +890,12 @@ public class GameInputHandler {
         }
 
         if (target.type.isHouse) {
-            BuildingType before = target.type;
             if (!target.upgradeHouse(state.resources)) {
                 return;
             }
             state.ideologyManager.applyShift(target.type.axisShift);
+            if (target.type == BuildingType.VILLA)
+                state.factionManager.onFirstVilla();
             if (game.audio != null)
                 game.audio.playSound(AudioManager.SFX_UPGRADE_HOUSE);
         } else if (target.type.isMonument) {
@@ -1058,29 +1049,6 @@ public class GameInputHandler {
             }
         }
         return touchesLand;
-    }
-
-    private boolean canPlaceOnTerrain(BuildingType bt, int cx, int cy) {
-        for (int dy = 0; dy < bt.h; dy++) {
-            for (int dx = 0; dx < bt.w; dx++) {
-                int t = state.terrainMap[cy + dy][cx + dx];
-                if (t == MapGenerator.WATER) {
-                    boolean waterOk = bt.onlyTerrain != null && containsTerrain(bt.onlyTerrain, MapGenerator.WATER);
-                    if (!waterOk)
-                        return false;
-                }
-                if (t == MapGenerator.MOUNTAIN || t == MapGenerator.PEAK) {
-                    boolean mtnOk = bt.onlyTerrain != null
-                            && (containsTerrain(bt.onlyTerrain, MapGenerator.MOUNTAIN)
-                                    || containsTerrain(bt.onlyTerrain, MapGenerator.PEAK));
-                    if (!mtnOk)
-                        return false;
-                }
-                if (!bt.allowedOnTerrain(t))
-                    return false;
-            }
-        }
-        return true;
     }
 
     private static boolean containsTerrain(int[] arr, int val) {

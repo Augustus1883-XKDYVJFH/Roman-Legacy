@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.math.Vector3;
-import com.RomanLegacy.UITheme;
 
 public class SettingsScreen implements Screen {
 
@@ -60,9 +59,9 @@ public class SettingsScreen implements Screen {
             "ui.settings.control.zoom_in", "ui.settings.control.zoom_out",
             "ui.settings.control.cancel_key", "ui.settings.control.cancel_mouse",
             "ui.settings.control.factions", "ui.settings.control.balance",
-            "ui.settings.control.trade", "ui.settings.control.pause",
+            "ui.settings.control.pause",
             "ui.settings.control.quick_save", "ui.settings.control.quick_load",
-            "ui.settings.control.switch_map", "ui.settings.control.settings"
+            "ui.settings.control.switch_map"
     };
     private static final int CANCEL_MOUSE_INDEX = 7;
 
@@ -646,9 +645,9 @@ public class SettingsScreen implements Screen {
         return new int[] {
                 s.keys.moveUp, s.keys.moveDown, s.keys.moveLeft, s.keys.moveRight,
                 s.keys.zoomIn, s.keys.zoomOut, s.keys.cancel, 0,
-                s.keys.toggleFactions, s.keys.openConsumption, s.keys.openTrade,
+                s.keys.toggleFactions, s.keys.openConsumption,
                 s.keys.pause, s.keys.quickSave, s.keys.quickLoad,
-                s.keys.switchMap, s.keys.openSettings
+                s.keys.switchMap
         };
     }
 
@@ -688,22 +687,16 @@ public class SettingsScreen implements Screen {
                 s.keys.openConsumption = keycode;
                 break;
             case 10:
-                s.keys.openTrade = keycode;
-                break;
-            case 11:
                 s.keys.pause = keycode;
                 break;
-            case 12:
+            case 11:
                 s.keys.quickSave = keycode;
                 break;
-            case 13:
+            case 12:
                 s.keys.quickLoad = keycode;
                 break;
-            case 14:
+            case 13:
                 s.keys.switchMap = keycode;
-                break;
-            case 15:
-                s.keys.openSettings = keycode;
                 break;
         }
         s.save();

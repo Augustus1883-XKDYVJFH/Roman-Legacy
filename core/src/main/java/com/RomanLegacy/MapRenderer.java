@@ -564,11 +564,6 @@ public class MapRenderer {
         sr.end();
     }
 
-    private void drawBuildingOutline(BuildingInstance b) {
-        int cs = GameState.CELL_SIZE;
-        sr.rect(b.rootX * cs, b.rootY * cs, b.effectiveW() * cs, b.effectiveH() * cs);
-    }
-
     public void drawInfluenceRadiusForBuilding(BuildingInstance b) {
         if (b.type.influenceRadius <= 0)
             return;

@@ -2,8 +2,6 @@ package com.RomanLegacy;
 
 import com.RomanLegacy.BuildingType.ServiceCategory;
 import com.badlogic.gdx.Gdx;
-import com.RomanLegacy.EventManager;
-import com.RomanLegacy.IdeologyManager;
 import com.RomanLegacy.BuildingType.ConsumptionServiceCategory;
 
 import java.util.*;
@@ -34,7 +32,6 @@ public class GameState {
     // ── Risorse, fazioni e commercio ────────────────────────────────────────────
     public final ResourceManager resources;
     public final FactionManager factionManager;
-    public final TradeManager tradeManager;
     public final IdeologyManager ideologyManager;
     public final EventManager eventManager;
 
@@ -96,7 +93,6 @@ public class GameState {
         resources = new ResourceManager();
         factionManager = new FactionManager(factionSeed);
         ideologyManager = new IdeologyManager();
-        tradeManager = new TradeManager(this);
         eventManager = new EventManager(factionSeed + 1);
 
         terrainMapOld = new MapGenerator().generate(MAP_WIDTH, MAP_HEIGHT, 3.5);
@@ -195,9 +191,6 @@ public class GameState {
 
         // 8. Ripristina ideologie
         ideologyManager.setValue(save.ideologyValue);
-
-        // 9. Ripristina flotta
-        tradeManager.deserialize(save.fleet);
 
         // 10. Ripristina eventi
         eventManager.deserializeFiredEvents(save.firedEvents);
@@ -562,6 +555,7 @@ public class GameState {
         expeditionActive = false;
         expeditionTimer = 0f;
         showNewWorldOverlay = true;
+        factionManager.onNewWorldUnlocked();
     }
 
     public void switchMap() {

@@ -6,15 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.Texture;
-import com.RomanLegacy.NarrativeEvent;
-import com.RomanLegacy.Main;
-import com.RomanLegacy.BuildingInstance;
-import com.RomanLegacy.BuildingType;
 import com.RomanLegacy.BuildingType.ServiceCategory;
-import com.RomanLegacy.Faction;
-import com.RomanLegacy.FactionManager;
-import com.RomanLegacy.GameInputHandler.ToolAction;
-import com.RomanLegacy.ResourceManager;
 import com.RomanLegacy.BuildingType.ConsumptionServiceCategory;
 
 import java.util.*;
@@ -24,9 +16,7 @@ import java.util.*;
  * Non gestisce input né logica di gioco.
  */
 public class HudRenderer {
-    public static final int TOPBAR_ROW_H = 35;
-    public static final int TOPBAR_ROW1_H = 64;
-    public static final int TOPBAR_H = TOPBAR_ROW1_H + TOPBAR_ROW_H * 3;
+    public static final int TOPBAR_H = 55;
     public static final int TAB_H = 30;
     public static final int SLOT_W = 200;
     public static final int BOTBAR_H = 92;
@@ -38,44 +28,29 @@ public class HudRenderer {
     public static final float ROTATE_BTN_H = 22f;
 
     private static final int GRID_COLS = 4;
-    private static final int SERVICE_COLS = ServiceCategory.values().length
-            + ConsumptionServiceCategory.values().length;
     private static final int WORKFORCE_COLS = BuildingType.SOCIAL_CLASS_NAMES.length;
-    private static final int GRID_LABEL_MAXCHARS = 11;
 
     private static final float HEADER_H = 48f;
-    private static final float MONUMENT_BOTTOM_RESERVE = 96f;
     private static final float PANEL_FOOTER_H = 34f;
     private static final float PANEL_FOOTER_GAP = 8f;
     private static final float PRODUCTION_BUTTON_ZONE_H = 54f;
     private static final float MONUMENT_BUTTON_ZONE_H = 32f;
-
     private static final float TOPBTN_GAP = 8f;
     private static final float TOPBTN_MARGIN_RIGHT = 20f;
-    private static final float TOPBTN_MARGIN_TOP = 4f;
-
-    private static final float HOUSE_BOTTOM_RESERVE = PANEL_FOOTER_H + PANEL_FOOTER_GAP + 8f;
-    private static final float PRODUCTION_BOTTOM_RESERVE = PANEL_FOOTER_H + PANEL_FOOTER_GAP + PRODUCTION_BUTTON_ZONE_H;
-    private static final float MONUMENT_BOTTOM_RESERVE_BTN = PANEL_FOOTER_H + PANEL_FOOTER_GAP + MONUMENT_BUTTON_ZONE_H;
-    private static final float MONUMENT_BOTTOM_RESERVE_NOBTN = PANEL_FOOTER_H + PANEL_FOOTER_GAP + 8f;
-
+    private static final float TOPBTN_MARGIN_TOP = 15f; // centrati nei 55 px
+    private static final float RES_ICON_SIZE = 26f; // era 36f
+    private static final float TOPBAR_BUTTONS_RESERVE = 300f; // TEMP: sparisce al passo 3
     private static final float ICON_SIZE = 46f;
     private static final float CELL_W = 90f;
     private static final float CELL_H = 76f;
     private static final float SECTION_LABEL_H = 22f;
     private static final float HAIRLINE_GAP = 16f;
-    private static final float BIG_STAT_H = 56f;
     private static final float CONTENT_TOP_PAD = 14f;
     private static final float BIG_STAT_VALUE_LABEL_GAP = 6f;
     private static final float BIG_STAT_BOTTOM_GAP = 10f;
     private static final float BOTBAR_ICON_SIZE = 34f;
     private static final float BOTBAR_ICON_TOP_PAD = 10f;
-    private static final float BOTBAR_LABEL_Y = 16f;
-    private static final float RES_ICON_SIZE = 36f;
-    private static final float SATISFACTION_DOT_SIZE = 6f;
     private static final float FIELD_BUTTON_ZONE_H = 34f;
-
-    private static final Color COL_TOPBAR_BG = UITheme.BG_TOP_BAND;
     private static final Color COL_BOTBAR_BG = UITheme.BG_DARK;
     private static final Color COL_SLOT_BG = UITheme.BG_PANEL;
     private static final Color COL_SLOT_SEL = UITheme.GOLD_PRIMARY;
@@ -84,7 +59,6 @@ public class HudRenderer {
     private static final Color COL_TAB_BG = UITheme.BG_TOP_BAND;
     private static final Color COL_TEXT_GOLD = UITheme.TEXT_GOLD;
     private static final Color COL_TEXT_GRAY = UITheme.TEXT_GRAY;
-    private static final Color COL_TEXT_GREEN = UITheme.STATUS_GREEN;
     private static final Color COL_TEXT_WHITE = Color.WHITE;
 
     // Celle cliccabili della riga recinti (ricalcolate a ogni frame in
@@ -92,6 +66,7 @@ public class HudRenderer {
     private final List<float[]> penHitRects = new ArrayList<>();
     private final List<BuildingType> penHitTypes = new ArrayList<>();
     private float[] fieldButtonRect = null;
+    private int workforceHoverClass = -1;
 
     public static final String[] TAB_KEYS = {
             "hud.tab.logistics", "hud.tab.houses", "hud.tab.services",
@@ -822,25 +797,6 @@ public class HudRenderer {
         drawLines(tail, px, y);
     }
 
-    private float drawIconLine(String resourceId, String text, Color color, float px, float y) {
-        float iconSize = 20f;
-        Texture icon = game.icons != null ? game.icons.getResourceIcon(resourceId) : null;
-
-        batch.setProjectionMatrix(uiCamera.combined);
-        batch.begin();
-        float textX = px + 16;
-        if (icon != null) {
-            batch.setColor(1f, 1f, 1f, 1f);
-            batch.draw(icon, px + 16, y - iconSize + 4f, iconSize, iconSize);
-            textX = px + 16 + iconSize + 6f;
-        }
-        game.fonts.normal.setColor(color);
-        game.fonts.normal.draw(batch, text, textX, y);
-        batch.end();
-
-        return y - 26f;
-    }
-
     private void drawProductionBarAndButton(BuildingInstance h, float px, float py, float pw) {
         float base = buttonZoneBottom(py);
         float barW = pw - 32f;
@@ -1123,40 +1079,32 @@ public class HudRenderer {
         sr.rect(0, sh - TOPBAR_H, sw, TOPBAR_H);
         sr.end();
 
-        float row2Top = sh - TOPBAR_ROW1_H;
-
-        sr.begin(ShapeRenderer.ShapeType.Line);
-        sr.setColor(UITheme.GOLD_DARK.r, UITheme.GOLD_DARK.g, UITheme.GOLD_DARK.b, 0.5f);
-        for (int i = 0; i < 3; i++) {
-            float y = row2Top - TOPBAR_ROW_H * i;
-            sr.line(0, y, sw, y);
-        }
-        sr.end();
-
         sr.begin(ShapeRenderer.ShapeType.Line);
         sr.setColor(UITheme.GOLD_PRIMARY);
         sr.line(0, sh - TOPBAR_H, sw, sh - TOPBAR_H);
+        sr.setColor(UITheme.GOLD_DARK);
+        sr.line(sw / 2f, sh - TOPBAR_H, sw / 2f, sh); // divisorio risorse | manodopera
         sr.end();
 
         drawResourceRow(state, sw, sh);
+        drawWorkforceRow(state, sw, sh);
         drawExpeditionBar(state, sw, sh);
-        drawServiceGridRow(state, sw, row2Top - TOPBAR_ROW_H);
-        drawWorkforceGridRow(state, sw, row2Top - TOPBAR_ROW_H * 2);
-        drawIdeologyRow(state, sw, sh - TOPBAR_H);
         drawTopBarButtons(input, state, sw, sh);
+        drawWorkforceTooltip(state); // per ultimo: sopra tutto il resto
     }
 
     private void drawResourceRow(GameState state, float sw, float sh) {
-        float row1Y = sh - TOPBAR_ROW1_H;
+        float rowY = sh - TOPBAR_H;
         ResourceManager.Resource[] topRes = state.resources.getTopBarResources(TOPBAR_RES);
 
-        float rightReserve = 300f;
-        float resStartX = 140f;
-        float resSlotW = (sw - resStartX - rightReserve) / Math.max(1, topRes.length);
-        float iconY = row1Y + (TOPBAR_ROW1_H - RES_ICON_SIZE) / 2f;
+        float areaX = 12f;
+        float areaW = sw / 2f - areaX - 12f;
+        float slotW = areaW / Math.max(1, topRes.length);
+        float iconY = rowY + (TOPBAR_H - RES_ICON_SIZE) / 2f;
 
         com.badlogic.gdx.graphics.g2d.GlyphLayout gl = new com.badlogic.gdx.graphics.g2d.GlyphLayout();
 
+        // Quadrati di fallback (solo dove manca l'icona)
         sr.setProjectionMatrix(uiCamera.combined);
         sr.begin(ShapeRenderer.ShapeType.Filled);
         for (int i = 0; i < topRes.length; i++) {
@@ -1164,10 +1112,9 @@ public class HudRenderer {
             Texture icon = game.icons != null ? game.icons.getResourceIcon(r.id) : null;
             if (icon != null)
                 continue;
-            gl.setText(game.fonts.title, formatResource(r.amount));
-            float blockW = RES_ICON_SIZE + 8f + gl.width;
-            float slotCenterX = resStartX + i * resSlotW + resSlotW / 2f;
-            float rx = slotCenterX - blockW / 2f;
+            gl.setText(game.fonts.normal, formatResource(r.amount));
+            float blockW = RES_ICON_SIZE + 6f + gl.width;
+            float rx = areaX + i * slotW + (slotW - blockW) / 2f;
             sr.setColor(r.color[0] * 0.85f, r.color[1] * 0.85f, r.color[2] * 0.85f, 1f);
             sr.rect(rx, iconY, RES_ICON_SIZE, RES_ICON_SIZE);
         }
@@ -1175,54 +1122,115 @@ public class HudRenderer {
 
         batch.setProjectionMatrix(uiCamera.combined);
         batch.begin();
-
         for (int i = 0; i < topRes.length; i++) {
             ResourceManager.Resource r = topRes[i];
             String amountText = formatResource(r.amount);
-            gl.setText(game.fonts.title, amountText);
-            float blockW = RES_ICON_SIZE + 8f + gl.width;
-            float slotCenterX = resStartX + i * resSlotW + resSlotW / 2f;
-            float rx = slotCenterX - blockW / 2f;
+            gl.setText(game.fonts.normal, amountText);
+            float blockW = RES_ICON_SIZE + 6f + gl.width;
+            float rx = areaX + i * slotW + (slotW - blockW) / 2f;
 
             Texture icon = game.icons != null ? game.icons.getResourceIcon(r.id) : null;
             if (icon != null) {
                 batch.setColor(1f, 1f, 1f, 1f);
                 batch.draw(icon, rx, iconY, RES_ICON_SIZE, RES_ICON_SIZE);
             }
-            game.fonts.title.setColor(new Color(r.color[0], r.color[1], r.color[2], 1f));
-            game.fonts.title.draw(batch, amountText, rx + RES_ICON_SIZE + 8, row1Y + TOPBAR_ROW1_H - 16);
+            game.fonts.normal.setColor(new Color(r.color[0], r.color[1], r.color[2], 1f));
+            game.fonts.normal.draw(batch, amountText, rx + RES_ICON_SIZE + 6f, rowY + (TOPBAR_H + gl.height) / 2f);
         }
-
-        float totalTaxes = 0f;
-        float totalMaintenance = 0f;
-        for (BuildingInstance b : state.buildings) {
-            if (b.type.isHouse) {
-                totalTaxes += b.calculateTaxesPerMinute();
-            } else if (b.type.input != null && !b.type.input.isEmpty()) {
-                if (!b.paused && b.connected)
-                    totalMaintenance += b.getMaintenancePerMinute();
-            }
-        }
-        float balance = totalTaxes - totalMaintenance;
-        String balanceText = Localization.format("hud.per_min", String.format("%+.0f", balance));
-        Color balanceColor = balance >= 0 ? Color.valueOf("55cc55") : Color.valueOf("cc5555");
-        game.fonts.large.setColor(balanceColor);
-        game.fonts.large.draw(batch, balanceText, sw - 250, sh - 40);
-
-        String speedPopText = Localization.format("hud.speed_pop",
-                String.valueOf((int) state.gameSpeed), String.valueOf((int) state.resources.get("population")));
-        game.fonts.normal.setColor(COL_TEXT_GRAY);
-        game.fonts.normal.draw(batch, speedPopText, sw - 250, sh - 62);
-
         batch.end();
+    }
+
+    private void drawWorkforceRow(GameState state, float sw, float sh) {
+        workforceHoverClass = -1;
+        float rowY = sh - TOPBAR_H;
+        float areaX = sw / 2f + 12f;
+        float areaW = sw - TOPBAR_BUTTONS_RESERVE - areaX;
+        float cellW = areaW / WORKFORCE_COLS;
+        float iconY = rowY + (TOPBAR_H - RES_ICON_SIZE) / 2f;
+        float mx = Gdx.input.getX();
+        float my = Gdx.graphics.getHeight() - Gdx.input.getY();
+
+        com.badlogic.gdx.graphics.g2d.GlyphLayout gl = new com.badlogic.gdx.graphics.g2d.GlyphLayout();
+        String[] texts = new String[WORKFORCE_COLS];
+        float[] blockX = new float[WORKFORCE_COLS];
+        Texture[] icons = new Texture[WORKFORCE_COLS];
+        Color[] colors = new Color[WORKFORCE_COLS];
+
+        for (int i = 0; i < WORKFORCE_COLS; i++) {
+            if (!state.classHasWorkforceDemand(i))
+                continue;
+            float s = state.getClassWorkforceSatisfaction(i);
+            colors[i] = s >= 0.8f ? UITheme.STATUS_GREEN : (s < 0.5f ? UITheme.STATUS_RED : UITheme.STATUS_YELLOW);
+            texts[i] = formatResource(state.getClassPopulation(i)) + "/"
+                    + formatResource(state.getClassWorkforceDemand(i));
+            gl.setText(game.fonts.small, texts[i]);
+            float blockW = RES_ICON_SIZE + 6f + gl.width;
+            blockX[i] = areaX + i * cellW + (cellW - blockW) / 2f;
+            icons[i] = game.icons != null ? game.icons.getUiIcon("class_" + i) : null;
+
+            if (mx >= areaX + i * cellW && mx < areaX + (i + 1) * cellW && my >= rowY && my < sh)
+                workforceHoverClass = i;
+        }
+
+        // Fallback: quadrato con il numero romano... in cifre arabe (il font non ha
+        // simboli speciali)
+        sr.setProjectionMatrix(uiCamera.combined);
+        sr.begin(ShapeRenderer.ShapeType.Filled);
+        sr.setColor(UITheme.BG_PANEL);
+        for (int i = 0; i < WORKFORCE_COLS; i++)
+            if (texts[i] != null && icons[i] == null)
+                sr.rect(blockX[i], iconY, RES_ICON_SIZE, RES_ICON_SIZE);
+        sr.end();
+        sr.begin(ShapeRenderer.ShapeType.Line);
+        sr.setColor(UITheme.GOLD_DARK);
+        for (int i = 0; i < WORKFORCE_COLS; i++)
+            if (texts[i] != null && icons[i] == null)
+                sr.rect(blockX[i], iconY, RES_ICON_SIZE, RES_ICON_SIZE);
+        sr.end();
+
+        batch.setProjectionMatrix(uiCamera.combined);
+        batch.begin();
+        for (int i = 0; i < WORKFORCE_COLS; i++) {
+            if (texts[i] == null)
+                continue;
+            if (icons[i] != null) {
+                batch.setColor(1f, 1f, 1f, 1f);
+                batch.draw(icons[i], blockX[i], iconY, RES_ICON_SIZE, RES_ICON_SIZE);
+            } else {
+                String n = String.valueOf(i + 1);
+                gl.setText(game.fonts.small, n);
+                game.fonts.small.setColor(UITheme.TEXT_GOLD);
+                game.fonts.small.draw(batch, n, blockX[i] + (RES_ICON_SIZE - gl.width) / 2f,
+                        iconY + (RES_ICON_SIZE + gl.height) / 2f);
+            }
+            gl.setText(game.fonts.small, texts[i]);
+            game.fonts.small.setColor(colors[i]);
+            game.fonts.small.draw(batch, texts[i], blockX[i] + RES_ICON_SIZE + 6f,
+                    rowY + (TOPBAR_H + gl.height) / 2f);
+        }
+        batch.end();
+    }
+
+    private void drawWorkforceTooltip(GameState state) {
+        int i = workforceHoverClass;
+        if (i < 0)
+            return;
+        int pct = (int) (state.getClassWorkforceSatisfaction(i) * 100);
+        List<String> lines = new ArrayList<>();
+        lines.add(BuildingType.socialClassName(i));
+        lines.add((int) state.getClassPopulation(i) + " / " + (int) state.getClassWorkforceDemand(i)
+                + "   " + pct + "%");
+        drawTooltipBox(lines);
     }
 
     private void drawExpeditionBar(GameState state, float sw, float sh) {
         if (!state.expeditionActive)
             return;
+        // TEMP: sotto la topbar, a destra. Al passo 5 va nel riquadro
+        // velocità/popolazione.
         float barW = 120f;
-        float bx = sw - (state.newWorldUnlocked ? 150f : 10f);
-        float by = sh - TOPBAR_ROW_H + 10;
+        float bx = sw - barW - 20f;
+        float by = sh - TOPBAR_H - 30f;
 
         sr.setProjectionMatrix(uiCamera.combined);
         sr.begin(ShapeRenderer.ShapeType.Filled);
@@ -1510,102 +1518,6 @@ public class HudRenderer {
             textY -= lineH;
         }
         batch.end();
-    }
-
-    /**
-     * Cella di griglia: valore colorato in alto, etichetta troncata sotto — nessun
-     * pallino.
-     */
-    private void drawStatCell(String label, String valueText, Color valueColor, float cellX, float cellW, float rowY) {
-        com.badlogic.gdx.graphics.g2d.GlyphLayout glVal = new com.badlogic.gdx.graphics.g2d.GlyphLayout(
-                game.fonts.small, valueText);
-        com.badlogic.gdx.graphics.g2d.GlyphLayout glLbl = new com.badlogic.gdx.graphics.g2d.GlyphLayout(
-                game.fonts.small, label);
-
-        float centerX = cellX + cellW / 2f;
-        game.fonts.small.setColor(valueColor);
-        game.fonts.small.draw(batch, valueText, centerX - glVal.width / 2f, rowY + TOPBAR_ROW_H - 8f);
-        game.fonts.small.setColor(COL_TEXT_GRAY);
-        game.fonts.small.draw(batch, label, centerX - glLbl.width / 2f, rowY + 13f);
-    }
-
-    private void drawServiceGridRow(GameState state, float sw, float rowY) {
-        float cellW = sw / SERVICE_COLS;
-        int col = 0;
-
-        batch.setProjectionMatrix(uiCamera.combined);
-        batch.begin();
-        for (ServiceCategory cat : ServiceCategory.values()) {
-            float s = state.getServiceSatisfaction(cat);
-            Color c = s >= 0.8f ? UITheme.STATUS_GREEN : (s < 0.5f ? UITheme.STATUS_RED : UITheme.STATUS_YELLOW);
-            drawStatCell(cat.getLabel(), (int) (s * 100) + "%", c, col * cellW, cellW, rowY);
-            col++;
-        }
-        for (ConsumptionServiceCategory cat : ConsumptionServiceCategory.values()) {
-            float s = state.getConsumptionServiceSatisfaction(cat);
-            Color c = s >= 0.8f ? UITheme.STATUS_GREEN : (s < 0.5f ? UITheme.STATUS_RED : UITheme.STATUS_YELLOW);
-            drawStatCell(cat.getLabel(), (int) (s * 100) + "%", c, col * cellW, cellW, rowY);
-            col++;
-        }
-        batch.end();
-    }
-
-    private void drawWorkforceGridRow(GameState state, float sw, float rowY) {
-        float cellW = sw / WORKFORCE_COLS;
-
-        batch.setProjectionMatrix(uiCamera.combined);
-        batch.begin();
-        for (int i = 0; i < BuildingType.SOCIAL_CLASS_NAMES.length; i++) {
-            if (!state.classHasWorkforceDemand(i))
-                continue; // colonna resta vuota, ma la posizione i*cellW è comunque fissa
-            float s = state.getClassWorkforceSatisfaction(i);
-            int available = (int) state.getClassPopulation(i);
-            int required = (int) state.getClassWorkforceDemand(i);
-            Color c = s >= 0.8f ? UITheme.STATUS_GREEN : (s < 0.5f ? UITheme.STATUS_RED : UITheme.STATUS_YELLOW);
-            String value = available + "/" + required + " " + (int) (s * 100) + "%";
-            drawStatCell(BuildingType.socialClassName(i), value, c, i * cellW, cellW, rowY);
-        }
-        batch.end();
-    }
-
-    private void drawIdeologyRow(GameState state, float sw, float row4Y) {
-        float value = state.ideologyManager.getValue();
-        float norm = (value - IdeologyManager.MIN_VALUE)
-                / (IdeologyManager.MAX_VALUE - IdeologyManager.MIN_VALUE);
-
-        float barMarginX = 24f;
-        float barW = sw - barMarginX * 2f;
-        float barH = 10f;
-        float barY = row4Y + (TOPBAR_ROW_H - barH) / 2f + 6f;
-
-        sr.setProjectionMatrix(uiCamera.combined);
-        sr.begin(ShapeRenderer.ShapeType.Filled);
-
-        sr.setColor(0.16f, 0.16f, 0.16f, 1f);
-        sr.rect(barMarginX, barY, barW, barH);
-
-        float bronzeW = barW * (1f - norm);
-
-        sr.setColor(0.55f, 0.32f, 0.14f, 1f);
-        sr.rect(barMarginX, barY, bronzeW, barH);
-
-        sr.setColor(0.18f, 0.42f, 0.62f, 1f);
-        sr.rect(barMarginX + bronzeW, barY, barW - bronzeW, barH);
-
-        sr.end();
-
-        sr.begin(ShapeRenderer.ShapeType.Line);
-        sr.setColor(UITheme.GOLD_DARK);
-        sr.rect(barMarginX, barY, barW, barH);
-        sr.setColor(0.5f, 0.5f, 0.5f, 0.8f);
-        sr.rect(barMarginX + barW * 0.5f - 1f, barY, 2f, barH);
-        sr.end();
-
-        float markerX = barMarginX + bronzeW;
-        sr.begin(ShapeRenderer.ShapeType.Filled);
-        sr.setColor(Color.WHITE);
-        sr.rect(markerX - 2f, barY - 4f, 4f, barH + 8f);
-        sr.end();
     }
 
     public void drawNarrativeEventPanel(GameState state) {

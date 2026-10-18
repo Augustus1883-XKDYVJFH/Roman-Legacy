@@ -15,10 +15,12 @@ public class IconManager {
     private final Map<String, Texture> resourceIcons = new HashMap<>();
     private final Map<String, Texture> buildingIcons = new HashMap<>();
     private final Map<String, Texture> factionIcons = new HashMap<>();
+    private final Map<String, Texture> uiIcons = new HashMap<>();
 
     private static final String RESOURCE_PATH = "icons/resources/";
     private static final String BUILDING_PATH = "icons/buildings/";
     private static final String FACTION_PATH = "icons/factions/";
+    private static final String UI_PATH = "icons/ui/";
 
     public Texture getResourceIcon(String resourceId) {
         return loadIfNeeded(resourceIcons, RESOURCE_PATH, resourceId);
@@ -32,6 +34,10 @@ public class IconManager {
         if (faction == null)
             return null;
         return loadIfNeeded(factionIcons, FACTION_PATH, faction.name().toLowerCase());
+    }
+
+    public Texture getUiIcon(String id) {
+        return loadIfNeeded(uiIcons, UI_PATH, id);
     }
 
     private Texture loadIfNeeded(Map<String, Texture> cache, String basePath, String id) {
@@ -64,6 +70,10 @@ public class IconManager {
         for (Texture t : factionIcons.values())
             if (t != null)
                 t.dispose();
+        for (Texture t : uiIcons.values())
+            if (t != null)
+                t.dispose();
+        uiIcons.clear();
         factionIcons.clear();
         resourceIcons.clear();
         buildingIcons.clear();

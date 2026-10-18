@@ -3,10 +3,8 @@ package com.RomanLegacy;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.RomanLegacy.ResourceManager.Resource;
-
-import main.java.com.RomanLegacy.EventDef;
-import main.java.com.RomanLegacy.EventDefLoader;
+import com.RomanLegacy.EventDef;
+import com.RomanLegacy.EventDefLoader;
 
 /**
  * Definisce un singolo evento narrativo: condizione di attivazione (trigger),
@@ -228,7 +226,7 @@ public class NarrativeEvent {
                         try {
                                 list.add(fromDef(d));
                         } catch (Exception e) {
-                                Gdx.app.error("NarrativeEvent", "Invalid event '" + d.id + "': " + e);
+                                // Gdx.app.error("NarrativeEvent", "Invalid event '" + d.id + "': " + e);
                         }
                 }
                 return list;

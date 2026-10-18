@@ -3,7 +3,6 @@ package com.RomanLegacy;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -30,7 +29,6 @@ public abstract class BaseMenuScreen implements Screen {
 
     // ── Layout card menu ─────────────────────────────────────────────────────
     private static final float BUTTON_H = 46f;
-    private static final float ACCENT_W = 4f;
 
     public BaseMenuScreen(Main game) {
         this.game = game;

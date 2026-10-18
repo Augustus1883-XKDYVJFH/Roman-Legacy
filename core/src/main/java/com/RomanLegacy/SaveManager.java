@@ -28,7 +28,6 @@ public class SaveManager {
 
         json.setElementType(SaveData.class, "buildingsOld", BuildingData.class);
         json.setElementType(SaveData.class, "buildingsNew", BuildingData.class);
-        json.setElementType(SaveData.class, "fleet", TradeManager.ShipSaveData.class);
 
         FileHandle dir = Gdx.files.local("saves");
         if (!dir.exists())
@@ -148,10 +147,6 @@ public class SaveManager {
         }
     }
 
-    public boolean hasAnySave() {
-        return !listSaves().isEmpty();
-    }
-
     // ── Privati ──────────────────────────────────────────────────────────────
 
     private SaveData buildSaveData(GameState state, float camX, float camY, float camZoom) {
@@ -188,7 +183,6 @@ public class SaveManager {
                 slots[0].arrived, slots[1].arrived, slots[2].arrived
         };
 
-        saveData.fleet = state.tradeManager.serialize();
         saveData.ideologyValue = state.ideologyManager.getValue();
         saveData.firedEvents = state.eventManager.serializeFiredEvents();
         saveData.pendingEventId = state.eventManager.getPendingEventId();
@@ -222,16 +216,12 @@ public class SaveManager {
             BuildingData data = new BuildingData();
             data.x = b.rootX * GameState.CELL_SIZE;
             data.y = b.rootY * GameState.CELL_SIZE;
-            data.width = b.effectiveW() * GameState.CELL_SIZE;
-            data.height = b.effectiveH() * GameState.CELL_SIZE;
             data.id = b.type.id;
-            data.uuid = b.rootX + "_" + b.rootY + "_" + System.currentTimeMillis();
             data.productionTimer = b.progress;
             data.paused = b.paused;
             data.rotated = b.rotated;
             data.connected = b.connected;
             data.housePop = b.housePop;
-            data.isHouse = b.type.isHouse;
             data.monumentUpgrading = b.monumentUpgrading;
             data.monumentUpgradeProgress = b.monumentUpgradeProgress;
             data.ownerX = b.ownerX;

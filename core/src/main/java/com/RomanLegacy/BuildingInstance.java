@@ -1,9 +1,6 @@
 package com.RomanLegacy;
 
 import com.RomanLegacy.BuildingType.PowerType;
-import com.RomanLegacy.BuildingType.ServiceCategory;
-import com.RomanLegacy.Connectable;
-import com.RomanLegacy.BuildingType.ConsumptionServiceCategory;
 
 /**
  * Rappresenta un singolo edificio piazzato sulla mappa.
@@ -15,7 +12,7 @@ import com.RomanLegacy.BuildingType.ConsumptionServiceCategory;
  * - Un tick di popolazione viene chiamato ogni secondo (~TICK_INTERVAL).
  * - canUpgrade() == true quando la casa è piena E tutti i bisogni sono ok.
  */
-public class BuildingInstance implements Connectable {
+public class BuildingInstance {
 
     /** Tipo corrente — può cambiare in-place con upgradeHouse(). */
     public BuildingType type;
@@ -293,38 +290,4 @@ public class BuildingInstance implements Connectable {
         return rotated ? type.w : type.h;
     }
 
-    @Override
-    public int getRootX() {
-        return rootX;
-    }
-
-    @Override
-    public int getRootY() {
-        return rootY;
-    }
-
-    @Override
-    public int getEffectiveW() {
-        return effectiveW();
-    }
-
-    @Override
-    public int getEffectiveH() {
-        return effectiveH();
-    }
-
-    @Override
-    public BuildingType.ConnectionType getRequiredConnection() {
-        return type.requiredConnection;
-    }
-
-    @Override
-    public boolean isConnected() {
-        return connected;
-    }
-
-    @Override
-    public void setConnected(boolean connected) {
-        this.connected = connected;
-    }
 }
