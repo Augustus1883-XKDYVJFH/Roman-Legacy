@@ -1,0 +1,83 @@
+[
+  {
+    "id": "THE_NEW_CITY",
+    "title": "The new city",
+    "description": "The new colonists have landed on a recently discovered island. Now they have to start the new city of the Roman legacy. (choose your difficulty)",
+    "trigger": "POPULATION_THRESHOLD",
+    "thresholdClass": 0,
+    "thresholdAmount": 0,
+    "choices": [
+      {
+        "label": "EASY",
+        "effects": [
+          { "type": "RESOURCE", "resource": "timber", "amount": 150 },
+          { "type": "RESOURCE", "resource": "brick", "amount": 50 },
+          { "type": "RESOURCE", "resource": "coin", "amount": 20000 },
+          { "type": "DIFFICULTY", "difficulty": "EASY" }
+        ]
+      },
+      {
+        "label": "MEDIUM",
+        "effects": [
+          { "type": "RESOURCE", "resource": "timber", "amount": 100 },
+          { "type": "RESOURCE", "resource": "brick", "amount": 40 },
+          { "type": "RESOURCE", "resource": "coin", "amount": 15000 },
+          { "type": "DIFFICULTY", "difficulty": "MEDIUM" }
+        ]
+      },
+      {
+        "label": "HARD",
+        "effects": [
+          { "type": "RESOURCE", "resource": "timber", "amount": 50 },
+          { "type": "RESOURCE", "resource": "brick", "amount": 20 },
+          { "type": "RESOURCE", "resource": "coin", "amount": 7500 },
+          { "type": "DIFFICULTY", "difficulty": "HARD" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "SERVICES",
+    "title": "City's services",
+    "description": "Your city is prospering, but citizens don't require only goods: they need clean homes, safety, rest and entertainment.",
+    "trigger": "POPULATION_THRESHOLD",
+    "thresholdClass": 0,
+    "thresholdAmount": 1
+  },
+  {
+    "id": "STEELWORKS",
+    "title": "Steel unlocked",
+    "description": "There are rumors circulating about a material stronger than pure iron. It's called STEEL.",
+    "trigger": "BUILDING_EXISTS",
+    "buildingType": "COALMINE",
+    "buildingCount": 1,
+    "delay": 20,
+    "choices": [
+      {
+        "label": "Promise to build a steelwork",
+        "effects": [{ "type": "IDEOLOGY", "shift": 10 }]
+      },
+      { "label": "Not now" }
+    ]
+  },
+  {
+    "id": "SENATORS",
+    "title": "New faction arrived: Senators",
+    "trigger": "FACTION_ARRIVED",
+    "faction": "SENATORS",
+    "delay": 20,
+    "choices": [
+      {
+        "label": "Welcome them with enthusiasm",
+        "effects": [{ "type": "IDEOLOGY", "shift": -20 }]
+      },
+      {
+        "label": "They don't think the way we do. Why welcome them?",
+        "effects": [
+          { "type": "FACTION_RELATION", "faction": "SENATORS", "delta": -10 },
+          { "type": "IDEOLOGY", "shift": 20 }
+        ]
+      }
+    ]
+  }
+]

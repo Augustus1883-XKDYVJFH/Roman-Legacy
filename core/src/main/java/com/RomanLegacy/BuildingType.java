@@ -528,106 +528,85 @@ public class BuildingType {
         // ── Info lines per tooltip hover ─────────────────────────────────────────────
         public List<String> getInfoLines(ResourceManager rm) {
                 List<String> lines = new ArrayList<>();
-                lines.add(label);
+                lines.add(getLabel());
 
-                if (cost != null && !cost.isEmpty()) {
-                        StringBuilder sb = new StringBuilder("Cost: ");
-                        boolean first = true;
-                        for (Map.Entry<String, Float> e : cost.entrySet()) {
-                                if (!first)
-                                        sb.append(", ");
-                                sb.append((int) (float) e.getValue()).append("x ")
-                                                .append(resourceLabel(rm, e.getKey()));
-                                first = false;
-                        }
-                        lines.add(sb.toString());
-                }
+                if (cost != null && !cost.isEmpty())
+                        lines.add(Localization.format("info.cost", joinAmounts(cost, rm)));
 
                 if (requiredConnection != null && requiredConnection != ConnectionType.NONE) {
-                        String connLabel = switch (requiredConnection) {
-                                case ROAD -> "Road";
-                                case PIPE -> "Pipe";
-                                case BOTH -> "Road + Pipe";
-                                default -> "";
+                        String key = switch (requiredConnection) {
+                                case ROAD -> "info.conn.road";
+                                case PIPE -> "info.conn.pipe";
+                                default -> "info.conn.both";
                         };
-                        lines.add("Requires: " + connLabel);
+                        lines.add(Localization.format("info.requires", Localization.get(key)));
                 }
 
                 if (requiredPower != null && requiredPower != PowerType.NONE) {
-                        String powerLabel = switch (requiredPower) {
-                                case STEAM -> "Steam";
-                                case ELECTRICITY -> "Electricity";
-                                case BOTH -> "Steam + Electricity";
-                                default -> "";
+                        String key = switch (requiredPower) {
+                                case STEAM -> "info.power.steam";
+                                case ELECTRICITY -> "info.power.electricity";
+                                default -> "info.power.both";
                         };
-                        lines.add("Power: " + powerLabel);
+                        lines.add(Localization.format("info.power", Localization.get(key)));
                 }
 
-                if (input != null && !input.isEmpty()) {
-                        StringBuilder sb = new StringBuilder(consumableOnly ? "Consumes: " : "Input: ");
-                        boolean first = true;
-                        for (Map.Entry<String, Float> e : input.entrySet()) {
-                                if (!first)
-                                        sb.append(", ");
-                                sb.append((int) (float) e.getValue()).append("x ")
-                                                .append(resourceLabel(rm, e.getKey()));
-                                first = false;
-                        }
-                        lines.add(sb.toString());
-                }
+                if (input != null && !input.isEmpty())
+                        lines.add(Localization.format(consumableOnly ? "info.consumes" : "info.input",
+                                        joinAmounts(input, rm)));
 
-                if (!consumableOnly && prod != null) {
-                        lines.add("Output: +" + rate + "x " + resourceLabel(rm, prod)
-                                        + " every " + cycleTime + "s");
-                }
+                if (!consumableOnly && prod != null)
+                        lines.add(Localization.format("info.output", String.valueOf(rate), resourceLabel(rm, prod),
+                                        String.valueOf(cycleTime)));
 
                 if (isHouse && houseNeeds != null && houseNeeds.length > 0) {
-                        StringBuilder sb = new StringBuilder("Needs: ");
+                        StringBuilder sb = new StringBuilder();
                         for (int i = 0; i < houseNeeds.length; i++) {
                                 if (i > 0)
                                         sb.append(", ");
                                 sb.append(resourceLabel(rm, houseNeeds[i]));
                         }
-                        lines.add(sb.toString());
+                        lines.add(Localization.format("info.needs", sb.toString()));
                 }
 
-                if (isMonument) {
-                        lines.add("Monument: phase " + (monumentLevel + 1) + "/"
-                                        + getMonumentChainLength());
-                }
-
-                if (requiresDeposit) {
-                        lines.add("Requires: matching deposit");
-                }
-
-                if (influenceRadius > 0) {
-                        lines.add("Radius: " + influenceRadius + " cells");
-                }
-
-                if (maintenanceCost > 0) {
-                        lines.add("Maintenance: " + (int) maintenanceCost + "/min");
-                }
-
-                if (axisShift != 0) {
+                if (isMonument)
+                        lines.add(Localization.format("info.monument", String.valueOf(monumentLevel + 1),
+                                        String.valueOf(getMonumentChainLength())));
+                if (requiresDeposit)
+                        lines.add(Localization.get("info.deposit"));
+                if (influenceRadius > 0)
+                        lines.add(Localization.format("info.radius", String.valueOf(influenceRadius)));
+                if (maintenanceCost > 0)
+                        lines.add(Localization.format("info.maintenance", String.valueOf((int) maintenanceCost)));
+                if (axisShift != 0)
                         lines.add(axisShift > 0
-                                        ? "Evolution +" + (int) axisShift
-                                        : "Tradition " + (int) axisShift);
-                }
-
-                if (workforceClass != null && workforceAmount > 0) {
-                        lines.add("Manodopera: " + workforceAmount + "x " + socialClassName(workforceClass));
-                }
-
-                if (unlockClass != null && unlockAmount > 0) {
-                        lines.add("Richiede: " + unlockAmount + " " + socialClassName(unlockClass));
-                }
+                                        ? Localization.format("info.evolution", String.valueOf((int) axisShift))
+                                        : Localization.format("info.tradition", String.valueOf((int) axisShift)));
+                if (workforceClass != null && workforceAmount > 0)
+                        lines.add(Localization.format("info.workforce", String.valueOf(workforceAmount),
+                                        socialClassName(workforceClass)));
+                if (unlockClass != null && unlockAmount > 0)
+                        lines.add(Localization.format("info.unlock", String.valueOf(unlockAmount),
+                                        socialClassName(unlockClass)));
 
                 return lines;
         }
 
+        private String joinAmounts(Map<String, Float> map, ResourceManager rm) {
+                StringBuilder sb = new StringBuilder();
+                boolean first = true;
+                for (Map.Entry<String, Float> e : map.entrySet()) {
+                        if (!first)
+                                sb.append(", ");
+                        sb.append((int) (float) e.getValue()).append("x ").append(resourceLabel(rm, e.getKey()));
+                        first = false;
+                }
+                return sb.toString();
+        }
+
         private String resourceLabel(ResourceManager rm, String resId) {
                 if (rm != null && rm.getAll().containsKey(resId))
-                        return rm.getAll().get(resId).label;
+                        return rm.getAll().get(resId).getLabel();
                 return resId;
         }
 

@@ -12,10 +12,7 @@ public class GameInputHandler {
     private static final int BOTBAR_H = HudRenderer.BOTBAR_H;
     private static final int TOPBAR_H = HudRenderer.TOPBAR_H;
     private static final int SLOT_W = HudRenderer.SLOT_W;
-    private static final String[] TAB_LABELS = {
-            "Logistics", "Houses", "Servicies", "Extraction", "Industry",
-            "Monuments"
-    };
+
     private static final BuildingType.Category[] TAB_CATS = {
             BuildingType.Category.LOGISTICA,
             BuildingType.Category.CASE,
@@ -495,9 +492,9 @@ public class GameInputHandler {
 
         // Click sui tabs
         if (my >= tabY && my < tabY + tabH) {
-            float tabW = screenW / TAB_LABELS.length;
+            float tabW = screenW / HudRenderer.TAB_KEYS.length;
             int t = (int) (mx / tabW);
-            if (t >= 0 && t < TAB_LABELS.length) {
+            if (t >= 0 && t < HudRenderer.TAB_KEYS.length) {
                 activeTab = t;
                 selectedSlot = -1;
                 selectedBuilding = null;
@@ -748,9 +745,9 @@ public class GameInputHandler {
     public String getToolLabel(ToolAction tool) {
         switch (tool) {
             case DEMOLISH:
-                return "Demolish";
+                return Localization.get("hud.tool.demolish");
             case UPGRADE_HOUSE:
-                return "Upgrade";
+                return Localization.get("hud.tool.upgrade");
             default:
                 return "";
         }

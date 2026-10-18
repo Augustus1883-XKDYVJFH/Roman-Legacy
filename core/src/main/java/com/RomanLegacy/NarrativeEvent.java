@@ -5,6 +5,9 @@ import java.util.List;
 
 import com.RomanLegacy.ResourceManager.Resource;
 
+import main.java.com.RomanLegacy.EventDef;
+import main.java.com.RomanLegacy.EventDefLoader;
+
 /**
  * Definisce un singolo evento narrativo: condizione di attivazione (trigger),
  * testo e le scelte disponibili al giocatore (anche una sola = evento
@@ -217,311 +220,82 @@ public class NarrativeEvent {
                 }
         }
 
-        // DICHIARAZIONE EVENTI — esempi, aggiungine quanti vuoi
-        public static final NarrativeEvent THE_NEW_CITY = new Builder(
-                        "THE_NEW_CITY", "The new city",
-                        "The new colonists have landed on a recently discovered island. Now they have to start the new city of the Roman legacy. (choose your difficulty)")
-                        .populationThreshold(0, 0)
-                        .delay(0f)
-                        .choice("EASY",
-                                        EventEffect.resource("timber", 150),
-                                        EventEffect.resource("brick", 50),
-                                        EventEffect.resource("coin", 20000),
-                                        EventEffect.difficulty(Difficulty.EASY))
-                        .choice("MEDIUM",
-                                        EventEffect.resource("timber", 100),
-                                        EventEffect.resource("brick", 40),
-                                        EventEffect.resource("coin", 15000),
-                                        EventEffect.difficulty(Difficulty.MEDIUM))
-                        .choice("HARD",
-                                        EventEffect.resource("timber", 50),
-                                        EventEffect.resource("brick", 20),
-                                        EventEffect.resource("coin", 7500),
-                                        EventEffect.difficulty(Difficulty.HARD))
-                        .build();
+        private static final List<NarrativeEvent> ALL_EVENTS = loadAll();
 
-        public static final NarrativeEvent SERVICES = new Builder(
-                        "SERVICES", "City's services",
-                        "Your city is prospering, but citizen don't require only goods, they need clean homes, feel safe, rest and entertain themeselves")
-                        .populationThreshold(0, 1)
-                        .info()
-                        .build();
+        private static List<NarrativeEvent> loadAll() {
+                List<NarrativeEvent> list = new ArrayList<>();
+                for (EventDef d : EventDefLoader.load("data/events.json")) {
+                        try {
+                                list.add(fromDef(d));
+                        } catch (Exception e) {
+                                Gdx.app.error("NarrativeEvent", "Invalid event '" + d.id + "': " + e);
+                        }
+                }
+                return list;
+        }
 
-        public static final NarrativeEvent BETTER_SERVICES = new Builder(
-                        "BETTER_SERVICES", "City's services",
-                        "Your city has grown tremendously and the demand for services has increased; it is time to build more powerful buildings")
-                        .populationThreshold(3, 500)
-                        .info()
-                        .build();
+        private static NarrativeEvent fromDef(EventDef d) {
+                if (d.title == null)
+                        throw new IllegalArgumentException("missing title");
 
-        public static final NarrativeEvent BOILERS = new Builder("BOILERS", "Steam unlocked",
-                        "From Rome arrives a revolutionary invention, BOILERS! capable to convert water into steam using coal")
-                        .buildingExists(BuildingType.STEELWORK)
-                        .choice("Promise to build a boiler",
-                                        EventEffect.ideology(10))
-                        .choice("Not now")
-                        .build();
+                Builder b = new Builder(d.id, d.title, d.description != null ? d.description : "");
 
-        public static final NarrativeEvent ELECTRICITY = new Builder(
-                        "ELECTRICITY", "Electricity unlocked",
-                        "A Roman engineer has demonstrated a revolutionary invention: ELECTRICITY! This new power source could transform your industries, making them faster and more efficient")
-                        .populationThreshold(3, 500)
-                        .choice("Invest in this new technology",
-                                        EventEffect.ideology(30f))
-                        .choice("take the invention but don't spend a single money",
-                                        EventEffect.ideology(10f))
-                        .choice("We don't need such novelties",
-                                        EventEffect.ideology(-10f))
-                        .build();
+                if (d.trigger != null) {
+                        switch (TriggerType.valueOf(d.trigger)) {
+                                case TIMER:
+                                        b.timer();
+                                        break;
+                                case POPULATION_THRESHOLD:
+                                        b.populationThreshold(d.thresholdClass, d.thresholdAmount);
+                                        break;
+                                case RESOURCE_THRESHOLD:
+                                        b.resourceThreshold(d.thresholdResource, d.thresholdAmount);
+                                        break;
+                                case FACTION_ARRIVED:
+                                        b.factionArrived(Faction.valueOf(d.faction));
+                                        break;
+                                case FACTION_RELATION:
+                                        b.factionRelation(Faction.valueOf(d.faction), d.minRelation, d.maxRelation);
+                                        break;
+                                case BUILDING_EXISTS:
+                                        b.buildingExists(BuildingType.valueOf(d.buildingType), d.buildingCount);
+                                        break;
+                                case NEW_WORLD_UNLOCKED:
+                                        b.newWorldUnlocked();
+                                        break;
+                        }
+                }
 
-        public static final NarrativeEvent STEELWORKS = new Builder("STEELWORKS", "Steel unlocked",
-                        "There are rumors circulating about a material stronger than pure iron. It's called STEEL.")
-                        .buildingExists(BuildingType.COALMINE)
-                        .delay(20f)
-                        .choice("Promise to build a steelwork",
-                                        EventEffect.ideology(10))
-                        .choice("Not now")
-                        .build();
+                if (d.repeatable)
+                        b.repeatable();
+                if (d.delay > 0f)
+                        b.delay(d.delay);
 
-        public static final NarrativeEvent MORE_EFFICIENT_WAY = new Builder("MORE_EFFICIENT_WAY",
-                        "COAL, a more efficient energy source", "Coal has been proven a better energy source than wood")
-                        .populationThreshold(2, 1)
-                        .choice("trust the source",
-                                        EventEffect.resource("coal", 20),
-                                        EventEffect.resource("tools", 10),
-                                        EventEffect.ideology(20f))
-                        .choice("defy the source",
-                                        EventEffect.resource("timber", 20),
-                                        EventEffect.ideology(-20f))
-                        .build();
+                if (d.choices != null) {
+                        for (EventDef.ChoiceDef c : d.choices) {
+                                int n = c.effects != null ? c.effects.length : 0;
+                                EventEffect[] effects = new EventEffect[n];
+                                for (int i = 0; i < n; i++)
+                                        effects[i] = effectFromDef(c.effects[i]);
+                                b.choice(c.label, effects);
+                        }
+                }
+                return b.build(); // senza scelte aggiunge da solo "Continue"
+        }
 
-        public static final NarrativeEvent STEAM_MOTOR = new Builder(
-                        "STEAM_MOTOR", "A new use for steam",
-                        "The STEAM MOTOR can burn coal or run on steam tu produce mecchanical force. New methods of transportation are arriving for every citizen of the empire")
-                        .populationThreshold(3, 200)
-                        .choice("Convert all factories to steam powered machines (-2000 coins)",
-                                        EventEffect.resource("coin", -2000),
-                                        EventEffect.ideology(25f))
-                        // sblocca il motore
-                        .choice("convert some factories to steam powered machines (-1000 coins)",
-                                        EventEffect.resource("coin", -1000),
-                                        EventEffect.ideology(5f))
-                        // sblocca il motore
-                        .choice("Man power is good for now",
-                                        EventEffect.ideology(-15f))
-                        .build();
-
-        public static final NarrativeEvent ELECTRIC_MOTOR = new Builder(
-                        "ELECTRIC_MOTOR", "the new engine",
-                        "The ELECTRIC MOTOR is smaller, cleaner, and more powerful than steam engines. It uses electricity to produce more mecchanical force")
-                        .populationThreshold(4, 800)
-                        .choice("Convert all factories to electric powered machines (-5000 coin)",
-                                        EventEffect.resource("coin", -5000),
-                                        EventEffect.ideology(45f))
-                        // sblocca il motore elettrico
-                        .choice("convert some factories to electric powered machines (-3000 coins)",
-                                        EventEffect.resource("coin", -3000),
-                                        // sblocca il motore elettrico
-                                        EventEffect.ideology(20f))
-                        .choice("Steam is good enough for now",
-                                        EventEffect.ideology(-5f))
-                        .build();
-
-        public static final NarrativeEvent OIL_DISCOVERY = new Builder(
-                        "OIL_DISCOVERY", "Black Gold",
-                        "Workers have found a strange black liquid seeping from the ground. It burns well and could be used as fuel. The New World has large deposits of this new material")
-                        .newWorldUnlocked()
-                        .delay(45f)
-                        .choice("Build an oil dock",
-                                        EventEffect.ideology(25f))
-                        // sblocca il pozzo petrolifero
-                        .choice("Ignore it for now")
-                        .build();
-
-        public static final NarrativeEvent ARTISANS = new Builder("ARTISANS", "Artisans arrival",
-                        "your population have started creating small businesses producing handmade objects")
-                        .populationThreshold(1, 1)
-                        .choice("help these small workshops",
-                                        EventEffect.ideology(-10f))
-                        .choice("They are ready and can take care of themeselves",
-                                        EventEffect.resource("tools", 10),
-                                        EventEffect.resource("ceramics", 10),
-                                        EventEffect.ideology(10f))
-                        .build();
-
-        public static final NarrativeEvent EQUITES = new Builder("EQUITES", "Equites arrival",
-                        "your population has got richer, they started upgrading theur houses with superior and raffined objects")
-                        .populationThreshold(2, 1)
-                        .choice("promise to produce more of these objects",
-                                        EventEffect.ideology(15f))
-                        .choice("promise nothing")
-                        .build();
-
-        public static final NarrativeEvent PATRICIANS = new Builder("PATRICIANS", "Patricians arrival",
-                        "some elité class from the continent has started docking in our city, they are the richest class, the patricians")
-                        .populationThreshold(3, 1)
-                        .choice("Make their life more comfortable",
-                                        EventEffect.ideology(-20f))
-                        .choice("They can adapt",
-                                        EventEffect.ideology(5f))
-                        .build();
-
-        public static final NarrativeEvent ENGINEERS = new Builder("ENGINEERS", "Engineers arrival",
-                        "From the smartest minds of our city is born a new social class. The engineers")
-                        .populationThreshold(4, 1)
-                        .choice("Fulfill their demands (have built a motor factory, have built at least 3 boiler)",
-                                        EventEffect.ideology(20f))
-                        .choice("This 'industrial revolution' has yet to arrive",
-                                        EventEffect.ideology(-5f))
-                        .build();
-
-        public static final NarrativeEvent MAGNATES = new Builder("MAGNATES", "Magnates arrival",
-                        "Your wealthiest citizens have accumulated so much that they have decided to invest in our city")
-                        .populationThreshold(5, 1)
-                        .choice("Accept all types of investments (+20000 coins)",
-                                        EventEffect.resource("coin", 20000),
-                                        EventEffect.ideology(30f))
-                        .choice("Accept only public investments (+10000 coins)",
-                                        EventEffect.resource("coin", 10000),
-                                        EventEffect.ideology(10f))
-                        .choice("Accept only industrial investments (+15000 coins)",
-                                        EventEffect.resource("coin", 15000),
-                                        EventEffect.ideology(20f))
-                        .choice("Reject all investments",
-                                        EventEffect.ideology(-40f))
-                        .build();
-
-        public static final NarrativeEvent SENATORS = new Builder(
-                        "SENATORS", "New faction arrived: Senators",
-                        "")
-                        .factionArrived(Faction.SENATORS)
-                        .delay(20f)
-                        .choice("Welcome them with enthusiasm",
-                                        EventEffect.ideology(-20f))
-                        .choice("They don't think the way we do. Why welcome them?",
-                                        EventEffect.factionRelation(Faction.SENATORS, -10),
-                                        EventEffect.ideology(20f))
-                        .build();
-
-        public static final NarrativeEvent LEGIONARIES = new Builder(
-                        "LEGIONARIES", "New faction arrived: Legionaries",
-                        "")
-                        .factionArrived(Faction.LEGIONARIES)
-                        .delay(20f)
-                        .choice("Welcome them with enthusiasm",
-                                        EventEffect.ideology(-20f))
-                        .choice("They don't think the way we do. Why welcome them?",
-                                        EventEffect.factionRelation(Faction.LEGIONARIES, -10),
-                                        EventEffect.ideology(20f))
-                        .build();
-
-        public static final NarrativeEvent THE_BLUES = new Builder(
-                        "THE_BLUES", "New faction arrived: The blues",
-                        "")
-                        .factionArrived(Faction.THE_BLUES)
-                        .delay(20f)
-                        .choice("Welcome them with enthusiasm",
-                                        EventEffect.ideology(-20f))
-                        .choice("They don't think the way we do. Why welcome them?",
-                                        EventEffect.factionRelation(Faction.THE_BLUES, -10),
-                                        EventEffect.ideology(20f))
-                        .build();
-
-        public static final NarrativeEvent OLDBLOODS = new Builder(
-                        "OLDBLOODS", "New faction arrived: Oldbloods",
-                        "")
-                        .factionArrived(Faction.OLDBLOODS)
-                        .delay(20f)
-                        .choice("Welcome them with enthusiasm",
-                                        EventEffect.ideology(-20f))
-                        .choice("They don't think the way we do. Why welcome them?",
-                                        EventEffect.factionRelation(Faction.OLDBLOODS, -10),
-                                        EventEffect.ideology(20f))
-                        .build();
-
-        public static final NarrativeEvent ACADEMICS = new Builder(
-                        "ACADEMICS", "New faction arrived: Academics",
-                        "")
-                        .factionArrived(Faction.ACADEMICS)
-                        .delay(20f)
-                        .choice("Welcome them with enthusiasm",
-                                        EventEffect.ideology(20f))
-                        .choice("They don't think the way we do. Why welcome them?",
-                                        EventEffect.factionRelation(Faction.ACADEMICS, -10),
-                                        EventEffect.ideology(-20f))
-                        .build();
-
-        public static final NarrativeEvent FUTURISTS = new Builder(
-                        "FUTURISTS", "New faction arrived: Futurists",
-                        "")
-                        .factionArrived(Faction.FUTURISTS)
-                        .delay(20f)
-                        .choice("Welcome them with enthusiasm",
-                                        EventEffect.ideology(20f))
-                        .choice("They don't think the way we do. Why welcome them?",
-                                        EventEffect.factionRelation(Faction.FUTURISTS, -10),
-                                        EventEffect.ideology(-20f))
-                        .build();
-
-        public static final NarrativeEvent INDUSTRIALISTS = new Builder(
-                        "INDUSTRIALISTS", "New faction arrived: Industrialists",
-                        "")
-                        .factionArrived(Faction.INDUSTRIALISTS)
-                        .delay(20f)
-                        .choice("Welcome them with enthusiasm",
-                                        EventEffect.ideology(20f))
-                        .choice("They don't think the way we do. Why welcome them?",
-                                        EventEffect.factionRelation(Faction.INDUSTRIALISTS, -10),
-                                        EventEffect.ideology(-20f))
-                        .build();
-
-        public static final NarrativeEvent EXPLORERS = new Builder(
-                        "EXPLORERS", "New faction arrived: Explorers",
-                        "")
-                        .factionArrived(Faction.EXPLORERS)
-                        .delay(20f)
-                        .choice("Welcome them with enthusiasm",
-                                        EventEffect.ideology(20f))
-                        .choice("They don't think the way we do. Why welcome them?",
-                                        EventEffect.factionRelation(Faction.EXPLORERS, -10),
-                                        EventEffect.ideology(-20f))
-                        .build();
-
-        public static final NarrativeEvent NEW_WORLD_EXPEDITION = new Builder(
-                        "NEW_WORLD_EXPEDITION", "New World expedition",
-                        "Your explorers have taken some ships and sailed beyon the pillars of Ercules")
-                        .populationThreshold(3, 300)
-                        .choice("Fund the expedition")
-                        .choice("We are not ready yet")
-                        .build();
-
-        private static final List<NarrativeEvent> ALL_EVENTS = new ArrayList<>();
-
-        static {
-                ALL_EVENTS.add(THE_NEW_CITY);
-                ALL_EVENTS.add(SERVICES);
-                ALL_EVENTS.add(BETTER_SERVICES);
-                ALL_EVENTS.add(BOILERS);
-                ALL_EVENTS.add(STEELWORKS);
-                ALL_EVENTS.add(ELECTRICITY);
-                ALL_EVENTS.add(MORE_EFFICIENT_WAY);
-                ALL_EVENTS.add(STEAM_MOTOR);
-                ALL_EVENTS.add(ELECTRIC_MOTOR);
-                ALL_EVENTS.add(OIL_DISCOVERY);
-                ALL_EVENTS.add(ARTISANS);
-                ALL_EVENTS.add(EQUITES);
-                ALL_EVENTS.add(PATRICIANS);
-                ALL_EVENTS.add(ENGINEERS);
-                ALL_EVENTS.add(MAGNATES);
-                ALL_EVENTS.add(SENATORS);
-                ALL_EVENTS.add(LEGIONARIES);
-                ALL_EVENTS.add(THE_BLUES);
-                ALL_EVENTS.add(OLDBLOODS);
-                ALL_EVENTS.add(ACADEMICS);
-                ALL_EVENTS.add(FUTURISTS);
-                ALL_EVENTS.add(INDUSTRIALISTS);
-                ALL_EVENTS.add(EXPLORERS);
-                ALL_EVENTS.add(NEW_WORLD_EXPEDITION);
+        private static EventEffect effectFromDef(EventDef.EffectDef e) {
+                switch (EventEffect.Type.valueOf(e.type)) {
+                        case RESOURCE:
+                                return EventEffect.resource(e.resource, e.amount);
+                        case IDEOLOGY:
+                                return EventEffect.ideology(e.shift);
+                        case FACTION_RELATION:
+                                return EventEffect.factionRelation(Faction.valueOf(e.faction), e.delta);
+                        case DIFFICULTY:
+                                return EventEffect.difficulty(Difficulty.valueOf(e.difficulty));
+                        default:
+                                throw new IllegalArgumentException("Unknown effect type: " + e.type);
+                }
         }
 
         public static List<NarrativeEvent> getAllEvents() {

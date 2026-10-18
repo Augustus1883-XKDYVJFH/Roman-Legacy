@@ -93,8 +93,9 @@ public class HudRenderer {
     private final List<BuildingType> penHitTypes = new ArrayList<>();
     private float[] fieldButtonRect = null;
 
-    private static final String[] TAB_LABELS = { "Logistics", "Houses", "Services", "Extraction", "Industry",
-            "Monumenti" };
+    public static final String[] TAB_KEYS = {
+            "hud.tab.logistics", "hud.tab.houses", "hud.tab.services",
+            "hud.tab.extraction", "hud.tab.industry", "hud.tab.monuments" };
 
     private final Main game;
     private final ShapeRenderer sr;
@@ -143,9 +144,10 @@ public class HudRenderer {
         batch.setProjectionMatrix(uiCamera.combined);
         batch.begin();
         game.fonts.large.setColor(COL_TEXT_GOLD);
-        game.fonts.large.draw(batch, h.type.label, px + 16, py + panH - 15);
+        game.fonts.large.draw(batch, h.type.getLabel(), px + 16, py + panH - 15);
         game.fonts.normal.setColor(COL_TEXT_GRAY);
-        game.fonts.normal.draw(batch, h.type.w + "x" + h.type.h + " cells", px + pw - 100, py + panH - 15);
+        game.fonts.normal.draw(batch,
+                Localization.format("hud.panel.size", h.type.w, h.type.h), px + pw - 100, py + panH - 15);
         batch.end();
 
         // Footer band
@@ -158,7 +160,7 @@ public class HudRenderer {
         sr.line(px + 3, py + 3 + PANEL_FOOTER_H, px + pw - 3, py + 3 + PANEL_FOOTER_H);
         sr.end();
 
-        String hint = "[ESC] or click outside to close";
+        String hint = Localization.get("hud.panel.close_hint");
         batch.begin();
         game.fonts.small.setColor(COL_TEXT_GRAY);
         com.badlogic.gdx.graphics.g2d.GlyphLayout gl = new com.badlogic.gdx.graphics.g2d.GlyphLayout(game.fonts.small,
@@ -217,7 +219,8 @@ public class HudRenderer {
         float mx = Gdx.input.getX();
         float my = Gdx.graphics.getHeight() - Gdx.input.getY();
 
-        String[] labels = { "MAP", "BALANCE", "FACTIONS" };
+        String[] labels = { Localization.get("hud.btn.map"), Localization.get("hud.btn.balance"),
+                Localization.get("hud.btn.factions") };
         boolean[] enabled = { state.newWorldUnlocked, true, true };
         boolean[] active = { false, false, input.showFactionPanel };
 
@@ -503,8 +506,8 @@ public class HudRenderer {
         boolean inGrace = (int) housePopClamped < (int) graceCap;
 
         if (inGrace) {
-            b.graceLine = new PanelLine(game.fonts.normal, "Minimum population: " + (int) graceCap,
-                    Color.valueOf("88cc88"), 24f);
+            b.graceLine = new PanelLine(game.fonts.normal, Localization.format("hud.house.min_pop",
+                    (int) graceCap), Color.valueOf("88cc88"), 24f);
         }
 
         for (ServiceCategory cat : ServiceCategory.values()) {
@@ -528,13 +531,14 @@ public class HudRenderer {
         String statusText;
         Color statusColor;
         if (h.type.nextHouseLevel() == null) {
-            statusText = "Maximum level";
+            statusText = Localization.get("hud.house.max_level");
             statusColor = COL_TEXT_GRAY;
         } else if (canUp) {
-            statusText = "Ready for upgrade";
+            statusText = Localization.get("hud.house.ready");
             statusColor = Color.valueOf("55cc55");
         } else {
-            statusText = b.pop < b.cap ? "Population required (" + b.pop + "/" + b.cap + ")" : "Needs unfulfilled";
+            statusText = b.pop < b.cap ? Localization.format("hud.house.pop_required", b.pop, b.cap)
+                    : Localization.get("hud.house.needs_unfulfilled");
             statusColor = COL_TEXT_GRAY;
         }
         b.statusLine = new PanelLine(game.fonts.large, statusText, statusColor, 30f);
@@ -542,7 +546,7 @@ public class HudRenderer {
     }
 
     private float measureHouseBlock(HouseBlock b) {
-        float h = measureBigStatHeight("0 / 0", "Inhabitants") + 20f;
+        float h = measureBigStatHeight("0 / 0", Localization.get("hud.stat.inhabitants")) + 20f;
         if (b.graceLine != null)
             h += b.graceLine.lineHeight;
         h += HAIRLINE_GAP + SECTION_LABEL_H;
@@ -565,7 +569,7 @@ public class HudRenderer {
 
     private void drawHouseBlock(BuildingInstance h, HouseBlock b, float px, float pw, float topY) {
         float y = topY;
-        y = drawBigStat(b.pop + " / " + b.cap, "Inhabitants", px, pw, y);
+        y = drawBigStat(b.pop + " / " + b.cap, Localization.get("hud.stat.inhabitants"), px, pw, y);
 
         float barY = y - 4f;
         float barW = pw - 32f;
@@ -586,11 +590,11 @@ public class HudRenderer {
         }
 
         y = drawHairline(px, pw, y);
-        y = drawSectionLabel("Needs", px, y);
+        y = drawSectionLabel(Localization.get("hud.section.needs"), px, y);
         y = drawResourceGrid(b.needsGrid, px, pw, y, true);
 
         y = drawHairline(px, pw, y);
-        y = drawSectionLabel("Services", px, y);
+        y = drawSectionLabel(Localization.get("hud.section.services"), px, y);
         y = drawCompactList(b.serviceLabels, b.serviceValues, b.serviceColors, px, pw, y);
 
         y = drawHairline(px, pw, y);
@@ -618,13 +622,13 @@ public class HudRenderer {
         String statusText;
         Color statusColor;
         if (!h.connected) {
-            statusText = "Not connected: capacity at 30%";
+            statusText = Localization.get("hud.service.not_connected");
             statusColor = Color.valueOf("cc8844");
         } else if (h.paused) {
-            statusText = "Paused: capacity at 30%";
+            statusText = Localization.get("hud.service.paused");
             statusColor = Color.valueOf("cc8844");
         } else {
-            statusText = "Active";
+            statusText = Localization.get("hud.service.active");
             statusColor = Color.valueOf("55cc55");
         }
         b.statusLine = new PanelLine(game.fonts.normal, statusText, statusColor, 26f);
@@ -634,15 +638,18 @@ public class HudRenderer {
         float s = state.getServiceSatisfaction(b.cat);
         Color sColor = s >= 0.9f ? Color.valueOf("55cc55") : s >= 0.7f ? UITheme.STATUS_YELLOW : UITheme.STATUS_RED;
 
-        b.cityLines.add(new PanelLine(game.fonts.normal, "City capacity: " + (int) cap, COL_TEXT_WHITE, 24f));
-        b.cityLines.add(new PanelLine(game.fonts.normal, "City demand: " + (int) cons, COL_TEXT_WHITE, 24f));
-        b.cityLines.add(new PanelLine(game.fonts.normal, "Coverage: " + (int) (s * 100) + "%", sColor, 24f));
+        b.cityLines.add(new PanelLine(game.fonts.normal, Localization.format("hud.service.city_capacity", (int) cap),
+                COL_TEXT_WHITE, 24f));
+        b.cityLines.add(new PanelLine(game.fonts.normal, Localization.format("hud.service.city_demand", (int) cons),
+                COL_TEXT_WHITE, 24f));
+        b.cityLines.add(new PanelLine(game.fonts.normal, Localization.format("hud.service.coverage", (int) (s * 100)),
+                sColor, 24f));
         return b;
     }
 
     private float measureServiceBlock(ServiceBlock b) {
         float h = b.statusLine.lineHeight;
-        h += measureBigStatHeight(b.capacityText, "Capacity");
+        h += measureBigStatHeight(b.capacityText, Localization.get("hud.stat.capacity"));
         h += HAIRLINE_GAP + SECTION_LABEL_H;
         h += measureLines(b.cityLines);
         return h;
@@ -650,7 +657,7 @@ public class HudRenderer {
 
     private void drawServiceBlock(ServiceBlock b, float px, float pw, float topY) {
         float y = drawLines(List.of(b.statusLine), px, topY);
-        y = drawBigStat(b.capacityText, "Capacity", px, pw, y);
+        y = drawBigStat(b.capacityText, Localization.get("hud.stat.capacity"), px, pw, y);
         y = drawHairline(px, pw, y);
         y = drawSectionLabel(b.cat.getLabel(), px, y);
         drawLines(b.cityLines, px, y);
@@ -673,7 +680,7 @@ public class HudRenderer {
     private ProductionBlock buildProductionBlock(BuildingInstance h, GameState state) {
         ProductionBlock b = new ProductionBlock();
 
-        String statusText = h.paused ? "Paused" : "Producing";
+        String statusText = h.paused ? Localization.get("hud.prod.paused") : Localization.get("hud.prod.producing");
         Color statusColor = h.paused ? Color.valueOf("cc8844")
                 : (h.type.consumableOnly ? Color.valueOf("55aacc") : Color.valueOf("55cc55"));
         b.statusLine = new PanelLine(game.fonts.normal, statusText, statusColor, 26f);
@@ -692,7 +699,8 @@ public class HudRenderer {
                 Color textColor = built ? Color.valueOf("55cc55")
                         : (affordable ? COL_TEXT_GOLD : Color.valueOf("cc4444"));
                 Color c = Color.valueOf(pen.colorHex);
-                GridItem item = new GridItem(new float[] { c.r, c.g, c.b }, built ? "Built" : "Build", border, null);
+                GridItem item = new GridItem(new float[] { c.r, c.g, c.b },
+                        built ? Localization.get("hud.prod.built") : Localization.get("hud.prod.build"), border, null);
                 item.buildingId = pen.id;
                 item.textColor = textColor;
                 b.penGrid.add(item);
@@ -704,7 +712,8 @@ public class HudRenderer {
             int count = state.countFields(h);
             int cap = h.type.fieldCap;
             b.powerLines.add(new PanelLine(game.fonts.small,
-                    "Fields: " + count + "/" + cap + (count < cap ? "  (click below to plant)" : ""),
+                    Localization.format("hud.prod.fields", count, cap)
+                            + (count < cap ? Localization.get("hud.prod.fields_plant") : ""),
                     count >= cap ? Color.valueOf("55cc55") : Color.valueOf("cc8844"), 18f));
             b.hasFieldButton = count < cap;
         }
@@ -719,31 +728,35 @@ public class HudRenderer {
             b.outputGrid = buildResourceGridItems(
                     Map.of(h.type.prod, (float) h.type.rate), state, false);
         } else if (h.type.consumableOnly) {
-            b.outputLine = new PanelLine(game.fonts.normal, "Cycle every " + h.type.cycleTime + "s",
+            b.outputLine = new PanelLine(game.fonts.normal,
+                    Localization.format("hud.prod.cycle_every", h.type.cycleTime),
                     COL_TEXT_GRAY, 22f);
         }
 
         if (h.type.requiredPower == BuildingType.PowerType.STEAM
                 || h.type.requiredPower == BuildingType.PowerType.BOTH) {
-            b.powerLines.add(new PanelLine(game.fonts.small, h.hasSteam ? "Steam: active" : "Steam: missing",
+            b.powerLines.add(new PanelLine(game.fonts.small,
+                    h.hasSteam ? Localization.get("hud.prod.steam_on") : Localization.get("hud.prod.steam_off"),
                     h.hasSteam ? Color.valueOf("88aaff") : Color.valueOf("ff8888"), 18f));
         }
         if (h.type.requiredPower == BuildingType.PowerType.ELECTRICITY
                 || h.type.requiredPower == BuildingType.PowerType.BOTH) {
             b.powerLines.add(
-                    new PanelLine(game.fonts.small, h.hasElectricity ? "Electricity: active" : "Electricity: missing",
+                    new PanelLine(game.fonts.small,
+                            h.hasElectricity ? Localization.get("hud.prod.elec_on")
+                                    : Localization.get("hud.prod.elec_off"),
                             h.hasElectricity ? Color.valueOf("ffff88") : Color.valueOf("ff8888"), 18f));
         }
 
         if (h.type.hasPens()) {
             int pct = (int) (h.penEfficiency * 100);
-            b.powerLines.add(new PanelLine(game.fonts.small, "Efficiency: " + pct + "%",
+            b.powerLines.add(new PanelLine(game.fonts.small, Localization.format("hud.prod.efficiency", pct),
                     pct >= 100 ? Color.valueOf("55cc55") : Color.valueOf("cc8844"), 18f));
         }
 
-        String cycleText = "Cycle: " + (int) (h.progress * 100) + "%";
+        String cycleText = Localization.format("hud.prod.cycle", (int) (h.progress * 100));
         if (producesResource)
-            cycleText += "  •  " + h.type.cycleTime + "s";
+            cycleText += Localization.format("hud.prod.cycle_time", h.type.cycleTime);
         b.cycleLine = new PanelLine(game.fonts.small, cycleText,
                 h.paused ? Color.valueOf("cc8844") : COL_TEXT_GRAY, 20f);
 
@@ -778,7 +791,7 @@ public class HudRenderer {
 
         if (b.penGrid != null) {
             y = drawHairline(px, pw, y);
-            y = drawSectionLabel("Pens", px, y);
+            y = drawSectionLabel(Localization.get("hud.section.pens"), px, y);
             penHitRects.clear();
             penHitTypes.clear();
             for (int i = 0; i < b.penGrid.size(); i++) {
@@ -790,13 +803,13 @@ public class HudRenderer {
 
         if (b.hasInput) {
             y = drawHairline(px, pw, y);
-            y = drawSectionLabel("Input", px, y);
+            y = drawSectionLabel(Localization.get("hud.section.input"), px, y);
             y = drawResourceGrid(b.inputGrid, px, pw, y);
         }
 
         if (b.outputGrid != null) {
             y = drawHairline(px, pw, y);
-            y = drawSectionLabel("Output", px, y);
+            y = drawSectionLabel(Localization.get("hud.section.output"), px, y);
             y = drawResourceGrid(b.outputGrid, px, pw, y);
             y -= 8f;
         } else if (b.outputLine != null) {
@@ -855,7 +868,7 @@ public class HudRenderer {
 
             batch.setProjectionMatrix(uiCamera.combined);
             batch.begin();
-            String btnLabel = h.paused ? "Resume" : "Pause";
+            String btnLabel = h.paused ? Localization.get("hud.prod.resume") : Localization.get("hud.prod.pause");
             drawCenteredButtonLabel(btnLabel, game.fonts.normal, COL_TEXT_GOLD, px + 16, base, pw - 32, 26);
             batch.end();
         }
@@ -873,21 +886,24 @@ public class HudRenderer {
         MonumentBlock b = new MonumentBlock();
 
         if (h.type.isLastMonumentLevel()) {
-            b.statusLine = new PanelLine(game.fonts.normal, "Completed", Color.valueOf("55cc55"), 24f);
+            b.statusLine = new PanelLine(game.fonts.normal,
+                    Localization.get("hud.monument.completed"), Color.valueOf("55cc55"), 24f);
             if (h.type.influenceRadius > 0) {
                 b.progressLine = new PanelLine(game.fonts.small,
-                        "Influence radius: " + h.type.influenceRadius + " cells",
+                        Localization.format("hud.monument.radius", h.type.influenceRadius),
                         COL_TEXT_GRAY, 20f);
             }
         } else if (h.monumentUpgrading) {
-            b.statusLine = new PanelLine(game.fonts.normal, "Under construction", Color.valueOf("4488cc"), 24f);
+            b.statusLine = new PanelLine(game.fonts.normal, Localization.get("hud.monument.building"),
+                    Color.valueOf("4488cc"), 24f);
             float base = h.type.upgradeTime > 0 ? h.type.upgradeTime : 60f;
             float required = base * state.difficulty.monumentTimeMultiplier;
             int percent = required > 0 ? (int) (h.monumentUpgradeProgress / required * 100) : 0;
-            b.progressLine = new PanelLine(game.fonts.small, "Progress: " + percent + "%", COL_TEXT_GRAY, 20f);
+            b.progressLine = new PanelLine(game.fonts.small, Localization.format("hud.monument.progress", percent),
+                    COL_TEXT_GRAY, 20f);
         } else {
             b.statusLine = new PanelLine(game.fonts.normal,
-                    "Phase " + (h.type.monumentLevel + 1) + " / " + h.type.getMonumentChainLength(),
+                    Localization.format("ui.hud.phase", h.type.monumentLevel + 1, h.type.getMonumentChainLength()),
                     Color.valueOf("e8d080"), 24f);
             BuildingType next = h.type.nextMonumentLevel();
             if (next != null && next.upgradeCost != null && !next.upgradeCost.isEmpty()) {
@@ -923,7 +939,7 @@ public class HudRenderer {
 
         if (b.costGrid != null && !b.costGrid.isEmpty()) {
             y = drawHairline(px, pw, y);
-            y = drawSectionLabel("Next phase cost", px, y);
+            y = drawSectionLabel(Localization.get("hud.section.next_cost"), px, y);
             drawResourceGrid(b.costGrid, px, pw, y);
         }
     }
@@ -938,7 +954,7 @@ public class HudRenderer {
 
         batch.setProjectionMatrix(uiCamera.combined);
         batch.begin();
-        drawCenteredButtonLabel("Build next phase", game.fonts.normal, Color.valueOf("55cc55"),
+        drawCenteredButtonLabel(Localization.get("hud.monument.build_next"), game.fonts.normal, Color.valueOf("55cc55"),
                 px + 16, btnY, pw - 32, 24);
         batch.end();
     }
@@ -957,7 +973,7 @@ public class HudRenderer {
 
         batch.setProjectionMatrix(uiCamera.combined);
         batch.begin();
-        drawCenteredButtonLabel("Plant fields", game.fonts.normal, UITheme.GOLD_PRIMARY,
+        drawCenteredButtonLabel(Localization.get("hud.prod.plant_fields"), game.fonts.normal, UITheme.GOLD_PRIMARY,
                 fieldButtonRect[0], fieldButtonRect[1], fieldButtonRect[2], fieldButtonRect[3]);
         batch.end();
     }
@@ -1034,7 +1050,7 @@ public class HudRenderer {
             batch.setProjectionMatrix(uiCamera.combined);
             batch.begin();
             game.fonts.normal.setColor(COL_TEXT_GRAY);
-            game.fonts.normal.draw(batch, "No production", px + 16, topY);
+            game.fonts.normal.draw(batch, Localization.get("hud.panel.no_production"), px + 16, topY);
             batch.end();
         }
 
@@ -1188,13 +1204,13 @@ public class HudRenderer {
             }
         }
         float balance = totalTaxes - totalMaintenance;
-        String balanceText = String.format("%+.0f/min", balance);
+        String balanceText = Localization.format("hud.per_min", String.format("%+.0f", balance));
         Color balanceColor = balance >= 0 ? Color.valueOf("55cc55") : Color.valueOf("cc5555");
         game.fonts.large.setColor(balanceColor);
         game.fonts.large.draw(batch, balanceText, sw - 250, sh - 40);
 
-        String speedPopText = "Speed " + (int) state.gameSpeed + "x   •   Pop. "
-                + (int) state.resources.get("population");
+        String speedPopText = Localization.format("hud.speed_pop",
+                String.valueOf((int) state.gameSpeed), String.valueOf((int) state.resources.get("population")));
         game.fonts.normal.setColor(COL_TEXT_GRAY);
         game.fonts.normal.draw(batch, speedPopText, sw - 250, sh - 62);
 
@@ -1220,33 +1236,8 @@ public class HudRenderer {
         batch.begin();
         game.fonts.small.setColor(COL_TEXT_GRAY);
         game.fonts.small.draw(batch,
-                "Expedition " + (int) (state.expeditionTimer / GameState.EXPEDITION_SECS * 100) + "%",
+                Localization.format("hud.expedition", (int) (state.expeditionTimer / GameState.EXPEDITION_SECS * 100)),
                 bx, by + 18);
-        batch.end();
-    }
-
-    private void drawSatisfactionRow(List<String> labels, List<Color> colors, float sw, float rowY) {
-        if (labels.isEmpty())
-            return;
-        float itemW = sw / labels.size();
-        float y = rowY + TOPBAR_ROW_H / 2f + 5f;
-
-        sr.setProjectionMatrix(uiCamera.combined);
-        sr.begin(ShapeRenderer.ShapeType.Filled);
-        for (int i = 0; i < labels.size(); i++) {
-            float x = i * itemW + 8;
-            sr.setColor(colors.get(i));
-            sr.rect(x, y - 4f, SATISFACTION_DOT_SIZE, SATISFACTION_DOT_SIZE);
-        }
-        sr.end();
-
-        batch.setProjectionMatrix(uiCamera.combined);
-        batch.begin();
-        for (int i = 0; i < labels.size(); i++) {
-            float x = i * itemW + 8 + SATISFACTION_DOT_SIZE + 6f;
-            game.fonts.small.setColor(COL_TEXT_GRAY);
-            game.fonts.small.draw(batch, labels.get(i), x, y);
-        }
         batch.end();
     }
 
@@ -1258,12 +1249,12 @@ public class HudRenderer {
         float mx = Gdx.input.getX();
         float my = Gdx.graphics.getHeight() - Gdx.input.getY();
         int totalSlots = input.getBottomBarSlotCount();
-        float tabW = sw / TAB_LABELS.length;
+        float tabW = sw / TAB_KEYS.length;
 
         int hoveredTab = -1;
         if (my >= tabY && my < tabY + TAB_H) {
             int t = (int) (mx / tabW);
-            if (t >= 0 && t < TAB_LABELS.length)
+            if (t >= 0 && t < TAB_KEYS.length)
                 hoveredTab = t;
         }
 
@@ -1298,7 +1289,7 @@ public class HudRenderer {
         sr.setColor(COL_TAB_BG);
         sr.rect(0, tabY, sw, TAB_H);
 
-        for (int i = 0; i < TAB_LABELS.length; i++) {
+        for (int i = 0; i < TAB_KEYS.length; i++) {
             if (i == input.activeTab) {
                 sr.setColor(0.18f, 0.14f, 0.04f, 1f);
                 sr.rect(i * tabW + 1, tabY, tabW - 2, TAB_H);
@@ -1361,11 +1352,12 @@ public class HudRenderer {
         batch.begin();
 
         com.badlogic.gdx.graphics.g2d.GlyphLayout tabLayout = new com.badlogic.gdx.graphics.g2d.GlyphLayout();
-        for (int i = 0; i < TAB_LABELS.length; i++) {
+        for (int i = 0; i < TAB_KEYS.length; i++) {
             boolean active = i == input.activeTab;
             game.fonts.small.setColor(active ? COL_TEXT_GOLD : (i == hoveredTab ? COL_TEXT_WHITE : COL_TEXT_GRAY));
-            tabLayout.setText(game.fonts.small, TAB_LABELS[i]);
-            game.fonts.small.draw(batch, TAB_LABELS[i],
+            String tabText = Localization.get(TAB_KEYS[i]);
+            tabLayout.setText(game.fonts.small, tabText);
+            game.fonts.small.draw(batch, tabText,
                     i * tabW + tabW / 2f - tabLayout.width / 2f, tabY + TAB_H - 5);
         }
 
@@ -1390,7 +1382,7 @@ public class HudRenderer {
             BuildingType bt = (tool == GameInputHandler.ToolAction.NONE)
                     ? input.bottomBarBuildings[input.getBuildingIndexForSlot(idx)]
                     : null;
-            String label = (tool == GameInputHandler.ToolAction.NONE) ? bt.label : input.getToolLabel(tool);
+            String label = (tool == GameInputHandler.ToolAction.NONE) ? bt.getLabel() : input.getToolLabel(tool);
 
             Color nameColor = sel ? COL_TEXT_GOLD : COL_TEXT_WHITE;
             labelLayout.setText(game.fonts.small, label, nameColor, slotW - 10,
@@ -1401,13 +1393,11 @@ public class HudRenderer {
         if (input.selectedBuilding != null) {
             game.fonts.normal.setColor(COL_TEXT_GOLD);
             game.fonts.normal.draw(batch,
-                    input.selectedBuilding.label + " — Click = place   ESC = cancel",
-                    8, tabY + TAB_H + 16);
+                    Localization.format("hud.place_hint", input.selectedBuilding.getLabel()), 8, tabY + TAB_H + 16);
         } else if (input.selectedTool != GameInputHandler.ToolAction.NONE) {
             game.fonts.normal.setColor(COL_TEXT_GOLD);
             game.fonts.normal.draw(batch,
-                    input.getToolLabel(input.selectedTool) + " — Click on a building   ESC = cancel",
-                    8, tabY + TAB_H + 16);
+                    Localization.format("hud.tool_hint", input.getToolLabel(input.selectedTool)), 8, tabY + TAB_H + 16);
         }
 
         batch.end();
@@ -1443,7 +1433,7 @@ public class HudRenderer {
             sr.end();
 
             batch.begin();
-            String rlabel = "Rotate";
+            String rlabel = Localization.get("hud.rotate");
             com.badlogic.gdx.graphics.g2d.GlyphLayout rgl = new com.badlogic.gdx.graphics.g2d.GlyphLayout(
                     game.fonts.small, rlabel);
             game.fonts.small.setColor(hover ? COL_TEXT_GOLD : COL_TEXT_WHITE);
@@ -1478,7 +1468,7 @@ public class HudRenderer {
             float[] r = penHitRects.get(i);
             if (mx >= r[0] && mx <= r[0] + r[2] && my >= r[1] && my <= r[1] + r[3]) {
                 List<String> lines = new ArrayList<>(penHitTypes.get(i).getInfoLines(state.resources));
-                lines.add("Next to the ranch or its pens");
+                lines.add(Localization.get("hud.pen_tooltip"));
                 drawTooltipBox(lines);
                 return;
             }
@@ -1520,11 +1510,6 @@ public class HudRenderer {
             textY -= lineH;
         }
         batch.end();
-    }
-
-    private static class HouseContent {
-        List<PanelLine> beforeBar;
-        List<PanelLine> afterBar;
     }
 
     /**
@@ -1686,208 +1671,6 @@ public class HudRenderer {
         }
     }
 
-    private String formatTime(int seconds) {
-        if (seconds < 60)
-            return seconds + "s";
-        int mins = seconds / 60;
-        int secs = seconds % 60;
-        if (secs == 0)
-            return mins + "m";
-        return mins + "m " + secs + "s";
-    }
-
-    private HouseContent buildHouseLines(BuildingInstance h, GameState state) {
-        HouseContent hc = new HouseContent();
-        hc.beforeBar = new ArrayList<>();
-        hc.afterBar = new ArrayList<>();
-
-        int cap = h.type.houseCap();
-        int pop = (int) h.housePop;
-        float graceCap = cap * 0.30f;
-        boolean inGrace = (int) h.housePop < (int) graceCap;
-
-        hc.beforeBar.add(new PanelLine(game.fonts.normal, "Inhabitants: " + pop + " / " + cap, COL_TEXT_WHITE, 26f));
-
-        if (inGrace) {
-            hc.afterBar.add(new PanelLine(game.fonts.normal, "(minimum population: " + (int) graceCap + ")",
-                    Color.valueOf("88cc88"), 26f));
-        }
-
-        hc.afterBar.add(new PanelLine(game.fonts.normal, "Servicies:", COL_TEXT_GRAY, 24f));
-        for (ServiceCategory cat : ServiceCategory.values()) {
-            float satisfaction = state.getServiceSatisfaction(cat);
-            Color color = satisfaction >= 0.9f ? Color.valueOf("55cc55")
-                    : satisfaction >= 0.7f ? UITheme.STATUS_YELLOW : UITheme.STATUS_RED;
-            hc.afterBar.add(new PanelLine(game.fonts.small,
-                    cat.getLabel() + " (" + (int) (satisfaction * 100) + "%)", color, 20f));
-        }
-        for (ConsumptionServiceCategory cat : ConsumptionServiceCategory.values()) {
-            float satisfaction = state.getConsumptionServiceSatisfaction(cat);
-            Color color = satisfaction >= 0.9f ? Color.valueOf("55cc55")
-                    : satisfaction >= 0.7f ? UITheme.STATUS_YELLOW : UITheme.STATUS_RED;
-            hc.afterBar.add(new PanelLine(game.fonts.small,
-                    cat.getLabel() + " (" + (int) (satisfaction * 100) + "%)", color, 20f));
-        }
-
-        hc.afterBar.add(new PanelLine(game.fonts.normal, "Needs:", COL_TEXT_GRAY, 24f));
-        if (h.type.houseNeeds != null) {
-            for (String need : h.type.houseNeeds) {
-                boolean ok = state.resources.get(need) >= 0.05f;
-                String label = state.resources.getAll().containsKey(need)
-                        ? state.resources.getAll().get(need).label
-                        : need;
-                hc.afterBar.add(new PanelLine(game.fonts.normal, label,
-                        ok ? Color.valueOf("55cc55") : Color.valueOf("cc4444"), 22f));
-            }
-        }
-
-        boolean canUp = h.canUpgrade(state.resources);
-        String statusText;
-        Color statusColor;
-        if (h.type.nextHouseLevel() == null) {
-            statusText = "Maximum level";
-            statusColor = COL_TEXT_GRAY;
-        } else if (canUp) {
-            statusText = "Ready for the upgrade";
-            statusColor = Color.valueOf("55cc55");
-        } else {
-            int popCap = h.type.houseCap();
-            statusText = pop < popCap ? "Required population (" + pop + "/" + popCap + ")" : "Needs unfulfilled";
-            statusColor = COL_TEXT_GRAY;
-        }
-        hc.afterBar.add(new PanelLine(game.fonts.normal, statusText, statusColor, 26f));
-
-        return hc;
-    }
-
-    private void drawPopBar(BuildingInstance h, float px, float pw, float barY) {
-        int cap = h.type.houseCap();
-        float barW = pw - 32f;
-        float fill = cap > 0 ? (h.housePop / cap) : 0f;
-        sr.setProjectionMatrix(uiCamera.combined);
-        sr.begin(ShapeRenderer.ShapeType.Filled);
-        sr.setColor(0.2f, 0.2f, 0.2f, 1f);
-        sr.rect(px + 16, barY, barW, 12);
-        sr.setColor(0.3f, 0.8f, 0.3f, 1f);
-        sr.rect(px + 16, barY, barW * fill, 12);
-        float graceX = px + 16 + barW * 0.30f;
-        sr.setColor(1f, 0.8f, 0.2f, 0.8f);
-        sr.rect(graceX - 1, barY, 2, 12);
-        sr.end();
-    }
-
-    private List<PanelLine> buildProductionLines(BuildingInstance h, GameState state) {
-        List<PanelLine> lines = new ArrayList<>();
-
-        if (h.paused) {
-            lines.add(new PanelLine(game.fonts.normal, "PAUSED", Color.valueOf("cc8844"), 26f));
-        } else {
-            lines.add(new PanelLine(game.fonts.normal, "PRODUCING",
-                    h.type.consumableOnly ? Color.valueOf("55aacc") : Color.valueOf("55cc55"), 26f));
-        }
-
-        if (h.type.input != null && !h.type.input.isEmpty()) {
-            lines.add(new PanelLine(game.fonts.normal, h.type.consumableOnly ? "Consumes:" : "Recipe:",
-                    COL_TEXT_GRAY, 20f));
-            for (Map.Entry<String, Float> e : h.type.input.entrySet()) {
-                boolean ok = state.resources.get(e.getKey()) >= e.getValue();
-                String lbl = state.resources.getAll().containsKey(e.getKey())
-                        ? state.resources.getAll().get(e.getKey()).label
-                        : e.getKey();
-                lines.add(new PanelLine(game.fonts.normal,
-                        (int) e.getValue().floatValue() + "x " + lbl + " (" + (int) state.resources.get(e.getKey())
-                                + " available)",
-                        ok ? Color.valueOf("55cc55") : Color.valueOf("cc4444"), 20f));
-            }
-            if (!h.type.consumableOnly && h.type.prod != null) {
-                String prodLbl = state.resources.getAll().containsKey(h.type.prod)
-                        ? state.resources.getAll().get(h.type.prod).label
-                        : h.type.prod;
-                lines.add(new PanelLine(game.fonts.normal,
-                        " +" + h.type.rate + " x " + prodLbl + " every " + h.type.cycleTime + "s",
-                        Color.valueOf("55cc55"), 20f));
-            } else if (h.type.consumableOnly) {
-                lines.add(new PanelLine(game.fonts.normal, " Consume every " + h.type.cycleTime + "s",
-                        COL_TEXT_GRAY, 20f));
-            }
-        } else if (h.type.prod != null) {
-            String prodLbl = state.resources.getAll().containsKey(h.type.prod)
-                    ? state.resources.getAll().get(h.type.prod).label
-                    : h.type.prod;
-            lines.add(new PanelLine(game.fonts.normal,
-                    "Produces: +" + h.type.rate + " " + prodLbl + " every " + h.type.cycleTime + " seconds ",
-                    Color.valueOf("55cc55"), 20f));
-        }
-
-        if (h.type.requiredPower != BuildingType.PowerType.NONE) {
-            if (h.type.requiredPower == BuildingType.PowerType.STEAM
-                    || h.type.requiredPower == BuildingType.PowerType.BOTH) {
-                lines.add(new PanelLine(game.fonts.small, h.hasSteam ? "Steam: ACTIVE" : "Steam: MISSING",
-                        h.hasSteam ? Color.valueOf("88aaff") : Color.valueOf("ff8888"), 18f));
-            }
-            if (h.type.requiredPower == BuildingType.PowerType.ELECTRICITY
-                    || h.type.requiredPower == BuildingType.PowerType.BOTH) {
-                lines.add(new PanelLine(game.fonts.small,
-                        h.hasElectricity ? "Electricity: ACTIVE" : "Electricity: MISSING",
-                        h.hasElectricity ? Color.valueOf("ffff88") : Color.valueOf("ff8888"), 18f));
-            }
-        }
-
-        lines.add(new PanelLine(game.fonts.normal,
-                "Cicle: " + (int) (h.progress * 100) + "%" + (h.paused ? "  (PAUSED)" : ""),
-                h.paused ? Color.valueOf("cc8844") : COL_TEXT_GRAY, 20f));
-
-        if (h.type.consumptionServiceCategory != null && h.type.influenceRadius > 0) {
-            lines.add(new PanelLine(game.fonts.small, "Radius: " + h.type.influenceRadius + " celle",
-                    COL_TEXT_GRAY, 20f));
-        }
-
-        return lines;
-    }
-
-    private List<PanelLine> buildMonumentLines(BuildingInstance h, GameState state) {
-        List<PanelLine> lines = new ArrayList<>();
-
-        if (h.type.isLastMonumentLevel()) {
-            lines.add(new PanelLine(game.fonts.normal, "COMPLETED", Color.valueOf("55cc55"), 22f));
-            if (h.type.influenceRadius > 0) {
-                lines.add(new PanelLine(game.fonts.normal, "Influence radius: " + h.type.influenceRadius + " celle",
-                        COL_TEXT_GRAY, 20f));
-            }
-        } else if (h.monumentUpgrading) {
-            lines.add(new PanelLine(game.fonts.normal, "UNDER CONSTRUCTION", Color.valueOf("4488cc"), 22f));
-            int percent = (int) (h.monumentUpgradeProgress / h.type.upgradeTime * 100);
-            lines.add(new PanelLine(game.fonts.normal, "Progress: " + percent + "%", COL_TEXT_GRAY, 20f));
-        } else {
-            lines.add(new PanelLine(game.fonts.normal,
-                    "Phase " + (h.type.monumentLevel + 1) + "/" + h.type.getMonumentChainLength(),
-                    Color.valueOf("e8d080"), 22f));
-
-            BuildingType next = h.type.nextMonumentLevel();
-            if (next != null && next.upgradeCost != null && !next.upgradeCost.isEmpty()) {
-                lines.add(new PanelLine(game.fonts.normal, "Next phase cost:", COL_TEXT_GRAY, 20f));
-                for (Map.Entry<String, Float> e : next.upgradeCost.entrySet()) {
-                    boolean ok = state.resources.get(e.getKey()) >= e.getValue();
-                    String lbl = state.resources.getAll().containsKey(e.getKey())
-                            ? state.resources.getAll().get(e.getKey()).label
-                            : e.getKey();
-                    lines.add(new PanelLine(game.fonts.normal,
-                            (int) e.getValue().floatValue() + "x " + lbl + " (" + (int) state.resources.get(e.getKey())
-                                    + " available)",
-                            ok ? Color.valueOf("55cc55") : Color.valueOf("cc4444"), 20f));
-                }
-            }
-        }
-
-        if (h.type.consumptionServiceCategory != null && h.type.influenceRadius > 0 && !h.type.isLastMonumentLevel()) {
-            lines.add(new PanelLine(game.fonts.small, "Radius: " + h.type.influenceRadius + " celle",
-                    COL_TEXT_GRAY, 20f));
-        }
-
-        return lines;
-    }
-
-    // ── Pannello fazioni ──────────────────────────────────────────────────────
     // ── Pannello fazioni ──────────────────────────────────────────────────────
     public void drawFactionPanel(GameInputHandler input, GameState state) {
         if (!input.showFactionPanel)
@@ -1917,7 +1700,7 @@ public class HudRenderer {
 
         batch.setProjectionMatrix(uiCamera.combined);
         batch.begin();
-        String title = "Factions";
+        String title = Localization.get("hud.faction.title");
         com.badlogic.gdx.graphics.g2d.GlyphLayout tgl = new com.badlogic.gdx.graphics.g2d.GlyphLayout(game.fonts.title,
                 title);
         game.fonts.title.setColor(COL_TEXT_GOLD);
@@ -1942,7 +1725,7 @@ public class HudRenderer {
         }
 
         batch.begin();
-        String hint = "[F] / [ESC] / click outside to close";
+        String hint = Localization.get("hud.faction.close_hint");
         com.badlogic.gdx.graphics.g2d.GlyphLayout hgl = new com.badlogic.gdx.graphics.g2d.GlyphLayout(game.fonts.small,
                 hint);
         game.fonts.small.setColor(COL_TEXT_GRAY);
@@ -2116,7 +1899,7 @@ public class HudRenderer {
         batch.setProjectionMatrix(uiCamera.combined);
         batch.begin();
         game.fonts.large.setColor(0.2f, 0.75f, 0.95f, 1f);
-        game.fonts.large.draw(batch, "New World", opx + 24, opy + ph - 26);
+        game.fonts.large.draw(batch, Localization.get("hud.newworld.title"), opx + 24, opy + ph - 26);
         /*
          * game.fonts.normal.setColor(COL_TEXT_WHITE);
          * game.fonts.normal.draw(batch,
@@ -2128,7 +1911,7 @@ public class HudRenderer {
          * "Petrolio, gomma, seta e molto altro vi aspetta.", opx + 24, opy + ph - 142);
          */
         game.fonts.normal.setColor(0.05f, 0.05f, 0.05f, 1f);
-        game.fonts.normal.draw(batch, "Now you can travel to the New World", btnX + 40, btnY + 24);
+        game.fonts.normal.draw(batch, Localization.get("hud.newworld.button"), btnX + 40, btnY + 24);
         batch.end();
 
         // Click handler per chiudere overlay
@@ -2141,18 +1924,6 @@ public class HudRenderer {
     }
 
     // ── Helper ────────────────────────────────────────────────────────────────
-    private Color relationColor(int relation) {
-        if (relation >= 60)
-            return Color.valueOf("55cc55");
-        if (relation >= 20)
-            return Color.valueOf("aadd44");
-        if (relation >= -20)
-            return Color.valueOf("cccccc");
-        if (relation >= -60)
-            return Color.valueOf("dd8833");
-        return Color.valueOf("cc3333");
-    }
-
     private String formatResource(float v) {
         if (v >= 1000)
             return String.format("%.1fk", v / 1000f);

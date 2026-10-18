@@ -160,9 +160,10 @@ public class ConsumptionScreen implements Screen {
 
         batch.begin();
         game.fonts.normal.setColor(UITheme.TEXT_GOLD);
-        game.fonts.normal.draw(batch, "<- Back to game", CLOSE_BTN_X + 16, CLOSE_BTN_Y + CLOSE_BTN_H - 9);
+        game.fonts.normal.draw(batch, Localization.get("balance.back"), CLOSE_BTN_X + 16,
+                CLOSE_BTN_Y + CLOSE_BTN_H - 9);
         game.fonts.small.setColor(UITheme.TEXT_GRAY);
-        game.fonts.small.draw(batch, "Green = surplus | Red = deficit", CLOSE_BTN_X + CLOSE_BTN_W + 24, 30);
+        game.fonts.small.draw(batch, Localization.get("balance.legend"), CLOSE_BTN_X + CLOSE_BTN_W + 24, 30);
         batch.end();
     }
 
@@ -183,7 +184,7 @@ public class ConsumptionScreen implements Screen {
         for (ResourceManager.Resource r : gameState.resources.getAll().values()) {
             if (r.id.equals("coin") || r.id.equals("population"))
                 continue; // le monete non servono in questa schermata
-            ResourceStats rs = new ResourceStats(r.id, r.label);
+            ResourceStats rs = new ResourceStats(r.id, r.getLabel());
             rs.amount = r.amount;
             statsMap.put(r.id, rs);
         }
@@ -287,11 +288,15 @@ public class ConsumptionScreen implements Screen {
         float sw = Main.SCREEN_W;
 
         batch.begin();
+        String title = Localization.get("balance.title");
+        layout.setText(game.fonts.title, title);
         game.fonts.title.setColor(UITheme.TEXT_GOLD);
-        game.fonts.title.draw(batch, "RESOURCE BALANCE", sw / 2f - 180, TITLE_Y);
+        game.fonts.title.draw(batch, title, sw / 2f - layout.width / 2f, TITLE_Y);
+
+        String hint = Localization.get("balance.hint");
+        layout.setText(game.fonts.normal, hint);
         game.fonts.normal.setColor(UITheme.TEXT_GRAY);
-        game.fonts.normal.draw(batch, "[ESC] / [C]: close | [↑↓] or scroll to navigate", sw / 2f - 200,
-                SUBTITLE_Y);
+        game.fonts.normal.draw(batch, hint, sw / 2f - layout.width / 2f, SUBTITLE_Y);
         batch.end();
 
         float bandX = FRAME_X + 8, bandW = sw - bandX * 2;
@@ -309,11 +314,11 @@ public class ConsumptionScreen implements Screen {
         float textY = HEADER_BAND_Y + HEADER_BAND_H - 8;
         batch.begin();
         game.fonts.large.setColor(UITheme.TEXT_GOLD);
-        game.fonts.large.draw(batch, "Resource", COL_LABEL_X, textY);
-        drawRight(game.fonts.large, "Owned", COL_QTY_R, textY);
-        drawRight(game.fonts.large, "Production/min", COL_PROD_R, textY);
-        drawRight(game.fonts.large, "Consumption/min", COL_CONS_R, textY);
-        drawRight(game.fonts.large, "Balance/min", COL_BAL_R, textY);
+        game.fonts.large.draw(batch, Localization.get("balance.col.resource"), COL_LABEL_X, textY);
+        drawRight(game.fonts.large, Localization.get("balance.col.owned"), COL_QTY_R, textY);
+        drawRight(game.fonts.large, Localization.get("balance.col.production"), COL_PROD_R, textY);
+        drawRight(game.fonts.large, Localization.get("balance.col.consumption"), COL_CONS_R, textY);
+        drawRight(game.fonts.large, Localization.get("balance.col.balance"), COL_BAL_R, textY);
         batch.end();
     }
 
