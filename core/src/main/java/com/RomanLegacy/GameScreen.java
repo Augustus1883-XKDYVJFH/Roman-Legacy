@@ -257,6 +257,12 @@ public class GameScreen implements Screen {
                 input.onScroll(amountY);
                 return true;
             }
+
+            @Override
+            public boolean keyTyped(char character) {
+                hud.onKeyTyped(input, character);
+                return true;
+            }
         });
     }
 
@@ -279,16 +285,17 @@ public class GameScreen implements Screen {
         }
 
         GameSettings.KeyBindings keys = GameSettings.get().keys;
+        boolean typing = input.textInputActive; // campo di testo attivo: niente scorciatoie
 
-        if (Gdx.input.isKeyJustPressed(keys.pause)) {
+        if (!typing && Gdx.input.isKeyJustPressed(keys.pause)) {
             paused = !paused;
         }
 
-        if (Gdx.input.isKeyJustPressed(keys.quickSave)) {
+        if (!typing && Gdx.input.isKeyJustPressed(keys.quickSave)) {
             quickSave();
         }
 
-        if (Gdx.input.isKeyJustPressed(keys.quickLoad)) {
+        if (!typing && Gdx.input.isKeyJustPressed(keys.quickLoad)) {
             quickLoad();
             return;
         }
@@ -299,12 +306,14 @@ public class GameScreen implements Screen {
             return;
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1))
-            state.gameSpeed = 1f;
-        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2))
-            state.gameSpeed = 2f;
-        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3))
-            state.gameSpeed = 3f;
+        if (!typing) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1))
+                state.gameSpeed = 1f;
+            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2))
+                state.gameSpeed = 2f;
+            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3))
+                state.gameSpeed = 3f;
+        }
 
         if (!paused)
             updateTimers(delta * state.gameSpeed);
@@ -348,6 +357,10 @@ public class GameScreen implements Screen {
         hud.drawTopBar(input, state);
         hud.drawBottomBar(input);
         hud.drawHoverTooltip(input, state);
+        hud.drawSideBar(input, state);
+        hud.drawIdeologyColumn(state);
+        hud.drawStatusBox(state);
+        hud.drawContractorMessage(state);
 
         if (input.showBuildingPanel && input.inspectedBuilding != null)
             hud.drawBuildingPanel(input, state);
@@ -408,5 +421,9 @@ public class GameScreen implements Screen {
 
         state.eventManager.tick(delta, state);
         state.tickMonumentUpgrades(delta);
+
+        float paid = state.tickContractor(delta);
+        if (paid > 0f && game.audio != null)
+            game.audio.playSound(AudioManager.SFX_CONTRACTOR);
     }
 }

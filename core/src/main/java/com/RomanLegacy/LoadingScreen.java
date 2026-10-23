@@ -34,7 +34,7 @@ public class LoadingScreen implements Screen {
     private static final String[] SFX_FILES = {
             "audio/place_building.ogg", "audio/demolish.ogg", "audio/ui_click.ogg",
             "audio/expedition_start.ogg", "audio/expedition_complete.ogg",
-            "audio/upgrade_house.ogg", "audio/faction_arrive.ogg"
+            "audio/upgrade_house.ogg", "audio/faction_arrive.ogg", "audio/contractor.ogg"
     };
 
     private final Screen targetScreen;

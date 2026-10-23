@@ -46,6 +46,9 @@ public class BuildingInstance {
     // ── Recinti ──
     public int ownerX = -1, ownerY = -1; // solo recinti: cella root dell'allevamento a cui appartengono
     public float penEfficiency = 1f; // solo allevamenti: recinti costruiti / recinti richiesti
+    // ── Export (solo DOCK) ──
+    public String exportResource = null; // id della risorsa del contratto, null = nessun contratto
+    public int exportAmount = 0; // quantità ritirata dal contractor a ogni visita
 
     public BuildingInstance(BuildingType type, int rootX, int rootY) {
         this.type = type;

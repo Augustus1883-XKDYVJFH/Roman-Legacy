@@ -35,7 +35,7 @@ public class SaveData {
     public float ideologyValue;
     public String pendingEventId;
     public float gameSpeed;
-
+    public float contractorTimer;
 
     public SaveData() {
         buildingsOld = new Array<>();

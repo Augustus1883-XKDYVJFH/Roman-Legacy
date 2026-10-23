@@ -169,6 +169,8 @@ public class SaveManager {
         saveData.terrainMapOld = state.terrainMapOld;
         saveData.terrainMapNew = state.terrainMapNew;
 
+        saveData.contractorTimer = state.contractorTimer;
+
         saveData.resources = new java.util.HashMap<>();
         for (var entry : state.resources.getAll().entrySet()) {
             saveData.resources.put(entry.getKey(), entry.getValue().amount);
@@ -226,6 +228,8 @@ public class SaveManager {
             data.monumentUpgradeProgress = b.monumentUpgradeProgress;
             data.ownerX = b.ownerX;
             data.ownerY = b.ownerY;
+            data.exportResource = b.exportResource;
+            data.exportAmount = b.exportAmount;
             result.add(data);
         }
         return result;

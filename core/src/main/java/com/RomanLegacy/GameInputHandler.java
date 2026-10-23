@@ -10,8 +10,12 @@ import java.util.*;
 public class GameInputHandler {
 
     private static final int BOTBAR_H = HudRenderer.BOTBAR_H;
-    // private static final int TOPBAR_H = HudRenderer.TOPBAR_H;
     private static final int SLOT_W = HudRenderer.SLOT_W;
+    private final Vector3 tmpVec = new Vector3();
+
+    public enum ToolAction {
+        NONE, DEMOLISH, UPGRADE_HOUSE
+    }
 
     private static final BuildingType.Category[] TAB_CATS = {
             BuildingType.Category.LOGISTICA,
@@ -38,20 +42,13 @@ public class GameInputHandler {
     public int activeTab = 2;
     public int botScrollOffset = 0;
     public BuildingType selectedBuilding = null;
-
-    public enum ToolAction {
-        NONE, DEMOLISH, UPGRADE_HOUSE
-    }
-
     public ToolAction selectedTool = ToolAction.NONE;
-
     public boolean roadDragging = false;
     public int roadStartX = -1, roadStartY = -1;
     public boolean pipeDragging = false;
     public int pipeStartX = -1, pipeStartY = -1;
     public boolean houseDragging = false;
     public int houseStartX = -1, houseStartY = -1;
-
     public BuildingInstance inspectedBuilding = null;
     public BuildingInstance penOwner = null; // allevamento per cui si sta piazzando un recinto
     public boolean showBuildingPanel = false;
@@ -60,10 +57,10 @@ public class GameInputHandler {
     public BuildingInstance fieldOwner = null;
     public boolean fieldDragging = false;
     public int fieldStartX = -1, fieldStartY = -1;
-
-    public float panelX, panelY, panelW, panelH; // rettangolo del pannello edificio, aggiornato da HudRenderer
-
-    private final Vector3 tmpVec = new Vector3();
+    public float panelX, panelY, panelW, panelH;
+    public boolean exportListOpen = false;
+    public boolean textInputActive = false;
+    public float modalScroll = 0f;
 
     public GameInputHandler(Main game, GameState state, OrthographicCamera mapCamera) {
         this.game = game;
@@ -111,8 +108,15 @@ public class GameInputHandler {
         syncCamera();
     }
 
-    /** Rotella: sopra la bottom bar scorre gli slot, altrove zooma la mappa. */
+    /**
+     * Rotella: con la lista risorse aperta scorre la lista; sopra la bottom bar
+     * scorre gli slot; altrove zooma la mappa.
+     */
     public void onScroll(float amountY) {
+        if (exportListOpen && showBuildingPanel) {
+            modalScroll += amountY;
+            return;
+        }
         float my = Gdx.graphics.getHeight() - Gdx.input.getY();
         if (my < BOTBAR_H + HudRenderer.TAB_H) {
             botScrollAccum += amountY;
@@ -132,6 +136,20 @@ public class GameInputHandler {
 
     private void handleKeys(float delta) {
         GameSettings.KeyBindings keys = GameSettings.get().keys;
+
+        if (!showBuildingPanel) {
+            exportListOpen = false;
+            textInputActive = false;
+        }
+        if (exportListOpen || textInputActive) {
+            if (Gdx.input.isKeyJustPressed(keys.cancel)) {
+                if (exportListOpen)
+                    exportListOpen = false;
+                else
+                    textInputActive = false;
+            }
+            return;
+        }
 
         if (Gdx.input.isKeyJustPressed(keys.toggleFactions)) {
             toggleFactionPanel();
@@ -176,32 +194,9 @@ public class GameInputHandler {
             cameraX -= speed;
         if (Gdx.input.isKeyPressed(keys.moveRight))
             cameraX += speed;
+        if (Gdx.input.isKeyJustPressed(keys.switchMap))
+            switchMapAction();
         clampCamera();
-
-        if (Gdx.input.isKeyJustPressed(keys.switchMap)) {
-            if (state.newWorldUnlocked) {
-                state.switchMap();
-                selectedBuilding = null;
-                selectedSlot = -1;
-                buildingRotated = false;
-                roadDragging = false;
-                pipeDragging = false;
-                houseDragging = false;
-                houseStartX = houseStartY = -1;
-                cameraX = (GameState.MAP_WIDTH * GameState.CELL_SIZE) / 2f;
-                cameraY = (GameState.MAP_HEIGHT * GameState.CELL_SIZE) / 2f;
-                loadTab(activeTab);
-                state.updateAllConnections();
-
-                if (game.audio != null) {
-                    if (state.onNewWorld) {
-                        game.audio.playMusic(AudioManager.MUSIC_NEWWORLD);
-                    } else {
-                        game.audio.playMusic(AudioManager.MUSIC_GAME);
-                    }
-                }
-            }
-        }
     }
 
     /**
@@ -263,13 +258,15 @@ public class GameInputHandler {
     private void handleMouseClick() {
         if (!Gdx.input.isButtonJustPressed(Input.Buttons.LEFT))
             return;
+        if (exportListOpen)
+            return; // la lista risorse gestisce i suoi click
 
         float mx = Gdx.input.getX();
         float screenH = Gdx.graphics.getHeight();
         float my = screenH - Gdx.input.getY();
         float screenW = Gdx.graphics.getWidth();
 
-        if (handleTopBarButtonClick(mx, my, screenW, screenH))
+        if (handleSideButtonClick(mx, my))
             return;
 
         if (handleRotateButtonClick(mx, my))
@@ -296,6 +293,10 @@ public class GameInputHandler {
             handleBottomBarClick(mx, my);
             return;
         }
+
+        // Click fuori dal rettangolo della mappa (barre): niente azioni sulla mappa
+        if (previewCellX < 0 || previewCellY < 0)
+            return;
 
         // Click sulla mappa
         if (selectedBuilding == BuildingType.ROAD) {
@@ -416,41 +417,47 @@ public class GameInputHandler {
         return placements;
     }
 
-    private boolean handleTopBarButtonClick(float mx, float my, float sw, float sh) {
-        // indice da destra: 0 = MAP, 1 = BALANCE, 2 = FACTIONS
-        for (int i = 0; i < 3; i++) {
-            float[] pos = HudRenderer.topBarButtonPos(i, sw, sh);
-            float bx = pos[0], by = pos[1];
-            if (mx < bx || mx > bx + HudRenderer.TOPBTN_W || my < by || my > by + HudRenderer.TOPBTN_H)
+    private void switchMapAction() {
+        if (!state.newWorldUnlocked)
+            return;
+        state.switchMap();
+        selectedBuilding = null;
+        selectedSlot = -1;
+        buildingRotated = false;
+        roadDragging = false;
+        pipeDragging = false;
+        houseDragging = false;
+        houseStartX = houseStartY = -1;
+        cameraX = (GameState.MAP_WIDTH * GameState.CELL_SIZE) / 2f;
+        cameraY = (GameState.MAP_HEIGHT * GameState.CELL_SIZE) / 2f;
+        loadTab(activeTab);
+        state.updateAllConnections();
+        if (game.audio != null)
+            game.audio.playMusic(state.onNewWorld ? AudioManager.MUSIC_NEWWORLD : AudioManager.MUSIC_GAME);
+    }
+
+    private boolean handleSideButtonClick(float mx, float my) {
+        float sh = Gdx.graphics.getHeight();
+        for (int i = 0; i < 4; i++) {
+            float[] r = HudRenderer.sideButtonRect(i, sh);
+            if (mx < r[0] || mx > r[0] + r[2] || my < r[1] || my > r[1] + r[3])
                 continue;
 
+            if (game.audio != null)
+                game.audio.playSound(AudioManager.SFX_UI_CLICK);
+
             switch (i) {
-                case 0: // MAP
-                    if (state.newWorldUnlocked) {
-                        state.switchMap();
-                        selectedBuilding = null;
-                        selectedSlot = -1;
-                        buildingRotated = false;
-                        roadDragging = false;
-                        pipeDragging = false;
-                        houseDragging = false;
-                        houseStartX = houseStartY = -1;
-                        cameraX = (GameState.MAP_WIDTH * GameState.CELL_SIZE) / 2f;
-                        cameraY = (GameState.MAP_HEIGHT * GameState.CELL_SIZE) / 2f;
-                        loadTab(activeTab);
-                        state.updateAllConnections();
-                        if (game.audio != null) {
-                            game.audio.playMusic(
-                                    state.onNewWorld ? AudioManager.MUSIC_NEWWORLD : AudioManager.MUSIC_GAME);
-                        }
-                    }
+                case 0: // Menu di gioco (da qui: Opzioni, Salva, Esci)
+                    ((GameScreen) game.getScreen()).toggleInGameMenu();
                     return true;
-                case 1: // BALANCE
-                    GameScreen currentGameScreen = (GameScreen) game.getScreen();
-                    game.setScreen(new ConsumptionScreen(game, state, currentGameScreen));
+                case 1: // Consumi
+                    game.setScreen(new ConsumptionScreen(game, state, (GameScreen) game.getScreen()));
                     return true;
-                case 2: // FACTIONS
+                case 2: // Fazioni
                     toggleFactionPanel();
+                    return true;
+                case 3: // Cambio mappa
+                    switchMapAction();
                     return true;
             }
         }
@@ -667,6 +674,8 @@ public class GameInputHandler {
             if (bt.unlockClass != null && state.getClassPopulation(bt.unlockClass) < bt.unlockAmount)
                 continue;
             if (bt.requiredEventId != null && !state.eventManager.hasFired(bt.requiredEventId)) // ← NUOVO
+                continue;
+            if (bt == BuildingType.OIL_DOCK && state.currentMapHas(bt)) // unico per mappa, come i monumenti
                 continue;
 
             if (cat == BuildingType.Category.MONUMENTI) {
@@ -936,7 +945,8 @@ public class GameInputHandler {
             state.updateAllConnections();
         if (autosave)
             SaveManager.getInstance().autosave(state, mapCamera.position.x, mapCamera.position.y, mapCamera.zoom);
-
+        if (selectedBuilding == BuildingType.OIL_DOCK)
+            loadTab(activeTab); // sparisce subito dalla barra
         if (selectedBuilding.isPen())
             finishPenPlacement();
         return true;
@@ -970,7 +980,7 @@ public class GameInputHandler {
         if (bt.requiresDeposit && !state.hasDepositAt(bt, cx, cy))
             return false;
 
-        if (bt == BuildingType.DOCK || bt == BuildingType.OIL_DOCK) {
+        if (bt == BuildingType.OIL_DOCK) {
             for (BuildingInstance b : state.buildings)
                 if (b.type == bt)
                     return false;
@@ -994,6 +1004,8 @@ public class GameInputHandler {
 
     /** Costo effettivo: i monumenti (fase 0) scalano con la difficoltà. */
     private Map<String, Float> costFor(BuildingType bt) {
+        if (bt == BuildingType.DOCK)
+            return state.dockCostMap();
         if (!bt.isMonument)
             return bt.cost;
         float mult = state.difficulty.monumentCostMultiplier;

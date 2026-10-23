@@ -11,13 +11,19 @@ public class ResourceManager {
         public final String id;
         public final String label;
         public final float[] color;
+        public final int price; // monete per unità esportata; 0 = non vendibile
         public float amount;
 
-        public Resource(String id, String label, float r, float g, float b) {
+        public Resource(String id, String label, float r, float g, float b, int price) {
             this.id = id;
             this.label = label;
             this.color = new float[] { r, g, b };
+            this.price = price;
             this.amount = 0f;
+        }
+
+        public boolean isSellable() {
+            return price > 0;
         }
 
         public String getLabel() {
@@ -128,7 +134,7 @@ public class ResourceManager {
         add("coal", "Coal", 0.16f, 0.16f, 0.16f); // fatto
         add("timber", "Timber", 0.29f, 0.41f, 0.21f); // fatto
 
-        add("wood_log", "Wood log", 0f, 0f, 0f);
+        add("wood_log", "Wood log", 0f, 0f, 0f, 9);
         add("fan", "Fan", 0f, 0f, 0f);
         add("fur_coats", "Fur coats", 0f, 0f, 0f);
         add("sewing_machine", "Sewing machine", 0f, 0f, 0f);
@@ -215,6 +221,10 @@ public class ResourceManager {
     }
 
     private void add(String id, String label, float r, float g, float b) {
-        resources.put(id, new Resource(id, label, r, g, b));
+        add(id, label, r, g, b, 0);
+    }
+
+    private void add(String id, String label, float r, float g, float b, int price) {
+        resources.put(id, new Resource(id, label, r, g, b, price));
     }
 }

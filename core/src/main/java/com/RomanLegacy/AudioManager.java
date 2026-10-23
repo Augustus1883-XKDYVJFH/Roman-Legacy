@@ -45,6 +45,7 @@ public class AudioManager {
     public static final String SFX_EXPEDITION_COMPLETE = "expedition_complete";
     public static final String SFX_UPGRADE_HOUSE = "upgrade_house";
     public static final String SFX_FACTION_ARRIVE = "faction_arrive";
+    public static final String SFX_CONTRACTOR = "contractor";
 
     // Limite di sicurezza sulla scansione numerata (non un vero limite d'uso).
     private static final int MAX_TRACKS_PER_PLAYLIST = 200;
@@ -85,6 +86,7 @@ public class AudioManager {
         loadSound(SFX_EXPEDITION_COMPLETE, "audio/expedition_complete.ogg");
         loadSound(SFX_UPGRADE_HOUSE, "audio/upgrade_house.ogg");
         loadSound(SFX_FACTION_ARRIVE, "audio/faction_arrive.ogg");
+        loadSound(SFX_CONTRACTOR, "audio/contractor.ogg");
     }
 
     // ── API pubblica — Musica ────────────────────────────────────────────────

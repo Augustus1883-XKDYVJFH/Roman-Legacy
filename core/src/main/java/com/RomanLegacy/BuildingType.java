@@ -523,11 +523,20 @@ public class BuildingType {
 
         // ── Info lines per tooltip hover ─────────────────────────────────────────────
         public List<String> getInfoLines(ResourceManager rm) {
+                return getInfoLines(rm, null);
+        }
+
+        /**
+         * costOverride: costo dinamico da mostrare al posto di quello fisso (es. il
+         * porto).
+         */
+        public List<String> getInfoLines(ResourceManager rm, Map<String, Float> costOverride) {
                 List<String> lines = new ArrayList<>();
                 lines.add(getLabel());
 
-                if (cost != null && !cost.isEmpty())
-                        lines.add(Localization.format("info.cost", joinAmounts(cost, rm)));
+                Map<String, Float> shownCost = costOverride != null ? costOverride : cost;
+                if (shownCost != null && !shownCost.isEmpty())
+                        lines.add(Localization.format("info.cost", joinAmounts(shownCost, rm)));
 
                 if (requiredConnection != null && requiredConnection != ConnectionType.NONE) {
                         String key = switch (requiredConnection) {

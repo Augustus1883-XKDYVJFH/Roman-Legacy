@@ -14,8 +14,8 @@ import java.util.*;
 public class GameState {
 
     // ── Costanti mappa ───────────────────────────────────────────────────────────
-    public static final int MAP_WIDTH = 400;
-    public static final int MAP_HEIGHT = 400;
+    public static final int MAP_WIDTH = 300;
+    public static final int MAP_HEIGHT = 300;
     public static final int CELL_SIZE = 25;
     private static final int DEPOSITS_PER_TYPE = 5;
 
@@ -34,6 +34,19 @@ public class GameState {
     public final FactionManager factionManager;
     public final IdeologyManager ideologyManager;
     public final EventManager eventManager;
+
+    // ── Export / contractor ──────────────────────────────────────────────────────
+    public static final float CONTRACTOR_INTERVAL = 30f; // 20 minuti di gioco
+    public static final float CONTRACTOR_MSG_SECS = 3f;
+    public static final float DOCK_BASE_PRICE = 2000f;
+
+    public float contractorTimer = 0f;
+    public float contractorMsgTimer = 0f;
+    public int contractorMsgAmount = 0;
+
+    // ── Economia ─────────────────────────────────────────────────────────────────
+    public static final float TAX_SCALE = 0.3f;
+    public static final float MAINTENANCE_SCALE = 3f;
 
     // ── Mappe ────────────────────────────────────────────────────────────────────
     public int[][] terrainMapOld;
@@ -189,6 +202,8 @@ public class GameState {
             }
         }
 
+        contractorTimer = save.contractorTimer;
+
         // 8. Ripristina ideologie
         ideologyManager.setValue(save.ideologyValue);
 
@@ -198,6 +213,88 @@ public class GameState {
 
         // 11. Ricalcola connessioni
         updateAllConnections();
+    }
+
+    /**
+     * Prezzo del prossimo porto: 0, 2000, 4000, 8000... in base ai porti già
+     * costruiti (entrambi i mondi).
+     */
+    public float nextDockPrice() {
+        int n = countBuildingsOfType(BuildingType.DOCK);
+        return n == 0 ? 0f : DOCK_BASE_PRICE * (float) Math.pow(2, n - 1);
+    }
+
+    public Map<String, Float> dockCostMap() {
+        Map<String, Float> m = new HashMap<>();
+        m.put("coin", nextDockPrice());
+        return m;
+    }
+
+    /**
+     * True se nella mappa attualmente visualizzata esiste un edificio di quel tipo.
+     */
+    public boolean currentMapHas(BuildingType type) {
+        for (BuildingInstance b : buildings)
+            if (b.type == type)
+                return true;
+        return false;
+    }
+
+    /**
+     * Timer del contractor (da chiamare con il delta scalato dalla velocità di
+     * gioco).
+     * Ritorna le monete incassate se è arrivato in questo tick, altrimenti 0.
+     * Scorre i porti di ENTRAMBI i mondi: le risorse sono condivise.
+     */
+    public float tickContractor(float delta) {
+        contractorTimer += delta;
+        if (contractorTimer < CONTRACTOR_INTERVAL)
+            return 0f;
+        contractorTimer -= CONTRACTOR_INTERVAL;
+
+        float total = 0f;
+        for (List<BuildingInstance> list : List.of(buildingsOld, buildingsNew)) {
+            for (BuildingInstance b : list) {
+                if (b.type != BuildingType.DOCK || b.exportResource == null || b.exportAmount <= 0)
+                    continue;
+                ResourceManager.Resource r = resources.getAll().get(b.exportResource);
+                if (r == null || !r.isSellable())
+                    continue;
+                int sold = (int) Math.min((float) b.exportAmount, resources.get(b.exportResource));
+                if (sold <= 0)
+                    continue;
+                resources.add(b.exportResource, -sold);
+                total += sold * (float) r.price;
+            }
+        }
+
+        if (total > 0f) {
+            resources.add("coin", total);
+            contractorMsgAmount = (int) total;
+            contractorMsgTimer = CONTRACTOR_MSG_SECS;
+        }
+        return total;
+    }
+
+    public float taxMultiplier() {
+        return getIncomeMultiplier() * difficulty.incomeMultiplier * TAX_SCALE;
+    }
+
+    public float maintenanceMultiplier() {
+        return difficulty.maintenanceMultiplier * MAINTENANCE_SCALE;
+    }
+
+    public float getCoinBalancePerMinute() {
+        float taxes = 0f;
+        float maintenance = 0f;
+        for (BuildingInstance b : buildings) {
+            if (b.type.isHouse) {
+                taxes += b.calculateTaxesPerMinute();
+            } else if (b.type.input != null && !b.type.input.isEmpty() && !b.paused && b.connected) {
+                maintenance += b.getMaintenancePerMinute();
+            }
+        }
+        return taxes * taxMultiplier() - maintenance * maintenanceMultiplier();
     }
 
     // ── Tick ─────────────────────────────────────────────────────────────────────
@@ -230,6 +327,8 @@ public class GameState {
      * floater.
      */
     public void tickFloaters(float delta) {
+        if (contractorMsgTimer > 0f)
+            contractorMsgTimer -= delta; // delta reale: il messaggio dura sempre 3 secondi
         Iterator<ResourceFloater> it = floaters.iterator();
         while (it.hasNext()) {
             ResourceFloater f = it.next();
@@ -257,9 +356,8 @@ public class GameState {
         float totalTaxes = 0f;
         float totalMaintenance = 0f;
 
-        // Moltiplicatori servizi (globali, non per-casa) e di difficoltà —
-        // calcolati una sola volta per tick.
-        float incomeMultiplier = getIncomeMultiplier() * difficulty.incomeMultiplier;
+        float incomeMultiplier = taxMultiplier();
+        totalMaintenance *= maintenanceMultiplier();
 
         for (BuildingInstance b : buildings) {
             if (b.type.isHouse) {
@@ -1064,6 +1162,8 @@ public class GameState {
             b.monumentUpgradeProgress = data.monumentUpgradeProgress;
             b.ownerX = data.ownerX;
             b.ownerY = data.ownerY;
+            b.exportResource = data.exportResource;
+            b.exportAmount = data.exportAmount;
             return b;
         } catch (IllegalArgumentException e) {
             Gdx.app.error("GameState", "Unknown building type: " + data.id);
