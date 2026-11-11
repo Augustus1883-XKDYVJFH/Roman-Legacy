@@ -29,24 +29,15 @@ public class BuildingInstance {
     public boolean connected = false;
     public boolean hasSteam = false;
     public boolean hasElectricity = false;
-    // ── Logistica (magazzini)
-    // ───────────────────────────────────────────────────
     public boolean hasCarriageLogistics = false;
     public boolean hasTruckLogistics = false;
     public float workforceSatisfaction = 1f;
     public int productionCounter = 0; // per extra ogni 3 cicli
-    // -- Monumenti
-    // --------------------------------------------------------
     public boolean monumentUpgrading = false;
     public float monumentUpgradeProgress = 0f;
-    // ── Popolazione (solo case)
-    // ───────────────────────────────────────────────────
-    /** Abitanti correnti nella casa [0 … houseCap]. */
     public float housePop = 0f;
-    // ── Recinti ──
     public int ownerX = -1, ownerY = -1; // solo recinti: cella root dell'allevamento a cui appartengono
     public float penEfficiency = 1f; // solo allevamenti: recinti costruiti / recinti richiesti
-    // ── Export (solo DOCK) ──
     public String exportResource = null; // id della risorsa del contratto, null = nessun contratto
     public int exportAmount = 0; // quantità ritirata dal contractor a ogni visita
 
@@ -193,8 +184,6 @@ public class BuildingInstance {
         if (type.isHouse)
             return 0f;
         if (type.prod == null && !type.consumableOnly)
-            return 0f;
-        if (type.input == null || type.input.isEmpty())
             return 0f;
         return type.maintenanceCost;
     }

@@ -35,120 +35,73 @@ public class ResourceManager {
 
     public ResourceManager() {
 
-        add("coin", "Coins", 0.78f, 0.66f, 0.13f); // fatto
-        add("population", "Population", 0.80f, 0.50f, 0.30f); // no png
+        add("coin", "Coins", 0.85f, 0.72f, 0.20f);
+        add("population", "Population", 0.80f, 0.50f, 0.30f);
 
-        // catene produttive
-        // pane
-        add("grain", "Grain", 0.85f, 0.70f, 0.20f); // fatto
-        add("flour", "Flour", 0.90f, 0.85f, 0.70f); // fatto
-        add("bread", "Bread", 0.85f, 0.65f, 0.40f); // fatto
+        add("beer", "Beer", 0.90f, 0.65f, 0.15f, 42);
+        add("brass", "Brass", 0.85f, 0.72f, 0.30f, 58);
+        add("bread", "Bread", 0.80f, 0.55f, 0.28f, 64);
+        add("brick", "Brick", 0.70f, 0.30f, 0.20f, 20);
+        add("cable", "Cable", 0.20f, 0.20f, 0.22f, 66);
+        add("cannedfood", "Canned food", 0.55f, 0.35f, 0.25f, 57);
+        add("ceramics", "Ceramics", 0.88f, 0.85f, 0.80f, 29);
+        add("cheese", "Cheese", 0.95f, 0.80f, 0.30f, 29);
+        add("cigars", "Cigars", 0.45f, 0.25f, 0.15f, 122);
+        add("clay", "Clay", 0.72f, 0.48f, 0.30f, 11);
+        add("coal", "Coal", 0.15f, 0.15f, 0.16f, 8);
+        add("coffee", "Coffee", 0.25f, 0.14f, 0.08f, 75);
+        add("coffee_beans", "Coffee beans", 0.35f, 0.20f, 0.12f, 24);
+        add("concrete", "Concrete", 0.62f, 0.62f, 0.60f, 166);
+        add("copper", "Copper", 0.80f, 0.50f, 0.30f, 8);
+        add("cotton", "Cotton", 0.95f, 0.94f, 0.90f, 9);
+        add("electricmotor", "Electric motor", 0.30f, 0.35f, 0.50f, 1588);
+        add("fabric", "Fabric", 0.45f, 0.60f, 0.72f, 28);
+        add("fan", "Fan", 0.70f, 0.70f, 0.72f, 3975);
+        add("fish", "Fish", 0.35f, 0.55f, 0.70f, 18);
+        add("flax", "Flax", 0.85f, 0.80f, 0.55f, 9);
+        add("flour", "Flour", 0.95f, 0.93f, 0.88f, 27);
+        add("fuel", "Fuel", 0.25f, 0.22f, 0.15f, 26);
+        add("fur_coats", "Fur coats", 0.55f, 0.38f, 0.22f, 264);
+        add("glass", "Glass", 0.75f, 0.90f, 0.92f, 29);
+        add("grain", "Grain", 0.85f, 0.70f, 0.20f, 9);
+        add("grapes", "Grapes", 0.45f, 0.20f, 0.45f, 9);
+        add("hops", "Hops", 0.45f, 0.65f, 0.25f, 9);
+        add("iron", "Iron", 0.55f, 0.57f, 0.60f, 8);
+        add("lavander", "Lavander", 0.60f, 0.45f, 0.85f, 9);
+        add("leather", "Leather", 0.50f, 0.30f, 0.18f, 9);
+        add("lightbulb", "Lightbulb", 0.98f, 0.95f, 0.70f, 315);
+        add("marble", "Marble", 0.93f, 0.93f, 0.96f, 16);
+        add("milk", "Milk", 0.97f, 0.96f, 0.92f, 9);
+        add("motor", "Motor", 0.35f, 0.38f, 0.42f, 309);
+        add("oil", "Oil", 0.12f, 0.11f, 0.10f, 6);
+        add("olive", "Olive", 0.30f, 0.40f, 0.15f, 9);
+        add("olive_oil", "Olive oil", 0.55f, 0.65f, 0.20f, 31);
+        add("paper", "Paper", 0.92f, 0.90f, 0.85f, 37);
+        add("perfume", "Perfume", 0.70f, 0.40f, 0.75f, 124);
+        add("plastic", "Plastic", 0.20f, 0.45f, 0.55f, 28);
+        add("purse", "Purse", 0.70f, 0.50f, 0.30f, 101);
+        add("radio", "Radio", 0.40f, 0.30f, 0.20f, 674);
+        add("rubber", "Rubber", 0.20f, 0.20f, 0.20f, 9);
+        add("rum", "Rum", 0.75f, 0.45f, 0.15f, 107);
+        add("saltpeter", "Saltpeter", 0.88f, 0.88f, 0.82f, 18);
+        add("sand", "Sand", 0.93f, 0.87f, 0.60f, 11);
+        add("sewing_machine", "Sewing machine", 0.35f, 0.35f, 0.38f, 88);
+        add("soap", "Soap", 0.90f, 0.88f, 0.75f, 71);
+        add("spectacles", "Spectacles", 0.35f, 0.45f, 0.60f, 215);
+        add("steam_carriage", "Steam carriage", 0.55f, 0.35f, 0.25f, 1416);
+        add("steel", "Steel", 0.60f, 0.63f, 0.68f, 50);
+        add("sugar", "Sugar", 0.95f, 0.95f, 0.92f, 24);
+        add("timber", "Timber", 0.55f, 0.38f, 0.20f, 11);
+        add("tobacco", "Tobacco", 0.75f, 0.60f, 0.25f, 24);
+        add("toga", "Toga", 0.90f, 0.88f, 0.82f, 57);
+        add("tools", "Tools", 0.45f, 0.47f, 0.50f, 54);
+        add("truck", "Truck", 0.45f, 0.55f, 0.35f, 3749);
+        add("window", "Window", 0.60f, 0.78f, 0.85f, 91);
+        add("wine", "Wine", 0.50f, 0.10f, 0.25f, 53);
+        add("wood_log", "Wood log", 0.45f, 0.30f, 0.18f, 9);
+        add("wool", "Wool", 0.92f, 0.90f, 0.85f, 9);
+        add("zinc", "Zinc", 0.70f, 0.72f, 0.75f, 8);
 
-        // acciaio e prodotti ferro
-        add("iron", "Iron", 0.44f, 0.38f, 0.38f); // fatto
-        add("tools", "Tools", 0.40f, 0.35f, 0.35f); // fatto da vedere
-        add("steel", "Steel", 0.31f, 0.36f, 0.44f); // fatto
-
-        // mattoni e prodotti argilla
-        add("clay", "Clay", 0.69f, 0.44f, 0.25f); // fatto
-        add("brick", "Brick", 0.69f, 0.36f, 0.19f); // fatto
-        add("ceramics", "Ceramics", 0.69f, 0.36f, 0.19f); // fatto
-        add("concrete", "Concrete", 0.50f, 0.53f, 0.53f); // fatto
-
-        // finestre
-        add("sand", "Sand", 0.91f, 0.85f, 0.44f); // fatto
-        add("glass", "Glass", 0.44f, 0.66f, 0.69f); // fatto
-        add("window", "Window", 0.44f, 0.66f, 0.69f);
-
-        // toga
-        add("wool", "Wool", 0.88f, 0.85f, 0.75f); // fatto
-        add("flax", "Flax", 0.94f, 0.90f, 0.70f); // fatto
-        add("fabric", "Fabric", 0.50f, 0.67f, 0.72f); // fatto da vedere
-        add("toga", "Toga", 0.50f, 0.66f, 0.72f); // fatto
-
-        // lampadine
-        add("copper", "Copper", 0.75f, 0.44f, 0.25f); // fatto
-        add("cable", "Cable", 0.25f, 0.32f, 0.38f); // fatto da vedere
-        // lucerna electrica
-        add("lightbulb", "Lightbulb", 0.95f, 0.92f, 0.60f); // fatto da vedere
-        add("grapes", "Grapes", 0.50f, 0.25f, 0.50f); // fatto
-        add("wine", "Wine", 0.55f, 0.15f, 0.35f); // fatto
-
-        // plastica e carburante
-        add("oil", "Oil", 0.10f, 0.10f, 0.12f); // fatto da rivedere
-        add("fuel", "Fuel", 0.15f, 0.17f, 0.10f); // fatto
-        add("plastic", "Plastic", 0.18f, 0.30f, 0.28f); // fatto
-
-        // cibo in scatola
-        add("fish", "Fish", 0.23f, 0.50f, 0.66f); // fatto
-        add("cannedfood", "Canned food", 0.38f, 0.47f, 0.31f); // fatto
-
-        // --- birra (NUOVA) ---
-        add("hops", "Hops", 0.35f, 0.76f, 0.25f); // fatto
-        add("beer", "Beer", 0.95f, 0.75f, 0.20f); // fatto
-
-        // --- olio d'oliva (NUOVA) ---
-        add("olive", "Olive", 0.15f, 0.45f, 0.10f); // fatto
-        add("olive_oil", "Olive oil", 0.35f, 0.70f, 0.20f); // fatto
-
-        // sapone e profumi
-        add("lavander", "Lavander", 0.57f, 0.39f, 0.85f); // fatto ritoccare
-        add("soap", "Soap", 0.85f, 0.80f, 0.60f); // fatto da rivedere
-        add("saltpeter", "Saltpeter", 0.82f, 0.85f, 0.69f); // fatto
-        add("perfume", "Perfume", 0f, 0f, 0f); // fatto
-
-        // --- formaggi (NUOVA) ---
-        add("milk", "Milk", 0.95f, 0.92f, 0.88f); // fatto da rivedere
-        add("cheese", "CHeese", 0.88f, 0.75f, 0.35f); // fatto
-
-        // occhiali
-        add("zinc", "Zinc", 0.65f, 0.65f, 0.70f); // fatto
-        add("brass", "Brass", 0.80f, 0.70f, 0.25f); // fatto
-        // ocularia
-        add("spectacles", "Spectacles", 0.40f, 0.55f, 0.70f); // fatto da vedere
-
-        // --- marmo (NUOVA) ---
-        add("marble", "Marble", 0.90f, 0.90f, 0.95f); // fatto
-
-        // --- cuoio e pelletteria (NUOVA) ---
-        add("leather", "Leather", 0.55f, 0.35f, 0.20f); // fatto
-        add("purse", "Purse", 0.75f, 0.55f, 0.25f); // fatto
-
-        // --- caffè (NUOVA) ---
-        add("coffee_beans", "Coffee beans", 0.40f, 0.20f, 0.10f); // fatto
-        add("coffee", "Coffee", 0.35f, 0.18f, 0.08f); // fatto da vedere/ritoccare
-
-        // --- tabacco e sigari (NUOVA) ---
-        add("tobacco", "Tobacco", 0.86f, 0.70f, 0.24f); // fatto
-        add("cigars", "Cigars", 0.80f, 0.60f, 0.20f); // fatto da rivedere
-
-        // --- zucchero e rum (NUOVA) ---
-        add("sugar", "Sugar", 0.87f, 0.90f, 0.52f); // fatto da rifinire
-        add("rum", "Rum", 0.70f, 0.35f, 0.20f); // fatto
-
-        // paper
-        add("paper", "Paper", 0f, 0f, 0f); // fatto
-
-        // prodotti base con più scopi
-        add("rubber", "Rubber", 0.25f, 0.30f, 0.18f); // fatto
-        add("coal", "Coal", 0.16f, 0.16f, 0.16f); // fatto
-        add("timber", "Timber", 0.29f, 0.41f, 0.21f); // fatto
-
-        add("wood_log", "Wood log", 0f, 0f, 0f, 9);
-        add("fan", "Fan", 0f, 0f, 0f);
-        add("fur_coats", "Fur coats", 0f, 0f, 0f);
-        add("sewing_machine", "Sewing machine", 0f, 0f, 0f);
-
-        // prodotti avanzati misti
-        // motor
-        add("motor", "Motor", 0.25f, 0.28f, 0.34f); // fatto da rivedere
-        add("electricmotor", "Electric motor", 0.25f, 0.28f, 0.44f);
-        // radius
-        add("radio", "Radio", 0.30f, 0.35f, 0.40f);
-        add("steam_carriage", "Steam carriage", 0.8f, 0.7f, 0.4f);
-        add("truck", "Truck", 0.4f, 0.7f, 0.3f);
-
-        // Valori iniziali — le monete arrivano dall'evento THE_NEW_CITY
         set("population", 0f);
     }
 

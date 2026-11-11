@@ -290,7 +290,7 @@ public class GameState {
         for (BuildingInstance b : buildings) {
             if (b.type.isHouse) {
                 taxes += b.calculateTaxesPerMinute();
-            } else if (b.type.input != null && !b.type.input.isEmpty() && !b.paused && b.connected) {
+            } else if (!b.paused && b.connected) {
                 maintenance += b.getMaintenancePerMinute();
             }
         }
@@ -374,10 +374,8 @@ public class GameState {
             }
 
             // Manutenzione
-            if (!b.type.isHouse && b.type.input != null && !b.type.input.isEmpty()) {
-                if (!b.paused && b.connected) {
-                    totalMaintenance += b.getMaintenancePerMinute() / 60f;
-                }
+            if (!b.type.isHouse && !b.paused && b.connected) {
+                totalMaintenance += b.getMaintenancePerMinute() / 60f;
             }
         }
 
