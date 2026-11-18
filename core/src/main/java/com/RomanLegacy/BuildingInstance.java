@@ -176,7 +176,7 @@ public class BuildingInstance {
         if (!type.isHouse)
             return 0f;
         int level = type.houseLevel != null ? type.houseLevel : 0;
-        float baseTaxPerPerson = 2.5f + (level * 2.5f);
+        float baseTaxPerPerson = 4f + (level * 2f);
         return housePop * baseTaxPerPerson;
     }
 

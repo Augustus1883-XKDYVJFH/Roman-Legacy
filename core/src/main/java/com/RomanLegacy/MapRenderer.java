@@ -43,11 +43,8 @@ public class MapRenderer {
             1.12f, // PEAK
     };
 
-    // Amplitude of the deterministic per-tile color jitter (retro textured look).
     private static final float TILE_JITTER = 0.045f;
-    // Below this zoom the map is close enough to show tile borders.
     private static final float GRID_ZOOM_THRESHOLD = 0.9f;
-
     private static final Color COL_CANPLACE = new Color(0, 1, 0, 0.35f);
     private static final Color COL_CANTPLACE = new Color(1, 0, 0, 0.35f);
     private static final Color COL_CANPLACE_CONNECTED = new Color(0, 1, 0, 0.45f);
@@ -261,10 +258,10 @@ public class MapRenderer {
             return;
 
         GlyphLayout gl = new GlyphLayout();
-        float iconSize = 20f;
-        float gap = 4f;
-        float padX = 6f;
-        float padY = 4f;
+        float iconSize = 30f;
+        float gap = 8f;
+        float padX = 12f;
+        float padY = 10f;
 
         java.util.List<float[]> boxes = new java.util.ArrayList<>();
 
@@ -393,7 +390,8 @@ public class MapRenderer {
             sr.begin(ShapeRenderer.ShapeType.Filled);
             for (int[] cell : input.getHouseLine(input.houseStartX, input.houseStartY, cx, cy)) {
                 sr.setColor(input.canPlace(input.selectedBuilding, cell[0], cell[1])
-                        ? COL_CANPLACE_CONNECTED : COL_CANTPLACE);
+                        ? COL_CANPLACE_CONNECTED
+                        : COL_CANTPLACE);
                 sr.rect(cell[0] * cs, cell[1] * cs, previewW * cs, previewH * cs);
             }
             sr.end();

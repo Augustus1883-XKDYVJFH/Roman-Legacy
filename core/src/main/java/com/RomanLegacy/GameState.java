@@ -36,7 +36,7 @@ public class GameState {
     public final EventManager eventManager;
 
     // ── Export / contractor ──────────────────────────────────────────────────────
-    public static final float CONTRACTOR_INTERVAL = 30f; // 20 minuti di gioco
+    public static final float CONTRACTOR_INTERVAL = 300f; // 5 minuti di gioco
     public static final float CONTRACTOR_MSG_SECS = 3f;
     public static final float DOCK_BASE_PRICE = 2000f;
 

@@ -857,7 +857,7 @@ public class BuildingType {
                         "#2a4a6a", 4, 4)
                         .cost("coin", 800, "timber", 50)
                         .terrain(1)
-                        .unlockEvent("OIL_DISCOVERY")
+                        .unlockEvent("THE_NEW_CITY")
                         .build();
 
         // ── CASE ─────────────────────────────────────────────────────────────────────
@@ -920,7 +920,7 @@ public class BuildingType {
                         .cost("coin", 100, "timber", 4)
                         .prod("leather", 1, 10)
                         .requires(ConnectionType.ROAD)
-                        .unlockEvent("PATRICIANS")
+                        .unlockEvent("THE_NEW_CITY")
                         .workforce(0, 5)
                         .pens("COW_PEN_1", "COW_PEN_2", "COW_PEN_3")
                         .build();
@@ -929,7 +929,7 @@ public class BuildingType {
                         .cost("coin", 100, "timber", 4)
                         .prod("milk", 1, 10)
                         .requires(ConnectionType.ROAD)
-                        .unlockEvent("ARTISANS")
+                        .unlockEvent("THE_NEW_CITY")
                         .workforce(0, 5)
                         .pens("GOAT_PEN_1", "GOAT_PEN_2", "GOAT_PEN_3")
                         .build();
