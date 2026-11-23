@@ -932,23 +932,26 @@ public class GameInputHandler {
         if (!canPlace(selectedBuilding, cx, cy))
             return false;
 
-        state.resources.spend(costFor(selectedBuilding));
-        BuildingInstance newBuilding = new BuildingInstance(selectedBuilding, cx, cy);
+        BuildingType placed = selectedBuilding; // loadTab() più sotto può azzerare selectedBuilding
+
+        state.resources.spend(costFor(placed));
+        BuildingInstance newBuilding = new BuildingInstance(placed, cx, cy);
         newBuilding.rotated = buildingRotated;
-        if (selectedBuilding.isPen() && penOwner != null) {
+        if (placed.isPen() && penOwner != null) {
             newBuilding.ownerX = penOwner.rootX;
             newBuilding.ownerY = penOwner.rootY;
         }
         state.buildings.add(newBuilding);
-        state.ideologyManager.applyShift(selectedBuilding.axisShift);
+        state.ideologyManager.applyShift(placed.axisShift);
         if (updateConnections)
             state.updateAllConnections();
         if (autosave)
             SaveManager.getInstance().autosave(state, mapCamera.position.x, mapCamera.position.y, mapCamera.zoom);
-        if (selectedBuilding == BuildingType.OIL_DOCK)
-            loadTab(activeTab); // sparisce subito dalla barra
-        if (selectedBuilding.isPen())
+
+        if (placed.isPen())
             finishPenPlacement();
+        if (placed == BuildingType.OIL_DOCK)
+            loadTab(activeTab); // unico per mappa: sparisce subito dalla barra
         return true;
     }
 

@@ -184,43 +184,37 @@ public class ConsumptionScreen implements Screen {
             statsMap.put(r.id, rs);
         }
 
-        for (BuildingInstance b : gameState.buildings) {
-            if (b.type.prod != null && !b.paused && b.connected) {
-                float prod = b.type.rate * (60f / b.type.cycleTime) * b.penEfficiency;
-                ResourceStats rs = statsMap.get(b.type.prod);
-                if (rs != null)
-                    rs.production += prod;
-            }
+        for (List<BuildingInstance> world : List.of(gameState.buildingsOld, gameState.buildingsNew)) {
+            float consumptionMultiplier = gameState.getConsumptionMultiplier(world);
+            for (BuildingInstance b : world) {
+                boolean running = !b.paused && b.connected && b.hasRequiredPower();
+                float speed = b.getSpeedMultiplier();
 
-            if (b.type.input != null && !b.paused && b.connected) {
-                for (Map.Entry<String, Float> e : b.type.input.entrySet()) {
-                    float cons = e.getValue() * (60f / b.type.cycleTime);
-                    ResourceStats rs = statsMap.get(e.getKey());
+                if (b.type.prod != null && running) {
+                    float prod = b.type.rate * (60f / b.type.cycleTime) * speed;
+                    ResourceStats rs = statsMap.get(b.type.prod);
                     if (rs != null)
-                        rs.consumption += cons;
+                        rs.production += prod;
                 }
-            }
 
-            if (b.type.isHouse && b.type.houseNeeds != null && b.type.houseNeeds.length > 0) {
-                int cap = b.type.houseCap();
-                if (cap > 0) {
-                    boolean needsSatisfied = true;
-                    for (String need : b.type.houseNeeds) {
-                        if (gameState.resources.get(need) < 0.05f) {
-                            needsSatisfied = false;
-                            break;
-                        }
+                if (b.type.input != null && running) {
+                    for (Map.Entry<String, Float> e : b.type.input.entrySet()) {
+                        float cons = e.getValue() * (60f / b.type.cycleTime) * speed;
+                        ResourceStats rs = statsMap.get(e.getKey());
+                        if (rs != null)
+                            rs.consumption += cons;
                     }
+                }
 
-                    if (needsSatisfied) {
-                        float consumptionMultiplier = gameState.getConsumptionMultiplier();
-                        float perTick = (0.006f * (((b.type.houseLevel + 1) * 0.1f))) * consumptionMultiplier;
-                        float perMinute = perTick * 60f;
-                        for (String need : b.type.houseNeeds) {
-                            ResourceStats rs = statsMap.get(need);
-                            if (rs != null)
-                                rs.consumption += perMinute;
-                        }
+                // Domanda delle case collegate: stessa formula della simulazione, anche se il
+                // bene manca
+                if (b.type.isHouse && b.connected && b.type.houseNeeds != null && b.type.houseNeeds.length > 0) {
+                    float perMinute = b.getNeedConsumptionPerTick(consumptionMultiplier)
+                            * (60f / GameState.POP_INTERVAL);
+                    for (String need : b.type.houseNeeds) {
+                        ResourceStats rs = statsMap.get(need);
+                        if (rs != null)
+                            rs.consumption += perMinute;
                     }
                 }
             }
@@ -229,17 +223,17 @@ public class ConsumptionScreen implements Screen {
         resourceStats = new ArrayList<>(statsMap.values());
         for (ResourceStats rs : resourceStats) {
             rs.balance = rs.production - rs.consumption;
-            rs.isDeficit = rs.balance < -0.1f && rs.consumption > 0.1f;
+            rs.isDeficit = rs.balance < -0.0005f && rs.consumption > 0.0005f;
         }
 
-        resourceStats.removeIf(rs -> rs.production < 0.01f && rs.consumption < 0.01f && rs.amount < 0.01f);
+        resourceStats.removeIf(rs -> rs.production < 0.0005f && rs.consumption < 0.0005f && rs.amount < 0.01f);
 
         resourceStats.sort((a, b) -> {
             if (a.isDeficit != b.isDeficit)
                 return a.isDeficit ? -1 : 1;
 
-            boolean aSignificant = Math.abs(a.balance) > 0.01f;
-            boolean bSignificant = Math.abs(b.balance) > 0.01f;
+            boolean aSignificant = Math.abs(a.balance) > 0.0005f;
+            boolean bSignificant = Math.abs(b.balance) > 0.0005f;
 
             if (aSignificant != bSignificant)
                 return aSignificant ? -1 : 1; // le significative vengono prima, sempre
@@ -372,8 +366,8 @@ public class ConsumptionScreen implements Screen {
             drawRight(game.fonts.large, formatRate(rs.consumption), COL_CONS_R, textY);
 
             String balanceStr = formatBalance(rs.balance);
-            Color balanceColor = rs.balance >= 1 ? new Color(0.3f, 0.9f, 0.3f, 1f)
-                    : (rs.balance <= -1 ? new Color(0.9f, 0.3f, 0.3f, 1f) : new Color(0.7f, 0.7f, 0.4f, 1f));
+            Color balanceColor = rs.balance >= 0.0005f ? new Color(0.3f, 0.9f, 0.3f, 1f)
+                    : (rs.balance <= -0.0005f ? new Color(0.9f, 0.3f, 0.3f, 1f) : new Color(0.7f, 0.7f, 0.4f, 1f));
             game.fonts.large.setColor(balanceColor);
             drawRight(game.fonts.large, balanceStr, COL_BAL_R, textY);
             batch.end();
@@ -394,17 +388,19 @@ public class ConsumptionScreen implements Screen {
     }
 
     private String formatRate(float rate) {
-        if (rate < 0.0005f)
+        if (rate < 0.00005f)
             return "0";
+        if (rate < 0.01f)
+            return String.format("%.4f", rate);
         if (rate < 0.1f)
-            return String.format("%.3f", rate); // consumi minuscoli (es. cabin): sempre visibili
+            return String.format("%.3f", rate);
         if (rate < 10f)
             return String.format("%.1f", rate);
         return String.valueOf((int) rate);
     }
 
     private String formatBalance(float balance) {
-        if (Math.abs(balance) < 0.0005f)
+        if (Math.abs(balance) < 0.00005f)
             return "0";
         String sign = balance > 0 ? "+" : "-";
         return sign + formatRate(Math.abs(balance));

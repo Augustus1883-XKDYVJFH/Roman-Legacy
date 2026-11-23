@@ -43,6 +43,17 @@ public class MapRenderer {
             1.12f, // PEAK
     };
 
+    private final java.util.List<BuildingInstance> fallbackBuildings = new java.util.ArrayList<>();
+    private final java.util.List<BuildingInstance> spriteBuildings = new java.util.ArrayList<>();
+    private final java.util.List<Texture> spriteTextures = new java.util.ArrayList<>();
+
+    private static boolean isVisible(BuildingInstance bi, float left, float right, float bottom, float top, int cs) {
+        float x = bi.rootX * cs;
+        float y = bi.rootY * cs;
+        return x + bi.effectiveW() * cs >= left && x <= right
+                && y + bi.effectiveH() * cs >= bottom && y <= top;
+    }
+
     private static final float TILE_JITTER = 0.045f;
     private static final float GRID_ZOOM_THRESHOLD = 0.9f;
     private static final Color COL_CANPLACE = new Color(0, 1, 0, 0.35f);
@@ -137,12 +148,35 @@ public class MapRenderer {
 
     private final Color tmpCol = new Color();
 
-    public void drawBuildings(GameState state, GameInputHandler input) {
+    public void drawBuildings(GameState state, GameInputHandler input, SpriteBatch batch, SpriteManager sprites) {
         int cs = GameState.CELL_SIZE;
+
+        float halfW = mapCamera.viewportWidth / 2f * mapCamera.zoom;
+        float halfH = mapCamera.viewportHeight / 2f * mapCamera.zoom;
+        float left = mapCamera.position.x - halfW;
+        float right = mapCamera.position.x + halfW;
+        float bottom = mapCamera.position.y - halfH;
+        float top = mapCamera.position.y + halfH;
+
+        // Solo gli edifici visibili; con sprite o senza (rettangolo di riserva)
+        fallbackBuildings.clear();
+        spriteBuildings.clear();
+        spriteTextures.clear();
+        for (BuildingInstance bi : state.buildings) {
+            if (!isVisible(bi, left, right, bottom, top, cs))
+                continue;
+            Texture tex = sprites != null ? sprites.getBuildingSprite(bi.type, bi.rotated) : null;
+            if (tex != null) {
+                spriteBuildings.add(bi);
+                spriteTextures.add(tex);
+            } else {
+                fallbackBuildings.add(bi);
+            }
+        }
 
         sr.setProjectionMatrix(mapCamera.combined);
         sr.begin(ShapeRenderer.ShapeType.Filled);
-        for (BuildingInstance bi : state.buildings) {
+        for (BuildingInstance bi : fallbackBuildings) {
             Color base = tmpCol.set(Color.valueOf(bi.type.colorHex));
             float r = base.r, g = base.g, b = base.b;
             for (int dy = 0; dy < bi.effectiveH(); dy++) {
@@ -156,13 +190,26 @@ public class MapRenderer {
         }
         sr.end();
 
-        // Contorno nero sottile standard
+        // Contorno nero sottile: solo per i rettangoli di riserva
         sr.begin(ShapeRenderer.ShapeType.Line);
         sr.setColor(0, 0, 0, 0.6f);
-        for (BuildingInstance bi : state.buildings) {
+        for (BuildingInstance bi : fallbackBuildings) {
             sr.rect(bi.rootX * cs, bi.rootY * cs, bi.effectiveW() * cs, bi.effectiveH() * cs);
         }
         sr.end();
+
+        // Sprite pixel art
+        if (!spriteBuildings.isEmpty()) {
+            batch.setProjectionMatrix(mapCamera.combined);
+            batch.begin();
+            batch.setColor(1f, 1f, 1f, 1f);
+            for (int i = 0; i < spriteBuildings.size(); i++) {
+                BuildingInstance bi = spriteBuildings.get(i);
+                batch.draw(spriteTextures.get(i), bi.rootX * cs, bi.rootY * cs,
+                        bi.effectiveW() * cs, bi.effectiveH() * cs);
+            }
+            batch.end();
+        }
 
         // Bordo rosso spesso: edifici scollegati, sempre visibile
         sr.begin(ShapeRenderer.ShapeType.Filled);
@@ -226,6 +273,77 @@ public class MapRenderer {
                 sr.end();
             }
         }
+    }
+
+    /**
+     * Veicoli estetici sulle strade: sprite se c'è, altrimenti un rettangolino
+     * colorato orientato.
+     */
+    public void drawVehicles(GameState state, SpriteBatch batch, SpriteManager sprites) {
+        java.util.List<Vehicle> list = state.vehicleManager.vehicles;
+        if (list.isEmpty())
+            return;
+        int cs = GameState.CELL_SIZE;
+
+        float halfW = mapCamera.viewportWidth / 2f * mapCamera.zoom;
+        float halfH = mapCamera.viewportHeight / 2f * mapCamera.zoom;
+        float left = mapCamera.position.x - halfW - cs;
+        float right = mapCamera.position.x + halfW + cs;
+        float bottom = mapCamera.position.y - halfH - cs;
+        float top = mapCamera.position.y + halfH + cs;
+
+        // Con sprite
+        boolean batchOpen = false;
+        for (Vehicle v : list) {
+            float px = v.x * cs;
+            float py = v.y * cs;
+            if (px < left || px > right || py < bottom || py > top)
+                continue;
+            Texture tex = sprites != null ? sprites.getVehicleSprite(v.kind) : null;
+            if (tex == null)
+                continue;
+            if (!batchOpen) {
+                batch.setProjectionMatrix(mapCamera.combined);
+                batch.begin();
+                batch.setColor(1f, 1f, 1f, 1f);
+                batchOpen = true;
+            }
+            batch.draw(tex, px - cs / 2f, py - cs / 2f, cs / 2f, cs / 2f, cs, cs, 1f, 1f, v.angle,
+                    0, 0, tex.getWidth(), tex.getHeight(), false, false);
+        }
+        if (batchOpen)
+            batch.end();
+
+        // Senza sprite: rettangolino colorato
+        boolean srOpen = false;
+        for (Vehicle v : list) {
+            float px = v.x * cs;
+            float py = v.y * cs;
+            if (px < left || px > right || py < bottom || py > top)
+                continue;
+            if (sprites != null && sprites.getVehicleSprite(v.kind) != null)
+                continue;
+            if (!srOpen) {
+                sr.setProjectionMatrix(mapCamera.combined);
+                sr.begin(ShapeRenderer.ShapeType.Filled);
+                srOpen = true;
+            }
+            switch (v.kind) {
+                case CART:
+                    sr.setColor(0.55f, 0.35f, 0.15f, 1f);
+                    break;
+                case STEAM_CARRIAGE:
+                    sr.setColor(0.3f, 0.3f, 0.35f, 1f);
+                    break;
+                default:
+                    sr.setColor(0.2f, 0.5f, 0.3f, 1f);
+            }
+            float len = cs * 0.7f;
+            float wid = cs * 0.4f;
+            sr.rect(px - len / 2f, py - wid / 2f, len / 2f, wid / 2f, len, wid, 1f, 1f, v.angle);
+        }
+        if (srOpen)
+            sr.end();
     }
 
     /** True se targetType riceve davvero un beneficio dal raggio di sourceType. */

@@ -339,7 +339,8 @@ public class GameScreen implements Screen {
 
         mapRenderer.drawMap(state);
         mapRenderer.drawDeposits(state);
-        mapRenderer.drawBuildings(state, input);
+        mapRenderer.drawBuildings(state, input, batch, game.sprites);
+        mapRenderer.drawVehicles(state, batch, game.sprites);
 
         if (input.selectedBuilding != null && input.previewCellX >= 0
                 && input.previewCellY >= 0)
@@ -425,5 +426,11 @@ public class GameScreen implements Screen {
         float paid = state.tickContractor(delta);
         if (paid > 0f && game.audio != null)
             game.audio.playSound(AudioManager.SFX_CONTRACTOR);
+
+        float halfW = mapCamera.viewportWidth / 2f * mapCamera.zoom;
+        float halfH = mapCamera.viewportHeight / 2f * mapCamera.zoom;
+        state.vehicleManager.tick(state, delta,
+                mapCamera.position.x - halfW, mapCamera.position.x + halfW,
+                mapCamera.position.y - halfH, mapCamera.position.y + halfH);
     }
 }

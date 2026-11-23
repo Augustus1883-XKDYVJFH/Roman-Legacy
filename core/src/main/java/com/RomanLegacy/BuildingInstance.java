@@ -72,7 +72,8 @@ public class BuildingInstance {
 
         float elapsed = Math.min(0.5f, delta);
         float cycle = type.cycleTime > 0 ? type.cycleTime : 1f;
-        float speedMulti = 1.0f;
+        float speedMulti = getLogisticsMultiplier();
+        float effWorkforce = getWorkforceEfficiency();
 
         if (hasCarriageLogistics && hasTruckLogistics) {
             speedMulti = 2.5f;
@@ -82,12 +83,6 @@ public class BuildingInstance {
             speedMulti = 1.5f;
         }
 
-        float effWorkforce = 0.4f + 0.6f * workforceSatisfaction;
-
-        // Il progresso avanza sempre, indipendentemente dalla disponibilità di
-        // input: si ferma solo a progress=1 ("pronto, in attesa di risorse")
-        // invece di congelarsi a ogni tick in cui manca anche solo momentaneamente
-        // l'input richiesto.
         if (progress < 1f) {
             progress += (elapsed / cycle) * speedMulti * effWorkforce * penEfficiency;
             if (progress > 1f)
@@ -126,7 +121,21 @@ public class BuildingInstance {
     }
 
     // ── Tick popolazione
-    public void tickHouse(ResourceManager resources, GameState state) {
+    /**
+     * Consumo di ciascun bene di necessità per tick di popolazione: proporzionale
+     * alla popolazione, anche in grace.
+     */
+    public float getNeedConsumptionPerTick(float consumptionMultiplier) {
+        if (!type.isHouse || type.houseLevel == null)
+            return 0f;
+        int cap = type.houseCap();
+        if (cap == 0)
+            return 0f;
+        float fill = Math.min(1f, Math.max(0f, housePop / cap));
+        return 0.006f * ((type.houseLevel + 1) * 0.1f) * consumptionMultiplier * fill;
+    }
+
+    public void tickHouse(ResourceManager resources, float consumptionMultiplier) {
         if (!type.isHouse)
             return;
         if (type.houseNeeds == null || type.houseNeeds.length == 0)
@@ -139,6 +148,7 @@ public class BuildingInstance {
         float graceCap = cap * 0.30f;
         boolean inGrace = (int) housePop < (int) graceCap;
 
+        // Bisogni soddisfatti: servono per crescere, non per consumare
         boolean needsSatisfied = true;
         for (String need : type.houseNeeds) {
             if (resources.get(need) < 0.05f) {
@@ -147,12 +157,14 @@ public class BuildingInstance {
             }
         }
 
-        if (needsSatisfied) {
-            float consumptionMultiplier = state.getConsumptionMultiplier();
-            for (String need : type.houseNeeds) {
-                float consumption = (0.006f * (((type.houseLevel + 1) * 0.1f))) * consumptionMultiplier;
-                resources.add(need, -consumption);
-            }
+        // Consumo: sempre, bene per bene, proporzionale alla popolazione (anche in
+        // grace).
+        // resources.add() non scende sotto zero, quindi un bene finito semplicemente
+        // non si consuma.
+        float perNeed = getNeedConsumptionPerTick(consumptionMultiplier);
+        if (perNeed > 0f) {
+            for (String need : type.houseNeeds)
+                resources.add(need, -perNeed);
         }
 
         if ((inGrace || needsSatisfied) && housePop < cap) {
@@ -167,7 +179,6 @@ public class BuildingInstance {
     }
 
     // ── Tasse e manutenzione ─────────────────────────────────────────────────
-
     /**
      * Calcola le tasse generate da questa casa al minuto.
      * Le tasse sono proporzionali alla popolazione e al livello della casa.
@@ -262,6 +273,44 @@ public class BuildingInstance {
             return true;
         }
         return false;
+    }
+
+    /** Moltiplicatore di velocità dato dai magazzini nel raggio. */
+    public float getLogisticsMultiplier() {
+        if (hasCarriageLogistics && hasTruckLogistics)
+            return 2.5f;
+        if (hasTruckLogistics)
+            return 2.0f;
+        if (hasCarriageLogistics)
+            return 1.5f;
+        return 1.0f;
+    }
+
+    /** Efficienza della manodopera: da 0,4 (nessun operaio) a 1,0 (tutti). */
+    public float getWorkforceEfficiency() {
+        return 0.4f + 0.6f * workforceSatisfaction;
+    }
+
+    /**
+     * Velocità effettiva rispetto al ciclo base: logistica x manodopera x
+     * recinti/campi.
+     */
+    public float getSpeedMultiplier() {
+        return getLogisticsMultiplier() * getWorkforceEfficiency() * penEfficiency;
+    }
+
+    /** True se l'energia richiesta (vapore/elettricità) è presente. */
+    public boolean hasRequiredPower() {
+        switch (type.requiredPower) {
+            case STEAM:
+                return hasSteam;
+            case ELECTRICITY:
+                return hasElectricity;
+            case BOTH:
+                return hasSteam && hasElectricity;
+            default:
+                return true;
+        }
     }
 
     // ── Utilità

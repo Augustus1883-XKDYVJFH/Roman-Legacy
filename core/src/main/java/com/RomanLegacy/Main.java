@@ -15,6 +15,7 @@ public class Main extends Game {
     public IconManager icons;
     public SteamManager steam;
     public AchievementManager achievements;
+    public SpriteManager sprites;
 
     private Cursor customCursor;
 
@@ -49,6 +50,7 @@ public class Main extends Game {
         audio = new AudioManager();
         icons = new IconManager();
         steam = new SteamManager();
+        sprites = new SpriteManager();
         achievements = new AchievementManager(steam);
 
         achievements.checkFirstLaunch(GameSettings.get());
@@ -92,6 +94,8 @@ public class Main extends Game {
             icons.dispose();
         if (steam != null)
             steam.dispose();
+        if (sprites != null)
+            sprites.dispose();
         if (customCursor != null)
             customCursor.dispose();
     }

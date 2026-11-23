@@ -618,6 +618,11 @@ public class HudRenderer {
         String statusText = h.paused ? Localization.get("hud.prod.paused") : Localization.get("hud.prod.producing");
         Color statusColor = h.paused ? Color.valueOf("cc8844")
                 : (h.type.consumableOnly ? Color.valueOf("55aacc") : Color.valueOf("55cc55"));
+        boolean isWarehouse = h.type == BuildingType.WAREHOUSE_CARRIAGE || h.type == BuildingType.WAREHOUSE_TRUCK;
+        if (isWarehouse && !h.paused && !state.isWarehouseActive(h)) {
+            statusText = Localization.get("hud.prod.warehouse_inactive");
+            statusColor = Color.valueOf("cc8844");
+        }
         b.statusLine = new PanelLine(game.fonts.normal, statusText, statusColor, 26f);
 
         // Recinti: una cella per tipo, con stato (costruito / costruibile / non
@@ -652,6 +657,15 @@ public class HudRenderer {
                     count >= cap ? Color.valueOf("55cc55") : Color.valueOf("cc8844"), 18f));
             b.hasFieldButton = count < cap;
         }
+
+        int speedPct = Math.round(h.getSpeedMultiplier() * 100f);
+        b.powerLines.add(new PanelLine(game.fonts.small,
+                Localization.format("hud.prod.speed", speedPct,
+                        String.format("%.1f", h.getLogisticsMultiplier()),
+                        Math.round(h.getWorkforceEfficiency() * 100f)),
+                speedPct > 100 ? Color.valueOf("55cc55")
+                        : (speedPct < 100 ? Color.valueOf("cc8844") : COL_TEXT_GRAY),
+                18f));
 
         b.hasInput = h.type.input != null && !h.type.input.isEmpty();
         if (b.hasInput) {

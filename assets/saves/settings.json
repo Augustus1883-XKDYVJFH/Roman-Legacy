@@ -26,8 +26,8 @@ brightness: 1
 autoSaveInterval: 60
 unlockedAchievements: []
 firstLaunchAchievementGranted: true
-buildingPanelOpens: 251
-factionPanelOpens: 0
-balanceOpens: 50
+buildingPanelOpens: 475
+factionPanelOpens: 1
+balanceOpens: 90
 language: en
 }

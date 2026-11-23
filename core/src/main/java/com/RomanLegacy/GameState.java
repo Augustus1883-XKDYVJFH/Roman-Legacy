@@ -34,6 +34,7 @@ public class GameState {
     public final FactionManager factionManager;
     public final IdeologyManager ideologyManager;
     public final EventManager eventManager;
+    public final VehicleManager vehicleManager = new VehicleManager();
 
     // ── Export / contractor ──────────────────────────────────────────────────────
     public static final float CONTRACTOR_INTERVAL = 300f; // 5 minuti di gioco
@@ -96,6 +97,50 @@ public class GameState {
     public Difficulty difficulty = Difficulty.MEDIUM;
 
     // ── Costruttori ──────────────────────────────────────────────────────────────
+    /**
+     * Servizi e manodopera di una mappa: ogni mondo ha la sua città. Risorse e
+     * monete restano condivise.
+     */
+    public static class WorldStats {
+        final Map<ServiceCategory, Float> totalCapacity = new HashMap<>();
+        final Map<ServiceCategory, Float> totalConsumption = new HashMap<>();
+        final Map<ServiceCategory, Float> serviceSatisfaction = new HashMap<>();
+        final Map<ConsumptionServiceCategory, Float> consumptionServiceSatisfaction = new HashMap<>();
+        final float[] classPopulation = new float[BuildingType.SOCIAL_CLASS_NAMES.length];
+        final float[] classWorkforceSatisfaction = new float[BuildingType.SOCIAL_CLASS_NAMES.length];
+        final boolean[] classHasDemand = new boolean[BuildingType.SOCIAL_CLASS_NAMES.length];
+        final float[] classWorkforceDemand = new float[BuildingType.SOCIAL_CLASS_NAMES.length];
+
+        /** Moltiplicatore tasse dato dai servizi a capacità di questa mappa. */
+        float incomeMultiplier() {
+            float bonus = 0f;
+            for (ServiceCategory cat : ServiceCategory.values())
+                bonus += CAPACITY_SERVICE_BONUS_PER_CAT * serviceSatisfaction.getOrDefault(cat, 0f);
+            return 1f + bonus;
+        }
+
+        /** Moltiplicatore consumo case dato dai servizi a consumo di questa mappa. */
+        float consumptionMultiplier() {
+            float reduction = 0f;
+            for (ConsumptionServiceCategory cat : ConsumptionServiceCategory.values())
+                reduction += CONSUMPTION_SERVICE_REDUCTION_PER_CAT
+                        * consumptionServiceSatisfaction.getOrDefault(cat, 0f);
+            return Math.max(0f, 1f - reduction);
+        }
+    }
+
+    private final WorldStats statsOld = new WorldStats();
+    private final WorldStats statsNew = new WorldStats();
+    /** Statistiche della mappa visualizzata (come "buildings"). */
+    private WorldStats stats = statsOld;
+
+    private WorldStats statsFor(List<BuildingInstance> world) {
+        return world == buildingsNew ? statsNew : statsOld;
+    }
+
+    private List<List<BuildingInstance>> worlds() {
+        return List.of(buildingsOld, buildingsNew);
+    }
 
     /**
      * Costruttore con seed esplicito — usato al caricamento del salvataggio
@@ -139,9 +184,11 @@ public class GameState {
                 terrainMapNew = new MapGenerator().generate(MAP_WIDTH, MAP_HEIGHT, 5.0);
             terrainMap = terrainMapNew;
             buildings = buildingsNew;
+            stats = statsNew;
         } else {
             terrainMap = terrainMapOld;
             buildings = buildingsOld;
+            stats = statsOld;
         }
 
         // I depositi non sono salvati: si rigenerano dallo stesso seed, quindi tornano
@@ -211,8 +258,19 @@ public class GameState {
         eventManager.deserializeFiredEvents(save.firedEvents);
         eventManager.restorePendingEvent(save.pendingEventId);
 
-        // 11. Ricalcola connessioni
+        // 11. Ricalcola connessioni, energia e logistica di ENTRAMBI i mondi (ora
+        // simulano insieme)
+        List<BuildingInstance> visibleBuildings = buildings;
+        WorldStats visibleStats = stats;
+        buildings = buildingsOld;
+        stats = statsOld;
         updateAllConnections();
+        buildings = buildingsNew;
+        stats = statsNew;
+        updateAllConnections();
+        buildings = visibleBuildings;
+        stats = visibleStats;
+        vehicleManager.clear();
     }
 
     /**
@@ -276,40 +334,127 @@ public class GameState {
         return total;
     }
 
-    public float taxMultiplier() {
-        return getIncomeMultiplier() * difficulty.incomeMultiplier * TAX_SCALE;
+    /**
+     * Moltiplicatore finale sulle tasse di una mappa: servizi x difficoltà x scala
+     * globale.
+     */
+    public float taxMultiplier(WorldStats ws) {
+        return ws.incomeMultiplier() * difficulty.incomeMultiplier * TAX_SCALE;
+    }
+
+    public float getIncomeMultiplier() {
+        return stats.incomeMultiplier();
+    }
+
+    public float getConsumptionMultiplier() {
+        return stats.consumptionMultiplier();
+    }
+
+    /**
+     * Moltiplicatore di consumo delle case di una mappa precisa (serve alla
+     * schermata Bilancio).
+     */
+    public float getConsumptionMultiplier(List<BuildingInstance> world) {
+        return statsFor(world).consumptionMultiplier();
+    }
+
+    /**
+     * Bilancio monete/min di ENTRAMBI i mondi (tasse - manutenzione), come in
+     * tickPopulation().
+     */
+    public float getCoinBalancePerMinute() {
+        float net = 0f;
+        for (List<BuildingInstance> world : worlds()) {
+            float taxMult = taxMultiplier(statsFor(world));
+            for (BuildingInstance b : world) {
+                if (b.type.isHouse) {
+                    net += b.calculateTaxesPerMinute() * taxMult;
+                } else if (b.type.input != null && !b.type.input.isEmpty() && !b.paused && b.connected) {
+                    net -= b.getMaintenancePerMinute() * maintenanceMultiplier();
+                }
+            }
+        }
+        return net;
     }
 
     public float maintenanceMultiplier() {
         return difficulty.maintenanceMultiplier * MAINTENANCE_SCALE;
     }
 
-    public float getCoinBalancePerMinute() {
-        float taxes = 0f;
-        float maintenance = 0f;
-        for (BuildingInstance b : buildings) {
-            if (b.type.isHouse) {
-                taxes += b.calculateTaxesPerMinute();
-            } else if (!b.paused && b.connected) {
-                maintenance += b.getMaintenancePerMinute();
-            }
-        }
-        return taxes * taxMultiplier() - maintenance * maintenanceMultiplier();
-    }
-
     // ── Tick ─────────────────────────────────────────────────────────────────────
     public void tickProduction(float delta) {
-        for (BuildingInstance b : buildings) {
-            if (b.type.prod == null && !b.type.consumableOnly)
-                continue;
-            boolean produced = b.tick(resources, delta);
-            if (produced && b.type.prod != null && !b.type.consumableOnly) {
-                float worldX = (b.rootX + b.effectiveW() / 2f) * CELL_SIZE;
-                float worldY = (b.rootY + b.effectiveH()) * CELL_SIZE;
-                spawnResourceFloater(b.type.prod, b.type.rate, worldX, worldY);
-                everProduced.add(b.type.prod);
+        for (List<BuildingInstance> world : worlds()) {
+            for (BuildingInstance b : world) {
+                if (b.type.prod == null && !b.type.consumableOnly)
+                    continue;
+                boolean produced = b.tick(resources, delta);
+                if (produced && b.type.prod != null && !b.type.consumableOnly) {
+                    // I floater sono in coordinate della mappa visualizzata: solo per quella
+                    if (world == buildings) {
+                        float worldX = (b.rootX + b.effectiveW() / 2f) * CELL_SIZE;
+                        float worldY = (b.rootY + b.effectiveH()) * CELL_SIZE;
+                        spawnResourceFloater(b.type.prod, b.type.rate, worldX, worldY);
+                    }
+                    everProduced.add(b.type.prod);
+                }
             }
         }
+    }
+
+    public void tickMonumentUpgrades(float delta) {
+        for (List<BuildingInstance> world : worlds()) {
+            for (BuildingInstance b : world) {
+                if (b.monumentUpgrading && b.tickMonumentUpgrade(delta, difficulty.monumentTimeMultiplier)) {
+                    ideologyManager.applyShift(b.type.axisShift); // b.type è già il nuovo livello
+                }
+            }
+        }
+    }
+
+    public void tickPopulation() {
+        float totalPop = 0f;
+        float totalTaxes = 0f;
+        float totalMaintenance = 0f;
+
+        for (List<BuildingInstance> world : worlds()) {
+            WorldStats ws = statsFor(world);
+            updateServiceCapacity(world, ws);
+            updateWorkforce(world, ws);
+            updateLogisticsInfluence(world); // lo stato dei magazzini cambia con le scorte
+
+            // Moltiplicatori della città di questo mondo
+            float incomeMultiplier = taxMultiplier(ws);
+            float consumptionMultiplier = ws.consumptionMultiplier();
+
+            for (BuildingInstance b : world) {
+                if (b.type.isHouse) {
+                    BuildingType.ConnectionType req = b.type.requiredConnection;
+                    boolean canGrow = (req == null || req == BuildingType.ConnectionType.NONE) || b.connected;
+
+                    if (canGrow) {
+                        b.tickHouse(resources, consumptionMultiplier);
+                    }
+                    totalPop += b.housePop;
+                    totalTaxes += (b.calculateTaxesPerMinute() / 60f) * incomeMultiplier;
+                }
+
+                // Manutenzione
+                if (!b.type.isHouse && b.type.input != null && !b.type.input.isEmpty()) {
+                    if (!b.paused && b.connected) {
+                        totalMaintenance += b.getMaintenancePerMinute() / 60f;
+                    }
+                }
+            }
+        }
+
+        totalMaintenance *= maintenanceMultiplier();
+
+        if (totalTaxes > 0)
+            resources.add("coin", totalTaxes);
+        if (totalMaintenance > 0)
+            resources.add("coin", -totalMaintenance);
+
+        resources.setTotalPopulation(totalPop);
     }
 
     /**
@@ -338,101 +483,221 @@ public class GameState {
         }
     }
 
-    public void tickMonumentUpgrades(float delta) {
-        for (BuildingInstance b : buildings) {
-            if (b.monumentUpgrading) {
-                if (b.tickMonumentUpgrade(delta, difficulty.monumentTimeMultiplier)) {
-                    ideologyManager.applyShift(b.type.axisShift); // b.type è già il nuovo livello
-                }
-            }
+    /**
+     * Un magazzino dà il bonus solo se è attivo: collegato, non in pausa, con
+     * energia e materiali.
+     */
+    public boolean isWarehouseActive(BuildingInstance w) {
+        if (!w.connected || w.paused || !w.hasRequiredPower())
+            return false;
+        if (w.progress < 1f)
+            return true; // ciclo in corso (già pagato, o il primo): il bonus resta
+        if (w.type.input != null) {
+            for (Map.Entry<String, Float> e : w.type.input.entrySet())
+                if (resources.get(e.getKey()) < e.getValue())
+                    return false; // fermo a fine ciclo in attesa dei materiali
         }
+        return true;
     }
 
-    public void tickPopulation() {
-        updateServiceCapacity();
-        updateWorkforce();
-
-        float totalPop = 0f;
-        float totalTaxes = 0f;
-        float totalMaintenance = 0f;
-
-        float incomeMultiplier = taxMultiplier();
-        totalMaintenance *= maintenanceMultiplier();
-
-        for (BuildingInstance b : buildings) {
-            if (b.type.isHouse) {
-                BuildingType.ConnectionType req = b.type.requiredConnection;
-                boolean canGrow = (req == null || req == BuildingType.ConnectionType.NONE) || b.connected;
-
-                if (canGrow) {
-                    b.tickHouse(resources, this);
-                }
-                totalPop += b.housePop;
-
-                float baseTax = b.calculateTaxesPerMinute() / 60f;
-                totalTaxes += baseTax * incomeMultiplier;
-            }
-
-            // Manutenzione
-            if (!b.type.isHouse && !b.paused && b.connected) {
-                totalMaintenance += b.getMaintenancePerMinute() / 60f;
-            }
-        }
-
-        totalMaintenance *= difficulty.maintenanceMultiplier;
-
-        if (totalTaxes > 0)
-            resources.add("coin", totalTaxes);
-        if (totalMaintenance > 0)
-            resources.add("coin", -totalMaintenance);
-
-        resources.setTotalPopulation(totalPop);
-    }
-
-    public void updateServiceCapacity() {
+    private void updateServiceCapacity(List<BuildingInstance> list, WorldStats ws) {
         for (ServiceCategory cat : ServiceCategory.values()) {
-            totalCapacity.put(cat, 0f);
-            totalConsumption.put(cat, 0f);
+            ws.totalCapacity.put(cat, 0f);
+            ws.totalConsumption.put(cat, 0f);
         }
 
         // 1. Capacità totale
-        for (BuildingInstance b : buildings) {
+        for (BuildingInstance b : list) {
             if (b.type.serviceCategory != null) {
                 float capacity = b.type.serviceCapacity;
                 if (b.paused || !b.connected) {
                     capacity *= 0.3f;
                 }
-                totalCapacity.put(b.type.serviceCategory,
-                        totalCapacity.get(b.type.serviceCategory) + capacity);
+                ws.totalCapacity.put(b.type.serviceCategory,
+                        ws.totalCapacity.get(b.type.serviceCategory) + capacity);
             }
         }
 
         // 2. Consumo totale case
-        for (BuildingInstance b : buildings) {
+        for (BuildingInstance b : list) {
             if (b.type.isHouse && b.connected) {
                 for (ServiceCategory cat : ServiceCategory.values()) {
                     float cap = b.type.houseCap();
                     float consumption = cat.consumptionPerHouse * (cap > 0 ? b.housePop / cap : 0f);
-                    totalConsumption.put(cat, totalConsumption.get(cat) + consumption);
+                    ws.totalConsumption.put(cat, ws.totalConsumption.get(cat) + consumption);
                 }
             }
         }
 
         // 3. Soddisfazione
         for (ServiceCategory cat : ServiceCategory.values()) {
-            float capacity = totalCapacity.getOrDefault(cat, 0f);
-            float consumption = totalConsumption.getOrDefault(cat, 0f);
+            float capacity = ws.totalCapacity.getOrDefault(cat, 0f);
+            float consumption = ws.totalConsumption.getOrDefault(cat, 0f);
 
             if (capacity > 0 && consumption > 0) {
-                serviceSatisfaction.put(cat, Math.min(1.0f, capacity / consumption));
+                ws.serviceSatisfaction.put(cat, Math.min(1.0f, capacity / consumption));
             } else if (capacity > 0 && consumption == 0) {
-                serviceSatisfaction.put(cat, 1.0f);
+                ws.serviceSatisfaction.put(cat, 1.0f);
             } else {
-                serviceSatisfaction.put(cat, 0f);
+                ws.serviceSatisfaction.put(cat, 0f);
             }
         }
 
-        updateConsumptionServices();
+        updateConsumptionServices(list, ws);
+    }
+
+    /**
+     * Servizi a consumo: una casa è servita se è nel raggio di almeno un edificio
+     * attivo della categoria.
+     * Soddisfazione = % di case servite sul totale, per questa mappa.
+     */
+    private void updateConsumptionServices(List<BuildingInstance> list, WorldStats ws) {
+        Map<ConsumptionServiceCategory, Integer> housesServed = new HashMap<>();
+        Map<ConsumptionServiceCategory, Integer> housesTotal = new HashMap<>();
+        Map<ConsumptionServiceCategory, List<BuildingInstance>> activeServices = new HashMap<>();
+
+        for (ConsumptionServiceCategory cat : ConsumptionServiceCategory.values()) {
+            housesServed.put(cat, 0);
+            housesTotal.put(cat, 0);
+            activeServices.put(cat, new ArrayList<>());
+        }
+
+        for (BuildingInstance b : list) {
+            ConsumptionServiceCategory cat = b.type.consumptionServiceCategory;
+            if (cat == null)
+                continue;
+
+            boolean isActive = b.connected && !b.paused;
+            if (isActive && b.type.input != null) {
+                for (Map.Entry<String, Float> e : b.type.input.entrySet()) {
+                    if (resources.get(e.getKey()) < e.getValue()) {
+                        isActive = false;
+                        break;
+                    }
+                }
+            }
+            if (isActive) {
+                activeServices.get(cat).add(b);
+            }
+        }
+
+        for (BuildingInstance house : list) {
+            if (!house.type.isHouse || house.type.houseLevel == null)
+                continue;
+
+            int centerX = house.rootX + house.effectiveW() / 2;
+            int centerY = house.rootY + house.effectiveH() / 2;
+
+            for (ConsumptionServiceCategory cat : ConsumptionServiceCategory.values()) {
+                housesTotal.put(cat, housesTotal.get(cat) + 1);
+
+                boolean hasService = false;
+                for (BuildingInstance service : activeServices.get(cat)) {
+                    int radius = service.type.influenceRadius;
+                    if (radius <= 0) {
+                        hasService = true; // senza raggio: influenza globale (fallback)
+                        break;
+                    }
+                    int dx = centerX - (service.rootX + service.effectiveW() / 2);
+                    int dy = centerY - (service.rootY + service.effectiveH() / 2);
+                    if (dx * dx + dy * dy <= radius * radius) {
+                        hasService = true;
+                        break;
+                    }
+                }
+                if (hasService) {
+                    housesServed.put(cat, housesServed.get(cat) + 1);
+                }
+            }
+        }
+
+        for (ConsumptionServiceCategory cat : ConsumptionServiceCategory.values()) {
+            int total = housesTotal.get(cat);
+            int served = housesServed.get(cat);
+            ws.consumptionServiceSatisfaction.put(cat, total == 0 ? 0f : (float) served / total);
+        }
+    }
+
+    /**
+     * Manodopera riservata per mappa: gli operai di una città lavorano solo nella
+     * sua mappa.
+     */
+    private void updateWorkforce(List<BuildingInstance> list, WorldStats ws) {
+        int n = BuildingType.SOCIAL_CLASS_NAMES.length;
+        float[] supply = new float[n];
+        float[] demand = new float[n];
+
+        for (BuildingInstance b : list) {
+            if (b.type.isHouse && b.type.houseLevel != null) {
+                supply[b.type.houseLevel] += (b.housePop * 2);
+            }
+        }
+        for (BuildingInstance b : list) {
+            if (b.type.workforceClass != null && b.connected && !b.paused) {
+                demand[b.type.workforceClass] += b.type.workforceAmount;
+            }
+        }
+
+        for (int i = 0; i < n; i++) {
+            ws.classPopulation[i] = supply[i];
+            ws.classWorkforceDemand[i] = demand[i];
+            ws.classHasDemand[i] = demand[i] > 0f;
+            ws.classWorkforceSatisfaction[i] = demand[i] > 0f ? Math.min(1f, supply[i] / demand[i]) : 1f;
+        }
+
+        for (BuildingInstance b : list) {
+            if (b.type.workforceClass == null) {
+                b.workforceSatisfaction = 1f;
+            } else {
+                b.workforceSatisfaction = ws.classWorkforceSatisfaction[b.type.workforceClass];
+            }
+        }
+    }
+
+    public void updateLogisticsInfluence(List<BuildingInstance> list) {
+        for (BuildingInstance b : list) {
+            b.hasCarriageLogistics = false;
+            b.hasTruckLogistics = false;
+        }
+
+        List<BuildingInstance> carriage = new ArrayList<>();
+        List<BuildingInstance> truck = new ArrayList<>();
+        for (BuildingInstance b : list) {
+            if (b.type.influenceRadius <= 0 || !isWarehouseActive(b))
+                continue;
+            if (b.type == BuildingType.WAREHOUSE_CARRIAGE)
+                carriage.add(b);
+            else if (b.type == BuildingType.WAREHOUSE_TRUCK)
+                truck.add(b);
+        }
+        for (BuildingInstance source : carriage)
+            applyLogisticsInfluence(list, source, source.type.influenceRadius, true);
+        for (BuildingInstance source : truck)
+            applyLogisticsInfluence(list, source, source.type.influenceRadius, false);
+    }
+
+    private void applyLogisticsInfluence(List<BuildingInstance> list, BuildingInstance source, int radius,
+            boolean isCarriage) {
+        int centerX = source.rootX + source.effectiveW() / 2;
+        int centerY = source.rootY + source.effectiveH() / 2;
+        int radiusSq = radius * radius;
+
+        for (BuildingInstance target : list) {
+            if (target == source)
+                continue;
+            if (target.type.prod == null)
+                continue; // solo edifici produttivi
+
+            int dx = (target.rootX + target.effectiveW() / 2) - centerX;
+            int dy = (target.rootY + target.effectiveH() / 2) - centerY;
+            if (dx * dx + dy * dy <= radiusSq) {
+                if (isCarriage) {
+                    target.hasCarriageLogistics = true;
+                } else {
+                    target.hasTruckLogistics = true;
+                }
+            }
+        }
     }
 
     /**
@@ -565,64 +830,55 @@ public class GameState {
         }
     }
 
-    public float getIncomeMultiplier() {
-        float bonus = 0f;
-        for (ServiceCategory cat : ServiceCategory.values()) {
-            bonus += CAPACITY_SERVICE_BONUS_PER_CAT * getServiceSatisfaction(cat);
-        }
-        return 1f + bonus;
+    /** Popolazione operaia della mappa visualizzata (pannello manodopera). */
+    public float getClassPopulation(int classIndex) {
+        if (classIndex < 0 || classIndex >= stats.classPopulation.length)
+            return 0f;
+        return stats.classPopulation[classIndex];
     }
 
     /**
-     * Moltiplicatore consumo case: 1.0 - somma(0.10 * soddisfazione) per ogni
-     * ConsumptionServiceCategory.
+     * Popolazione di classe dei due mondi insieme: per sblocchi, eventi e
+     * achievement.
      */
-    public float getConsumptionMultiplier() {
-        float reduction = 0f;
-        for (ConsumptionServiceCategory cat : ConsumptionServiceCategory.values()) {
-            reduction += CONSUMPTION_SERVICE_REDUCTION_PER_CAT * getConsumptionServiceSatisfaction(cat);
-        }
-        return Math.max(0f, 1f - reduction);
-    }
-
-    public float getClassPopulation(int classIndex) {
-        if (classIndex < 0 || classIndex >= classPopulation.length)
+    public float getTotalClassPopulation(int classIndex) {
+        if (classIndex < 0 || classIndex >= statsOld.classPopulation.length)
             return 0f;
-        return classPopulation[classIndex];
+        return statsOld.classPopulation[classIndex] + statsNew.classPopulation[classIndex];
     }
 
     public float getClassWorkforceSatisfaction(int classIndex) {
-        if (classIndex < 0 || classIndex >= classWorkforceSatisfaction.length)
+        if (classIndex < 0 || classIndex >= stats.classWorkforceSatisfaction.length)
             return 1f;
-        return classWorkforceSatisfaction[classIndex];
+        return stats.classWorkforceSatisfaction[classIndex];
     }
 
     public boolean classHasWorkforceDemand(int classIndex) {
-        if (classIndex < 0 || classIndex >= classHasDemand.length)
+        if (classIndex < 0 || classIndex >= stats.classHasDemand.length)
             return false;
-        return classHasDemand[classIndex];
+        return stats.classHasDemand[classIndex];
     }
 
     public float getClassWorkforceDemand(int classIndex) {
-        if (classIndex < 0 || classIndex >= classWorkforceDemand.length)
+        if (classIndex < 0 || classIndex >= stats.classWorkforceDemand.length)
             return 0f;
-        return classWorkforceDemand[classIndex];
+        return stats.classWorkforceDemand[classIndex];
     }
 
     public float getConsumptionServiceSatisfaction(ConsumptionServiceCategory cat) {
-        return consumptionServiceSatisfaction.getOrDefault(cat, 0f);
+        return stats.consumptionServiceSatisfaction.getOrDefault(cat, 0f);
     }
 
     public float getServiceSatisfaction(ServiceCategory cat) {
-        return serviceSatisfaction.getOrDefault(cat, 0f);
+        return stats.serviceSatisfaction.getOrDefault(cat, 0f);
     }
 
     public float getServiceCapacity(ServiceCategory cat) {
-        return totalCapacity.getOrDefault(cat, 0f);
+        return stats.totalCapacity.getOrDefault(cat, 0f);
     }
 
     public float getServiceConsumption(ServiceCategory cat) {
-        return totalConsumption.getOrDefault(cat, 0f);
+        return stats.totalConsumption.getOrDefault(cat, 0f);
     }
 
     // ── Spedizione / Nuovo Mondo ─────────────────────────────────────────────────
@@ -632,7 +888,7 @@ public class GameState {
             return;
         float patriziPop = 0f;
         for (BuildingInstance b : buildingsOld) {
-            if (b.type == BuildingType.VILLA)
+            if (b.type == BuildingType.CABIN)
                 patriziPop += b.housePop;
         }
         if ((int) patriziPop >= NEW_WORLD_POP_REQ)
@@ -658,6 +914,8 @@ public class GameState {
         onNewWorld = !onNewWorld;
         terrainMap = onNewWorld ? terrainMapNew : terrainMapOld;
         buildings = onNewWorld ? buildingsNew : buildingsOld;
+        stats = onNewWorld ? statsNew : statsOld;
+        vehicleManager.clear();
     }
 
     public BuildingType.Region getCurrentRegion() {
@@ -667,6 +925,8 @@ public class GameState {
     // ── Connessioni ──────────────────────────────────────────────────────────────
 
     public void updateAllConnections() {
+        vehicleManager.markRoadsDirty();
+
         for (BuildingInstance b : buildings)
             b.connected = false;
 
@@ -707,7 +967,7 @@ public class GameState {
         }
 
         updateSteamAndElectricityInfluence();
-        updateLogisticsInfluence();
+        updateLogisticsInfluence(buildings);
         updatePenEfficiency();
     }
 
@@ -845,16 +1105,14 @@ public class GameState {
     }
 
     public void updateLogisticsInfluence() {
-        // Reset flag
         for (BuildingInstance b : buildings) {
             b.hasCarriageLogistics = false;
             b.hasTruckLogistics = false;
         }
 
-        // Calcola influenza magazzini carrozze
         warehouseCarriageList.clear();
         for (BuildingInstance b : buildings) {
-            if (b.type == BuildingType.WAREHOUSE_CARRIAGE && b.type.influenceRadius > 0) {
+            if (b.type == BuildingType.WAREHOUSE_CARRIAGE && b.type.influenceRadius > 0 && isWarehouseActive(b)) {
                 warehouseCarriageList.add(b);
             }
         }
@@ -862,10 +1120,9 @@ public class GameState {
             applyLogisticsInfluence(source, source.type.influenceRadius, true);
         }
 
-        // Calcola influenza magazzini autocarri
         warehouseTruckList.clear();
         for (BuildingInstance b : buildings) {
-            if (b.type == BuildingType.WAREHOUSE_TRUCK && b.type.influenceRadius > 0) {
+            if (b.type == BuildingType.WAREHOUSE_TRUCK && b.type.influenceRadius > 0 && isWarehouseActive(b)) {
                 warehouseTruckList.add(b);
             }
         }

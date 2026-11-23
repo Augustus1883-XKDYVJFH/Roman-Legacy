@@ -580,7 +580,7 @@ buildingsOld: [
 		x: 3625
 		y: 2150
 		id: WOOD_CAMP
-		productionTimer: 0.7200065
+		productionTimer: 0.8745442
 		paused: false
 		rotated: true
 		connected: true
@@ -596,7 +596,7 @@ buildingsOld: [
 		x: 3675
 		y: 2150
 		id: WOOD_CAMP
-		productionTimer: 0.19504929
+		productionTimer: 0.34791836
 		paused: false
 		rotated: true
 		connected: true
@@ -612,7 +612,7 @@ buildingsOld: [
 		x: 3725
 		y: 2150
 		id: WOOD_CAMP
-		productionTimer: 0.19504929
+		productionTimer: 0.34791836
 		paused: false
 		rotated: true
 		connected: true
@@ -628,7 +628,7 @@ buildingsOld: [
 		x: 3775
 		y: 2150
 		id: WOOD_CAMP
-		productionTimer: 0.19504929
+		productionTimer: 0.34791836
 		paused: false
 		rotated: true
 		connected: true
@@ -644,7 +644,7 @@ buildingsOld: [
 		x: 3875
 		y: 2150
 		id: WOOD_CAMP
-		productionTimer: 0.19504929
+		productionTimer: 0.34791836
 		paused: false
 		rotated: true
 		connected: true
@@ -660,7 +660,7 @@ buildingsOld: [
 		x: 3925
 		y: 2150
 		id: WOOD_CAMP
-		productionTimer: 0.19504929
+		productionTimer: 0.34791836
 		paused: false
 		rotated: true
 		connected: true
@@ -676,7 +676,7 @@ buildingsOld: [
 		x: 3825
 		y: 2150
 		id: WOOD_CAMP
-		productionTimer: 0.19504929
+		productionTimer: 0.34791836
 		paused: false
 		rotated: true
 		connected: true
@@ -1059,12 +1059,12 @@ buildingsOld: [
 	{
 		x: 3450
 		y: 1400
-		id: HOUSE
+		id: DOMUS
 		productionTimer: 0
 		paused: false
 		rotated: true
 		connected: true
-		housePop: 20
+		housePop: 9
 		monumentUpgrading: false
 		monumentUpgradeProgress: 0
 		ownerX: -1
@@ -1075,12 +1075,12 @@ buildingsOld: [
 	{
 		x: 3375
 		y: 1400
-		id: HOUSE
+		id: DOMUS
 		productionTimer: 0
 		paused: false
 		rotated: true
 		connected: true
-		housePop: 20
+		housePop: 9
 		monumentUpgrading: false
 		monumentUpgradeProgress: 0
 		ownerX: -1
@@ -1187,12 +1187,12 @@ buildingsOld: [
 	{
 		x: 3375
 		y: 1475
-		id: HOUSE
+		id: DOMUS
 		productionTimer: 0
 		paused: false
 		rotated: true
 		connected: true
-		housePop: 20
+		housePop: 9
 		monumentUpgrading: false
 		monumentUpgradeProgress: 0
 		ownerX: -1
@@ -1203,12 +1203,12 @@ buildingsOld: [
 	{
 		x: 3450
 		y: 1475
-		id: HOUSE
+		id: DOMUS
 		productionTimer: 0
 		paused: false
 		rotated: true
 		connected: true
-		housePop: 20
+		housePop: 9
 		monumentUpgrading: false
 		monumentUpgradeProgress: 0
 		ownerX: -1
@@ -1283,12 +1283,12 @@ buildingsOld: [
 	{
 		x: 3375
 		y: 1575
-		id: HOUSE
+		id: DOMUS
 		productionTimer: 0
 		paused: false
 		rotated: true
 		connected: true
-		housePop: 20
+		housePop: 9
 		monumentUpgrading: false
 		monumentUpgradeProgress: 0
 		ownerX: -1
@@ -1299,12 +1299,12 @@ buildingsOld: [
 	{
 		x: 3450
 		y: 1575
-		id: HOUSE
+		id: DOMUS
 		productionTimer: 0
 		paused: false
 		rotated: true
 		connected: true
-		housePop: 20
+		housePop: 9
 		monumentUpgrading: false
 		monumentUpgradeProgress: 0
 		ownerX: -1
@@ -1347,12 +1347,12 @@ buildingsOld: [
 	{
 		x: 3450
 		y: 1650
-		id: HOUSE
+		id: DOMUS
 		productionTimer: 0
 		paused: false
 		rotated: true
 		connected: true
-		housePop: 20
+		housePop: 9
 		monumentUpgrading: false
 		monumentUpgradeProgress: 0
 		ownerX: -1
@@ -1363,12 +1363,12 @@ buildingsOld: [
 	{
 		x: 3375
 		y: 1650
-		id: HOUSE
+		id: DOMUS
 		productionTimer: 0
 		paused: false
 		rotated: true
 		connected: true
-		housePop: 20
+		housePop: 9
 		monumentUpgrading: false
 		monumentUpgradeProgress: 0
 		ownerX: -1
@@ -3601,54 +3601,6 @@ buildingsOld: [
 		exportAmount: 0
 	}
 	{
-		x: 2700
-		y: 2125
-		id: ROAD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: -1
-		ownerY: -1
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2675
-		y: 2125
-		id: ROAD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: -1
-		ownerY: -1
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2650
-		y: 2125
-		id: ROAD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: -1
-		ownerY: -1
-		exportResource: null
-		exportAmount: 0
-	}
-	{
 		x: 2625
 		y: 2125
 		id: ROAD
@@ -4996,7 +4948,7 @@ buildingsOld: [
 		x: 2050
 		y: 2150
 		id: GRAIN_FARM
-		productionTimer: 0.19504929
+		productionTimer: 0.75339305
 		paused: false
 		rotated: false
 		connected: true
@@ -5012,7 +4964,7 @@ buildingsOld: [
 		x: 2125
 		y: 2150
 		id: GRAIN_FARM
-		productionTimer: 0.9099328
+		productionTimer: 0.51751924
 		paused: false
 		rotated: false
 		connected: true
@@ -5028,23 +4980,7 @@ buildingsOld: [
 		x: 2200
 		y: 2150
 		id: GRAIN_FARM
-		productionTimer: 0.5600923
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: -1
-		ownerY: -1
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2275
-		y: 2150
-		id: GRAIN_FARM
-		productionTimer: 0.37000212
+		productionTimer: 0.16379312
 		paused: false
 		rotated: false
 		connected: true
@@ -6492,486 +6428,6 @@ buildingsOld: [
 		monumentUpgrading: false
 		monumentUpgradeProgress: 0
 		ownerX: 88
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2275
-		y: 2250
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2300
-		y: 2250
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2325
-		y: 2250
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2275
-		y: 2275
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2300
-		y: 2275
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2325
-		y: 2275
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2275
-		y: 2300
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2300
-		y: 2300
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2325
-		y: 2300
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2275
-		y: 2325
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2300
-		y: 2325
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2325
-		y: 2325
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2275
-		y: 2350
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2300
-		y: 2350
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2325
-		y: 2350
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2275
-		y: 2375
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2300
-		y: 2375
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2325
-		y: 2375
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2275
-		y: 2400
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2300
-		y: 2400
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2325
-		y: 2400
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2275
-		y: 2425
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2300
-		y: 2425
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2325
-		y: 2425
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2275
-		y: 2450
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2300
-		y: 2450
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2325
-		y: 2450
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2275
-		y: 2475
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2300
-		y: 2475
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 86
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2325
-		y: 2475
-		id: GRAIN_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
 		ownerY: 86
 		exportResource: null
 		exportAmount: 0
@@ -6980,7 +6436,7 @@ buildingsOld: [
 		x: 2050
 		y: 2075
 		id: MILL
-		productionTimer: 0.1266856
+		productionTimer: 0.6887305
 		paused: false
 		rotated: false
 		connected: true
@@ -6996,7 +6452,7 @@ buildingsOld: [
 		x: 2100
 		y: 2075
 		id: MILL
-		productionTimer: 0.88277906
+		productionTimer: 0.44428638
 		paused: false
 		rotated: false
 		connected: true
@@ -7012,7 +6468,7 @@ buildingsOld: [
 		x: 2050
 		y: 2000
 		id: BAKERY
-		productionTimer: 0.6861754
+		productionTimer: 0.24975489
 		paused: false
 		rotated: false
 		connected: true
@@ -7028,7 +6484,7 @@ buildingsOld: [
 		x: 2125
 		y: 2000
 		id: BAKERY
-		productionTimer: 0.6462835
+		productionTimer: 0.20598887
 		paused: false
 		rotated: false
 		connected: true
@@ -7044,7 +6500,7 @@ buildingsOld: [
 		x: 2200
 		y: 2000
 		id: BAKERY
-		productionTimer: 0.43669805
+		productionTimer: 0.9963545
 		paused: false
 		rotated: false
 		connected: true
@@ -7796,7 +7252,7 @@ buildingsOld: [
 		x: 2150
 		y: 2075
 		id: MILL
-		productionTimer: 0.43669805
+		productionTimer: 0.9963545
 		paused: false
 		rotated: false
 		connected: true
@@ -7812,7 +7268,7 @@ buildingsOld: [
 		x: 2200
 		y: 2075
 		id: MILL
-		productionTimer: 0.41836703
+		productionTimer: 0.97695065
 		paused: false
 		rotated: false
 		connected: true
@@ -7828,7 +7284,7 @@ buildingsOld: [
 		x: 2050
 		y: 1875
 		id: WOOLEN_MILL
-		productionTimer: 0.78779346
+		productionTimer: 0.34705895
 		paused: false
 		rotated: false
 		connected: true
@@ -7844,7 +7300,7 @@ buildingsOld: [
 		x: 2150
 		y: 1875
 		id: WOOLEN_MILL
-		productionTimer: 0.46669698
+		productionTimer: 0.02680267
 		paused: false
 		rotated: false
 		connected: true
@@ -7860,7 +7316,7 @@ buildingsOld: [
 		x: 2250
 		y: 1875
 		id: WOOLEN_MILL
-		productionTimer: 0.1266856
+		productionTimer: 0.6887305
 		paused: false
 		rotated: false
 		connected: true
@@ -7876,7 +7332,7 @@ buildingsOld: [
 		x: 1925
 		y: 2150
 		id: SHEEP_RANCH
-		productionTimer: 0.9099328
+		productionTimer: 0.51751924
 		paused: false
 		rotated: false
 		connected: true
@@ -7892,7 +7348,7 @@ buildingsOld: [
 		x: 1825
 		y: 2150
 		id: SHEEP_RANCH
-		productionTimer: 0.37000212
+		productionTimer: 0.9766269
 		paused: false
 		rotated: false
 		connected: true
@@ -7908,7 +7364,7 @@ buildingsOld: [
 		x: 3625
 		y: 2050
 		id: SAWMILL
-		productionTimer: 0.19504929
+		productionTimer: 0.34791836
 		paused: false
 		rotated: false
 		connected: true
@@ -7924,7 +7380,7 @@ buildingsOld: [
 		x: 3700
 		y: 2050
 		id: SAWMILL
-		productionTimer: 0.19504929
+		productionTimer: 0.34791836
 		paused: false
 		rotated: false
 		connected: true
@@ -7940,7 +7396,7 @@ buildingsOld: [
 		x: 3775
 		y: 2050
 		id: SAWMILL
-		productionTimer: 0.19504929
+		productionTimer: 0.34791836
 		paused: false
 		rotated: false
 		connected: true
@@ -7956,7 +7412,7 @@ buildingsOld: [
 		x: 3850
 		y: 2050
 		id: SAWMILL
-		productionTimer: 0.19504929
+		productionTimer: 0.34791836
 		paused: false
 		rotated: false
 		connected: true
@@ -7972,7 +7428,7 @@ buildingsOld: [
 		x: 3925
 		y: 2050
 		id: SAWMILL
-		productionTimer: 0.10511051
+		productionTimer: 0.2568908
 		paused: false
 		rotated: false
 		connected: true
@@ -7988,7 +7444,7 @@ buildingsOld: [
 		x: 4000
 		y: 2050
 		id: SAWMILL
-		productionTimer: 0.030027632
+		productionTimer: 0.18676373
 		paused: false
 		rotated: false
 		connected: true
@@ -8019,12 +7475,12 @@ buildingsOld: [
 	{
 		x: 3450
 		y: 1750
-		id: HOUSE
+		id: DOMUS
 		productionTimer: 0
 		paused: false
 		rotated: false
 		connected: true
-		housePop: 20
+		housePop: 9
 		monumentUpgrading: false
 		monumentUpgradeProgress: 0
 		ownerX: -1
@@ -8035,12 +7491,12 @@ buildingsOld: [
 	{
 		x: 3375
 		y: 1750
-		id: HOUSE
+		id: DOMUS
 		productionTimer: 0
 		paused: false
 		rotated: false
 		connected: true
-		housePop: 20
+		housePop: 9
 		monumentUpgrading: false
 		monumentUpgradeProgress: 0
 		ownerX: -1
@@ -8211,12 +7667,12 @@ buildingsOld: [
 	{
 		x: 3375
 		y: 1825
-		id: HOUSE
+		id: DOMUS
 		productionTimer: 0
 		paused: false
 		rotated: false
 		connected: true
-		housePop: 20
+		housePop: 9
 		monumentUpgrading: false
 		monumentUpgradeProgress: 0
 		ownerX: -1
@@ -8227,12 +7683,12 @@ buildingsOld: [
 	{
 		x: 3450
 		y: 1825
-		id: HOUSE
+		id: DOMUS
 		productionTimer: 0
 		paused: false
 		rotated: false
 		connected: true
-		housePop: 20
+		housePop: 9
 		monumentUpgrading: false
 		monumentUpgradeProgress: 0
 		ownerX: -1
@@ -10900,7 +10356,7 @@ buildingsOld: [
 		x: 1725
 		y: 2150
 		id: SHEEP_RANCH
-		productionTimer: 0.19504929
+		productionTimer: 0.75339305
 		paused: false
 		rotated: false
 		connected: true
@@ -11060,7 +10516,7 @@ buildingsOld: [
 		x: 3625
 		y: 2250
 		id: IRONMINE
-		productionTimer: 0.34255317
+		productionTimer: 0.94143146
 		paused: false
 		rotated: false
 		connected: true
@@ -11076,7 +10532,7 @@ buildingsOld: [
 		x: 3675
 		y: 2250
 		id: IRONMINE
-		productionTimer: 0.80750054
+		productionTimer: 0.4131361
 		paused: false
 		rotated: false
 		connected: true
@@ -11092,7 +10548,7 @@ buildingsOld: [
 		x: 3725
 		y: 2250
 		id: IRONMINE
-		productionTimer: 0.80750054
+		productionTimer: 0.4131361
 		paused: false
 		rotated: false
 		connected: true
@@ -11348,7 +10804,7 @@ buildingsOld: [
 		x: 3550
 		y: 2150
 		id: SMITHY
-		productionTimer: 0.65776294
+		productionTimer: 0.73526716
 		paused: false
 		rotated: true
 		connected: true
@@ -11364,7 +10820,7 @@ buildingsOld: [
 		x: 3500
 		y: 2150
 		id: SMITHY
-		productionTimer: 0.6133408
+		productionTimer: 0.69357383
 		paused: false
 		rotated: true
 		connected: true
@@ -11380,7 +10836,7 @@ buildingsOld: [
 		x: 3450
 		y: 2150
 		id: SMITHY
-		productionTimer: 0.54834294
+		productionTimer: 0.62553805
 		paused: false
 		rotated: true
 		connected: true
@@ -11396,7 +10852,7 @@ buildingsOld: [
 		x: 3975
 		y: 2150
 		id: WOOD_CAMP
-		productionTimer: 0.43004742
+		productionTimer: 0.57108414
 		paused: false
 		rotated: true
 		connected: true
@@ -11412,7 +10868,7 @@ buildingsOld: [
 		x: 4025
 		y: 2150
 		id: WOOD_CAMP
-		productionTimer: 0.2797255
+		productionTimer: 0.44105947
 		paused: false
 		rotated: true
 		connected: true
@@ -11444,7 +10900,7 @@ buildingsOld: [
 		x: 1625
 		y: 2150
 		id: SHEEP_RANCH
-		productionTimer: 0.045125373
+		productionTimer: 0.65135604
 		paused: false
 		rotated: false
 		connected: true
@@ -11460,7 +10916,7 @@ buildingsOld: [
 		x: 1525
 		y: 2150
 		id: SHEEP_RANCH
-		productionTimer: 0.43004742
+		productionTimer: 0.017320171
 		paused: false
 		rotated: false
 		connected: true
@@ -11572,7 +11028,7 @@ buildingsOld: [
 		x: 2350
 		y: 1875
 		id: WOOLEN_MILL
-		productionTimer: 0.41836703
+		productionTimer: 0.97695065
 		paused: false
 		rotated: false
 		connected: true
@@ -12164,7 +11620,7 @@ buildingsOld: [
 		x: 2050
 		y: 1775
 		id: WOOLEN_MILL
-		productionTimer: 0.77618164
+		productionTimer: 0.33735162
 		paused: false
 		rotated: false
 		connected: true
@@ -12180,7 +11636,7 @@ buildingsOld: [
 		x: 2150
 		y: 1775
 		id: WOOLEN_MILL
-		productionTimer: 0.7442704
+		productionTimer: 0.30607134
 		paused: false
 		rotated: false
 		connected: true
@@ -12196,7 +11652,7 @@ buildingsOld: [
 		x: 2250
 		y: 1775
 		id: WOOLEN_MILL
-		productionTimer: 0.6942336
+		productionTimer: 0.25388354
 		paused: false
 		rotated: false
 		connected: true
@@ -12212,7 +11668,7 @@ buildingsOld: [
 		x: 2350
 		y: 1775
 		id: WOOLEN_MILL
-		productionTimer: 0.46669698
+		productionTimer: 0.02680267
 		paused: false
 		rotated: false
 		connected: true
@@ -12228,7 +11684,7 @@ buildingsOld: [
 		x: 1425
 		y: 2150
 		id: SHEEP_RANCH
-		productionTimer: 0.43004742
+		productionTimer: 0.017320171
 		paused: false
 		rotated: false
 		connected: true
@@ -12644,7 +12100,7 @@ buildingsOld: [
 		x: 2050
 		y: 1650
 		id: CHEESE_MAKER
-		productionTimer: 0.51476395
+		productionTimer: 0.79884773
 		paused: false
 		rotated: false
 		connected: true
@@ -12660,7 +12116,7 @@ buildingsOld: [
 		x: 2150
 		y: 1650
 		id: CHEESE_MAKER
-		productionTimer: 0.3471168
+		productionTimer: 0.6311764
 		paused: false
 		rotated: false
 		connected: true
@@ -12676,7 +12132,7 @@ buildingsOld: [
 		x: 1925
 		y: 2400
 		id: GOAT_RANCH
-		productionTimer: 0.37000212
+		productionTimer: 0.9766269
 		paused: false
 		rotated: false
 		connected: true
@@ -12740,7 +12196,7 @@ buildingsOld: [
 		x: 1825
 		y: 2400
 		id: GOAT_RANCH
-		productionTimer: 0.68015236
+		productionTimer: 0.26529244
 		paused: false
 		rotated: false
 		connected: true
@@ -12804,7 +12260,7 @@ buildingsOld: [
 		x: 1725
 		y: 2400
 		id: GOAT_RANCH
-		productionTimer: 0.68015236
+		productionTimer: 0.26529244
 		paused: false
 		rotated: false
 		connected: true
@@ -13425,74 +12881,10 @@ buildingsOld: [
 		exportAmount: 0
 	}
 	{
-		x: 1625
-		y: 2400
-		id: GOAT_RANCH
-		productionTimer: 0.5600923
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: -1
-		ownerY: -1
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 1650
-		y: 2475
-		id: GOAT_PEN_1
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 65
-		ownerY: 96
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 1575
-		y: 2475
-		id: GOAT_PEN_2
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 65
-		ownerY: 96
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 1575
-		y: 2550
-		id: GOAT_PEN_3
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 65
-		ownerY: 96
-		exportResource: null
-		exportAmount: 0
-	}
-	{
 		x: 2250
 		y: 1650
 		id: CHEESE_MAKER
-		productionTimer: 0.022512745
+		productionTimer: 0.30618283
 		paused: false
 		rotated: false
 		connected: true
@@ -13508,7 +12900,7 @@ buildingsOld: [
 		x: 2050
 		y: 2525
 		id: OLIVE_GROVE
-		productionTimer: 0.2797255
+		productionTimer: 0.8745442
 		paused: false
 		rotated: false
 		connected: true
@@ -13524,7 +12916,7 @@ buildingsOld: [
 		x: 2125
 		y: 2525
 		id: OLIVE_GROVE
-		productionTimer: 0.19504929
+		productionTimer: 0.75339305
 		paused: false
 		rotated: false
 		connected: true
@@ -13540,23 +12932,7 @@ buildingsOld: [
 		x: 2200
 		y: 2525
 		id: OLIVE_GROVE
-		productionTimer: 0.19504929
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: -1
-		ownerY: -1
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2275
-		y: 2525
-		id: OLIVE_GROVE
-		productionTimer: 0.19504929
+		productionTimer: 0.75339305
 		paused: false
 		rotated: false
 		connected: true
@@ -15004,486 +14380,6 @@ buildingsOld: [
 		monumentUpgrading: false
 		monumentUpgradeProgress: 0
 		ownerX: 88
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2275
-		y: 2625
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2300
-		y: 2625
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2325
-		y: 2625
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2275
-		y: 2650
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2300
-		y: 2650
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2325
-		y: 2650
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2275
-		y: 2675
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2300
-		y: 2675
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2325
-		y: 2675
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2275
-		y: 2700
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2300
-		y: 2700
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2325
-		y: 2700
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2275
-		y: 2725
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2300
-		y: 2725
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2325
-		y: 2725
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2275
-		y: 2750
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2300
-		y: 2750
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2325
-		y: 2750
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2275
-		y: 2775
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2300
-		y: 2775
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2325
-		y: 2775
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2275
-		y: 2800
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2300
-		y: 2800
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2325
-		y: 2800
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2275
-		y: 2825
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2300
-		y: 2825
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2325
-		y: 2825
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2275
-		y: 2850
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2300
-		y: 2850
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
-		ownerY: 101
-		exportResource: null
-		exportAmount: 0
-	}
-	{
-		x: 2325
-		y: 2850
-		id: OLIVE_FIELD
-		productionTimer: 0
-		paused: false
-		rotated: false
-		connected: true
-		housePop: 0
-		monumentUpgrading: false
-		monumentUpgradeProgress: 0
-		ownerX: 91
 		ownerY: 101
 		exportResource: null
 		exportAmount: 0
@@ -15876,7 +14772,7 @@ buildingsOld: [
 		x: 2050
 		y: 1525
 		id: OIL_PREES
-		productionTimer: 0.28004614
+		productionTimer: 0.112885594
 		paused: false
 		rotated: false
 		connected: true
@@ -15892,7 +14788,7 @@ buildingsOld: [
 		x: 2125
 		y: 1525
 		id: OIL_PREES
-		productionTimer: 0.28004614
+		productionTimer: 0.112885594
 		paused: false
 		rotated: false
 		connected: true
@@ -16644,7 +15540,7 @@ buildingsOld: [
 		x: 2550
 		y: 1900
 		id: CLAYPIT
-		productionTimer: 0.9134288
+		productionTimer: 0.99000835
 		paused: false
 		rotated: false
 		connected: true
@@ -16660,7 +15556,7 @@ buildingsOld: [
 		x: 825
 		y: 5050
 		id: CLAYPIT
-		productionTimer: 0.8600271
+		productionTimer: 0.9440867
 		paused: false
 		rotated: false
 		connected: true
@@ -16676,7 +15572,7 @@ buildingsOld: [
 		x: 1375
 		y: 5150
 		id: CLAYPIT
-		productionTimer: 0.8600271
+		productionTimer: 0.9440867
 		paused: false
 		rotated: false
 		connected: true
@@ -19412,7 +18308,7 @@ buildingsOld: [
 		x: 1925
 		y: 2025
 		id: BRICKFACTORY
-		productionTimer: 0.9021075
+		productionTimer: 0.71329236
 		paused: false
 		rotated: false
 		connected: true
@@ -19428,7 +18324,7 @@ buildingsOld: [
 		x: 1825
 		y: 2025
 		id: BRICKFACTORY
-		productionTimer: 0.7850003
+		productionTimer: 0.6154049
 		paused: false
 		rotated: false
 		connected: true
@@ -19444,7 +18340,7 @@ buildingsOld: [
 		x: 2050
 		y: 1400
 		id: KILN
-		productionTimer: 0.56656855
+		productionTimer: 0.12564726
 		paused: false
 		rotated: false
 		connected: true
@@ -19460,7 +18356,7 @@ buildingsOld: [
 		x: 2150
 		y: 1400
 		id: KILN
-		productionTimer: 0.49664643
+		productionTimer: 0.057392985
 		paused: false
 		rotated: false
 		connected: true
@@ -19476,7 +18372,7 @@ buildingsOld: [
 		x: 1875
 		y: 1875
 		id: TAILORING_WORKSHOP
-		productionTimer: 0.00836249
+		productionTimer: 0.5568196
 		paused: false
 		rotated: false
 		connected: true
@@ -19492,7 +18388,7 @@ buildingsOld: [
 		x: 1725
 		y: 1875
 		id: TAILORING_WORKSHOP
-		productionTimer: 0.3313843
+		productionTimer: 0.8901315
 		paused: false
 		rotated: false
 		connected: true
@@ -24372,7 +23268,7 @@ buildingsOld: [
 		x: 1375
 		y: 3550
 		id: STEELWORK
-		productionTimer: 0.30015513
+		productionTimer: 0.24415042
 		paused: false
 		rotated: false
 		connected: true
@@ -24388,7 +23284,7 @@ buildingsOld: [
 		x: 1475
 		y: 3550
 		id: STEELWORK
-		productionTimer: 0.9600542
+		productionTimer: 0.87370586
 		paused: false
 		rotated: false
 		connected: true
@@ -24404,7 +23300,7 @@ buildingsOld: [
 		x: 1600
 		y: 3475
 		id: BOILER
-		productionTimer: 0.84976035
+		productionTimer: 0.13284664
 		paused: false
 		rotated: false
 		connected: true
@@ -24420,7 +23316,7 @@ buildingsOld: [
 		x: 3625
 		y: 2350
 		id: COALMINE
-		productionTimer: 0.21502371
+		productionTimer: 0.81851345
 		paused: false
 		rotated: false
 		connected: true
@@ -24436,7 +23332,7 @@ buildingsOld: [
 		x: 3675
 		y: 2350
 		id: COALMINE
-		productionTimer: 0.16256501
+		productionTimer: 0.77272457
 		paused: false
 		rotated: false
 		connected: true
@@ -24452,7 +23348,7 @@ buildingsOld: [
 		x: 3725
 		y: 2350
 		id: COALMINE
-		productionTimer: 0.079942346
+		productionTimer: 0.6861959
 		paused: false
 		rotated: false
 		connected: true
@@ -24468,7 +23364,7 @@ buildingsOld: [
 		x: 3775
 		y: 2350
 		id: COALMINE
-		productionTimer: 0.0075554703
+		productionTimer: 0.6154049
 		paused: false
 		rotated: false
 		connected: true
@@ -24484,7 +23380,7 @@ buildingsOld: [
 		x: 3825
 		y: 2350
 		id: COALMINE
-		productionTimer: 0.9817263
+		productionTimer: 0.5893574
 		paused: false
 		rotated: false
 		connected: true
@@ -24500,7 +23396,7 @@ buildingsOld: [
 		x: 3775
 		y: 2250
 		id: IRONMINE
-		productionTimer: 0.6400422
+		productionTimer: 0.24842344
 		paused: false
 		rotated: false
 		connected: true
@@ -24516,7 +23412,7 @@ buildingsOld: [
 		x: 3825
 		y: 2250
 		id: IRONMINE
-		productionTimer: 0.5600568
+		productionTimer: 0.16469882
 		paused: false
 		rotated: false
 		connected: true
@@ -24532,7 +23428,7 @@ buildingsOld: [
 		x: 3875
 		y: 2350
 		id: COALMINE
-		productionTimer: 0.39256182
+		productionTimer: 0.99555737
 		paused: false
 		rotated: false
 		connected: true
@@ -24548,7 +23444,7 @@ buildingsOld: [
 		x: 1900
 		y: 3400
 		id: GLASSWORKS
-		productionTimer: 0.50325286
+		productionTimer: 0.06430086
 		paused: false
 		rotated: false
 		connected: true
@@ -24564,7 +23460,7 @@ buildingsOld: [
 		x: 1775
 		y: 3400
 		id: GLASSWORKS
-		productionTimer: 0.17835563
+		productionTimer: 0.7387288
 		paused: false
 		rotated: false
 		connected: true
@@ -24580,7 +23476,7 @@ buildingsOld: [
 		x: 1900
 		y: 3275
 		id: WINDOWMAKER
-		productionTimer: 0.13502531
+		productionTimer: 0.057521492
 		paused: false
 		rotated: false
 		connected: true
@@ -24596,7 +23492,7 @@ buildingsOld: [
 		x: 1775
 		y: 3275
 		id: WINDOWMAKER
-		productionTimer: 0.13502531
+		productionTimer: 0.057521492
 		paused: false
 		rotated: false
 		connected: true
@@ -24612,7 +23508,7 @@ buildingsOld: [
 		x: 1900
 		y: 3125
 		id: WINDOWMAKER
-		productionTimer: 0.89711934
+		productionTimer: 0.8191605
 		paused: false
 		rotated: false
 		connected: true
@@ -25108,7 +24004,7 @@ buildingsOld: [
 		x: 1325
 		y: 1925
 		id: SANDPIT
-		productionTimer: 0.03676576
+		productionTimer: 0.11054546
 		paused: false
 		rotated: false
 		connected: true
@@ -25124,7 +24020,7 @@ buildingsOld: [
 		x: 6725
 		y: 3025
 		id: SANDPIT
-		productionTimer: 0.4667045
+		productionTimer: 0.5954475
 		paused: false
 		rotated: false
 		connected: true
@@ -25140,7 +24036,7 @@ buildingsOld: [
 		x: 4900
 		y: 5250
 		id: SANDPIT
-		productionTimer: 0.26276025
+		productionTimer: 0.35747498
 		paused: false
 		rotated: false
 		connected: true
@@ -25156,7 +24052,7 @@ buildingsOld: [
 		x: 3450
 		y: 5500
 		id: SANDPIT
-		productionTimer: 0.9134288
+		productionTimer: 0.99000835
 		paused: false
 		rotated: false
 		connected: true
@@ -25172,7 +24068,7 @@ buildingsOld: [
 		x: 3175
 		y: 5775
 		id: CLAYPIT
-		productionTimer: 0.7028536
+		productionTimer: 0.79402566
 		paused: false
 		rotated: false
 		connected: true
@@ -25188,7 +24084,7 @@ buildingsOld: [
 		x: 6975
 		y: 4925
 		id: CLAYPIT
-		productionTimer: 0.7630957
+		productionTimer: 0.845521
 		paused: false
 		rotated: false
 		connected: true
@@ -25204,7 +24100,7 @@ buildingsOld: [
 		x: 5550
 		y: 5600
 		id: SANDPIT
-		productionTimer: 0.4667045
+		productionTimer: 0.5522613
 		paused: false
 		rotated: false
 		connected: true
@@ -33060,7 +31956,7 @@ buildingsOld: [
 		x: 4175
 		y: 1925
 		id: WOOD_CAMP
-		productionTimer: 0.7200065
+		productionTimer: 0.8745442
 		paused: false
 		rotated: true
 		connected: true
@@ -33076,7 +31972,7 @@ buildingsOld: [
 		x: 4225
 		y: 1925
 		id: WOOD_CAMP
-		productionTimer: 0.5600923
+		productionTimer: 0.71379244
 		paused: false
 		rotated: true
 		connected: true
@@ -33092,7 +31988,7 @@ buildingsOld: [
 		x: 4325
 		y: 1925
 		id: WOOD_CAMP
-		productionTimer: 0.08007567
+		productionTimer: 0.24441737
 		paused: false
 		rotated: true
 		connected: true
@@ -33108,7 +32004,7 @@ buildingsOld: [
 		x: 4375
 		y: 1925
 		id: WOOD_CAMP
-		productionTimer: 0.030027632
+		productionTimer: 0.18676373
 		paused: false
 		rotated: true
 		connected: true
@@ -33124,7 +32020,7 @@ buildingsOld: [
 		x: 4425
 		y: 1925
 		id: WOOD_CAMP
-		productionTimer: 0.86513823
+		productionTimer: 0.017320171
 		paused: false
 		rotated: true
 		connected: true
@@ -33140,7 +32036,7 @@ buildingsOld: [
 		x: 4275
 		y: 1925
 		id: WOOD_CAMP
-		productionTimer: 0.36410972
+		productionTimer: 0.51751924
 		paused: false
 		rotated: true
 		connected: true
@@ -33156,7 +32052,7 @@ buildingsOld: [
 		x: 4475
 		y: 1925
 		id: WOOD_CAMP
-		productionTimer: 0.19504929
+		productionTimer: 0.34791836
 		paused: false
 		rotated: true
 		connected: true
@@ -33172,7 +32068,7 @@ buildingsOld: [
 		x: 1950
 		y: 1750
 		id: PERFUME_MIXER
-		productionTimer: 0.5553778
+		productionTimer: 0.0786089
 		paused: false
 		rotated: false
 		connected: true
@@ -33188,7 +32084,7 @@ buildingsOld: [
 		x: 1875
 		y: 1750
 		id: PERFUME_MIXER
-		productionTimer: 0.52983963
+		productionTimer: 0.05311396
 		paused: false
 		rotated: false
 		connected: true
@@ -33204,7 +32100,7 @@ buildingsOld: [
 		x: 1800
 		y: 1750
 		id: PERFUME_MIXER
-		productionTimer: 0.470948
+		productionTimer: 0.99414426
 		paused: false
 		rotated: false
 		connected: true
@@ -33220,7 +32116,7 @@ buildingsOld: [
 		x: 1725
 		y: 1750
 		id: PERFUME_MIXER
-		productionTimer: 0.43650573
+		productionTimer: 0.9596572
 		paused: false
 		rotated: false
 		connected: true
@@ -33236,7 +32132,7 @@ buildingsOld: [
 		x: 2050
 		y: 2900
 		id: LAVANDER_FARM
-		productionTimer: 0.8450616
+		productionTimer: 0.4515302
 		paused: false
 		rotated: false
 		connected: true
@@ -33252,7 +32148,7 @@ buildingsOld: [
 		x: 2125
 		y: 2900
 		id: LAVANDER_FARM
-		productionTimer: 0.81414133
+		productionTimer: 0.38945317
 		paused: false
 		rotated: false
 		connected: true
@@ -33268,7 +32164,7 @@ buildingsOld: [
 		x: 2200
 		y: 2900
 		id: LAVANDER_FARM
-		productionTimer: 0.81414133
+		productionTimer: 0.38945317
 		paused: false
 		rotated: false
 		connected: true
@@ -33284,7 +32180,7 @@ buildingsOld: [
 		x: 2275
 		y: 2900
 		id: LAVANDER_FARM
-		productionTimer: 0.81414133
+		productionTimer: 0.38945317
 		paused: false
 		rotated: false
 		connected: true
@@ -35524,7 +34420,7 @@ buildingsOld: [
 		x: 1950
 		y: 1650
 		id: PERFUME_MIXER
-		productionTimer: 0.71871954
+		productionTimer: 0.2418438
 		paused: false
 		rotated: false
 		connected: true
@@ -35540,7 +34436,7 @@ buildingsOld: [
 		x: 1875
 		y: 1650
 		id: PERFUME_MIXER
-		productionTimer: 0.5676179
+		productionTimer: 0.09065147
 		paused: false
 		rotated: false
 		connected: true
@@ -35556,7 +34452,7 @@ buildingsOld: [
 		x: 1800
 		y: 1650
 		id: PERFUME_MIXER
-		productionTimer: 0.5676179
+		productionTimer: 0.09065147
 		paused: false
 		rotated: false
 		connected: true
@@ -35572,7 +34468,7 @@ buildingsOld: [
 		x: 1725
 		y: 1650
 		id: PERFUME_MIXER
-		productionTimer: 0.5676179
+		productionTimer: 0.09065147
 		paused: false
 		rotated: false
 		connected: true
@@ -36032,18 +34928,2082 @@ buildingsOld: [
 		exportResource: null
 		exportAmount: 0
 	}
+	{
+		x: 4625
+		y: 1825
+		id: CABIN
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 10
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4625
+		y: 1750
+		id: CABIN
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 10
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4700
+		y: 1750
+		id: CABIN
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 10
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4775
+		y: 1750
+		id: CABIN
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 10
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4850
+		y: 1750
+		id: CABIN
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 10
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 2800
+		y: 2150
+		id: FORUM_FOUNDATIONS
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4625
+		y: 1650
+		id: CABIN
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 10
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4700
+		y: 1650
+		id: CABIN
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 10
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4775
+		y: 1650
+		id: CABIN
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 10
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4850
+		y: 1650
+		id: CABIN
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 10
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4625
+		y: 1575
+		id: CABIN
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 10
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4700
+		y: 1575
+		id: CABIN
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 10
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4775
+		y: 1575
+		id: CABIN
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 10
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4850
+		y: 1575
+		id: CABIN
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 10
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4625
+		y: 1475
+		id: CABIN
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 10
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4700
+		y: 1475
+		id: CABIN
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 10
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4775
+		y: 1475
+		id: CABIN
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 10
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4850
+		y: 1475
+		id: CABIN
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 10
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4625
+		y: 1400
+		id: CABIN
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 10
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4700
+		y: 1400
+		id: CABIN
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 10
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4775
+		y: 1400
+		id: CABIN
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 10
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4850
+		y: 1400
+		id: CABIN
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 10
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 2650
+		y: 2125
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 2675
+		y: 2125
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 2700
+		y: 2125
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 3250
+		y: 1925
+		id: THERMAL_BATHS
+		productionTimer: 0.07804249
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4625
+		y: 1275
+		id: THERMAL_BATHS
+		productionTimer: 0.3908158
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4525
+		y: 1925
+		id: THERMAL_BATHS
+		productionTimer: 0.36513415
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 3925
+		y: 1925
+		id: THERMAL_BATHS
+		productionTimer: 0.2780549
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 2575
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 2600
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 2625
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 2650
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 2675
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 2700
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 2725
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 2750
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 2775
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 2800
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 2825
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 2850
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 2875
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 2900
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 2925
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 2950
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 2975
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 3000
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 3025
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 3050
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 3075
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 3100
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 3125
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 5000
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 5025
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 5050
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 5075
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 5100
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 5125
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 5150
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 5175
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 5200
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 5225
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 5250
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 5275
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 5300
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 5325
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 5350
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 5375
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 5400
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 5425
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 5450
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 5475
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 5500
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 5525
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 5550
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 5575
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 5600
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 5625
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 5650
+		y: 3750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 3950
+		y: 6025
+		id: MARBLE_QUARRY
+		productionTimer: 0.5728724
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4175
+		y: 5425
+		id: MARBLE_QUARRY
+		productionTimer: 0.18637078
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 6075
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 6050
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 6025
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 6000
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5975
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5950
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5925
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5900
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5875
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5850
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5825
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5800
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5775
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5750
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5725
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5700
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5675
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5650
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5625
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5600
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5575
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5550
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5525
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5500
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5475
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5450
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5425
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5400
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5375
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5350
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5325
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5300
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5275
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5250
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5225
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5200
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5175
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5150
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5125
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5100
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5075
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4025
+		y: 5050
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4175
+		y: 5500
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4150
+		y: 5500
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4125
+		y: 5500
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4100
+		y: 5500
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4075
+		y: 5500
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
+	{
+		x: 4050
+		y: 5500
+		id: ROAD
+		productionTimer: 0
+		paused: false
+		rotated: false
+		connected: true
+		housePop: 0
+		monumentUpgrading: false
+		monumentUpgradeProgress: 0
+		ownerX: -1
+		ownerY: -1
+		exportResource: null
+		exportAmount: 0
+	}
 ]
 buildingsNew: []
 version: 9
-timestamp: 1794758132345
+timestamp: 1795166385667
 onNewWorld: false
 newWorldUnlocked: false
-gold: 175678
-population: 1702
+gold: 254143
+population: 1780
 difficulty: EASY
-cameraX: 3491.3164
-cameraY: 2259.1667
-cameraZoom: 2.9028447
+cameraX: 3746.476
+cameraY: 2208.6956
+cameraZoom: 3.7428448
 terrainMapOld: [
 	[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
 	[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
@@ -36349,70 +37309,70 @@ terrainMapOld: [
 terrainMapNew: null
 resources: {
 	class: java.util.HashMap
-	wool: 425
+	wool: 514
 	fuel: 0
 	cotton: 0
 	saltpeter: 0
 	rum: 0
-	cheese: 360.38678
+	cheese: 512.2981
 	fur_coats: 0
 	radio: 0
 	fan: 0
 	cannedfood: 0
-	olive: 653
-	flour: 422
+	olive: 855
+	flour: 512
 	rubber: 0
 	steam_carriage: 0
 	tobacco: 0
-	grain: 1692
-	timber: 3046
+	grain: 1990
+	timber: 3388.5
 	cable: 0
 	zinc: 0
 	beer: 0
-	glass: 101
-	toga: 408.48093
-	wood_log: 1411
-	milk: 1158
+	glass: 182
+	toga: 629.3963
+	wood_log: 2330
+	milk: 1574
 	brass: 0
 	leather: 0
-	population: 1702
-	marble: 0
-	sand: 446
+	population: 1780
+	marble: 18
+	sand: 819
 	plastic: 0
-	fabric: 1447.9644
-	coal: 179
+	fabric: 1426.0231
+	coal: 302
 	sugar: 0
 	soap: 0
 	wine: 0
-	coin: 175678.38
+	coin: 254143.12
 	grapes: 0
 	concrete: 0
 	motor: 0
-	steel: 791
+	steel: 1349
 	truck: 0
-	perfume: 88
-	tools: 837.04315
-	clay: 351
+	perfume: 140
+	tools: 998.5832
+	clay: 582
 	coffee_beans: 0
 	flax: 0
 	oil: 0
 	paper: 0
 	copper: 0
-	brick: 482
-	olive_oil: 383.7479
-	ceramics: 230.96527
-	bread: 772.68384
-	lavander: 440
+	brick: 816.5
+	olive_oil: 482.65924
+	ceramics: 363.70572
+	bread: 822.2239
+	lavander: 874
 	cigars: 0
 	electricmotor: 0
 	sewing_machine: 0
 	coffee: 0
 	fish: 0
-	iron: 1243
+	iron: 1465
 	hops: 0
 	lightbulb: 0
 	spectacles: 0
-	window: 262
+	window: 472
 	purse: 0
 }
 firedEvents: [
@@ -36427,8 +37387,8 @@ factionArrived: [
 	false
 	false
 ]
-ideologyValue: 40
+ideologyValue: -30
 pendingEventId: null
 gameSpeed: 3
-contractorTimer: 259.06543
+contractorTimer: 171.82825
 }

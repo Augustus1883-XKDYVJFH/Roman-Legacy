@@ -844,7 +844,7 @@ public class BuildingType {
         public static final BuildingType PIPELINE = new Builder("PIPELINE", "Pipeline", "#696969", 1, 1)
                         .cost("coin", 20, "steel", 1)
                         .terrain(1, 2, 3, 4)
-                        .unlockEvent("OIL_DISCOVERY")
+                        .unlockEvent("THE_NEW_CITY")
                         .build();
 
         public static final BuildingType DOCK = new Builder("DOCK", "Dock", "#3a6ea5", 4, 4)
